@@ -1,0 +1,6 @@
+T1,23.5
+T2,error
+T1,80.0
+missing-comma
+T9,21.0
+T2,74.5

@@ -1,0 +1,8 @@
+temperature = float(input("Temperature: "))
+
+if temperature > 80
+    status = "alarm"
+else:
+    status = "normal"
+
+print(status)

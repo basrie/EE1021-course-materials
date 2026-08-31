@@ -1,0 +1,1569 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Week3 Mobile Pilot</title>
+<style>:root{color-scheme:light;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;max-width:920px;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Week3 Mobile Pilot" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Week3 Mobile Pilot&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(--background) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: light-dark(rgb(255 255 255), rgb(24 24 24));
+  --foreground: light-dark(rgb(26 28 31), rgb(255 255 255));
+  --card: color-mix(in oklab, var(--foreground) 5%, transparent);
+  --card-foreground: var(--foreground);
+  --popover: light-dark(rgb(255 255 255), rgb(45 45 45));
+  --popover-foreground: var(--foreground);
+  --primary: light-dark(rgb(51 156 255), rgb(131 195 255));
+  --primary-foreground: light-dark(rgb(255 255 255), rgb(13 13 13));
+  --secondary: light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%));
+  --secondary-foreground: var(--foreground);
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: light-dark(
+    rgb(26 28 31 / 49.4%),
+    rgb(255 255 255 / 49.8%)
+  );
+  --accent: light-dark(rgb(229 242 255), rgb(13 39 63));
+  --accent-foreground: var(--primary);
+  --destructive: light-dark(rgb(226 85 7), rgb(255 133 73));
+  --border: light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%));
+  --input: light-dark(
+    rgb(26 28 31 / 11.8%),
+    color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+  );
+  --ring: light-dark(rgb(51 156 255), rgb(131 195 255 / 76%));
+  --font-size-base: 14px;
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --radius: 12.5px;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+  --color-background-primary: var(--background);
+  --color-text-primary: var(--foreground);
+  --color-border-secondary: var(--border);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  margin: 0;
+  padding: 5px;
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--viz-font-weight-medium);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: superellipse(1.5);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: superellipse(1.5);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+    [aria-pressed=&quot;true&quot;],
+    [aria-selected=&quot;true&quot;],
+    .is-selected
+  ) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;ee1021-lecture3-mobile-pilot&quot;&gt;
+  &lt;style&gt;
+    #ee1021-lecture3-mobile-pilot {
+      display: grid;
+      gap: 1rem;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-meta {
+      justify-content: space-between;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-card {
+      display: grid;
+      gap: 1rem;
+    }
+
+    #ee1021-lecture3-mobile-pilot fieldset {
+      display: grid;
+      gap: 0.75rem;
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    #ee1021-lecture3-mobile-pilot legend {
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    #ee1021-lecture3-mobile-pilot pre {
+      margin: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-code {
+      display: grid;
+      gap: 0.375rem;
+      padding-inline-start: 0.75rem;
+      border-inline-start: 2px solid var(--border);
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-options {
+      display: grid;
+      gap: 0.75rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-sans);
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-options-title {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-token-keyword,
+    #ee1021-lecture3-mobile-pilot .pilot-token-number {
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-token-string {
+      color: var(--destructive);
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-token-function {
+      color: var(--foreground);
+      font-weight: 500;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-token-comment,
+    #ee1021-lecture3-mobile-pilot .pilot-token-operator {
+      color: var(--muted-foreground);
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-feedback {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-actions {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-menu-group {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-menu-item {
+      display: grid;
+      gap: 0.375rem;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-menu-final {
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-menu-heading,
+    #ee1021-lecture3-mobile-pilot .pilot-result-heading {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    #ee1021-lecture3-mobile-pilot .pilot-topic-list {
+      margin: 0;
+      padding-inline-start: 1.25rem;
+    }
+  &lt;/style&gt;
+
+  &lt;div class=&quot;viz-row pilot-meta&quot;&gt;
+    &lt;span class=&quot;viz-badge&quot; id=&quot;w3pilot-status&quot;&gt;Ready&lt;/span&gt;
+    &lt;span class=&quot;text-small text-muted&quot;&gt;No login · answers stay on this device&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;section class=&quot;card pilot-card&quot; id=&quot;w3pilot-stage&quot; aria-live=&quot;polite&quot;&gt;
+    &lt;p&gt;Loading activity choices…&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  (() =&gt; {
+    const root = document.getElementById(&quot;ee1021-lecture3-mobile-pilot&quot;);
+    const stage = root.querySelector(&quot;#w3pilot-stage&quot;);
+    const status = root.querySelector(&quot;#w3pilot-status&quot;);
+    document.documentElement.dataset.theme = &quot;light&quot;;
+    document.documentElement.style.colorScheme = &quot;light&quot;;
+
+    const intervalSets = [
+      {
+        label: &quot;Checkpoint 1&quot;,
+        timing: &quot;around minute 20&quot;,
+        topics: &quot;Function definitions and calls&quot;,
+        questions: [
+          {
+            topic: &quot;Function calls&quot;,
+            prompt: &quot;Which line calls the function?&quot;,
+            code: &quot;def calibrate_voltage(raw):\n    return raw - 0.12\n\nresult = calibrate_voltage(4.92)\nprint(result)&quot;,
+            options: [
+              &quot;def calibrate_voltage(raw):&quot;,
+              &quot;return raw - 0.12&quot;,
+              &quot;result = calibrate_voltage(4.92)&quot;,
+              &quot;print(result)&quot;
+            ],
+            answer: 2,
+            explanation: &quot;The call is the expression with the function name followed by parentheses: calibrate_voltage(4.92).&quot;
+          }
+        ]
+      },
+      {
+        label: &quot;Checkpoint 2&quot;,
+        timing: &quot;around minute 45&quot;,
+        topics: &quot;Return values and local scope&quot;,
+        questions: [
+          {
+            topic: &quot;Print and return&quot;,
+            prompt: &quot;What does this program display?&quot;,
+            code: &quot;def show_double(value):\n    print(value * 2)\n\nanswer = show_double(5)\nprint(answer)&quot;,
+            options: [
+              &quot;10 only&quot;,
+              &quot;10, then None&quot;,
+              &quot;5, then 10&quot;,
+              &quot;Nothing&quot;
+            ],
+            answer: 1,
+            explanation: &quot;show_double prints 10 but has no return statement, so Python returns None; the second print displays it.&quot;
+          },
+          {
+            topic: &quot;Local scope&quot;,
+            prompt: &quot;What does this program display?&quot;,
+            code: &quot;level = 3\n\ndef test_level():\n    level = 4\n    print(\&quot;inside:\&quot;, level)\n\ntest_level()\nprint(\&quot;outside:\&quot;, level)&quot;,
+            options: [
+              &quot;inside: 4, then outside: 3&quot;,
+              &quot;inside: 4, then outside: 4&quot;,
+              &quot;inside: 3, then outside: 3&quot;,
+              &quot;An error&quot;
+            ],
+            answer: 0,
+            explanation: &quot;The level created inside test_level is local. It does not replace the global level outside the function.&quot;
+          }
+        ]
+      },
+      {
+        label: &quot;Checkpoint 3&quot;,
+        timing: &quot;around minute 70&quot;,
+        topics: &quot;Boundary conditions and modules&quot;,
+        questions: [
+          {
+            topic: &quot;Boundary conditions&quot;,
+            prompt: &quot;A sensor is Normal from 4.50 V through 5.00 V, including both limits. How should 4.75 V be classified?&quot;,
+            code: &quot;def voltage_status(voltage):\n    if 4.50 &lt;= voltage &lt;= 5.00:\n        return \&quot;Normal\&quot;\n    return \&quot;Check\&quot;&quot;,
+            options: [
+              &quot;Normal&quot;,
+              &quot;Check&quot;,
+              &quot;No result&quot;,
+              &quot;A boundary error&quot;
+            ],
+            answer: 0,
+            explanation: &quot;4.75 lies inside the inclusive interval 4.50 &lt;= voltage &lt;= 5.00, so the function returns Normal.&quot;
+          },
+          {
+            topic: &quot;Module calls&quot;,
+            prompt: &quot;After import sensor_tools, which line correctly calls the module function?&quot;,
+            code: &quot;import sensor_tools&quot;,
+            options: [
+              &quot;calibrate_voltage(4.92)&quot;,
+              &quot;sensor_tools.calibrate_voltage(4.92)&quot;,
+              &quot;import.calibrate_voltage(4.92)&quot;,
+              &quot;sensor_tools = calibrate_voltage(4.92)&quot;
+            ],
+            answer: 1,
+            explanation: &quot;With import sensor_tools, use the module name as a prefix: sensor_tools.calibrate_voltage(...).&quot;
+          }
+        ]
+      }
+    ];
+
+    const finalQuestions = [
+      {
+        topic: &quot;Function calls&quot;,
+        prompt: &quot;Which line calls celsius_to_kelvin?&quot;,
+        code: &quot;def celsius_to_kelvin(celsius):\n    return celsius + 273.15\n\nkelvin = celsius_to_kelvin(25)&quot;,
+        options: [
+          &quot;def celsius_to_kelvin(celsius):&quot;,
+          &quot;return celsius + 273.15&quot;,
+          &quot;kelvin = celsius_to_kelvin(25)&quot;,
+          &quot;celsius + 273.15&quot;
+        ],
+        answer: 2
+      },
+      {
+        topic: &quot;Return values&quot;,
+        prompt: &quot;What does this program display?&quot;,
+        code: &quot;def scale_sample(value):\n    return value * 2\n\nreading = scale_sample(6)\nprint(reading)&quot;,
+        options: [
+          &quot;12&quot;,
+          &quot;6&quot;,
+          &quot;None&quot;,
+          &quot;An error&quot;
+        ],
+        answer: 0
+      },
+      {
+        topic: &quot;Local scope&quot;,
+        prompt: &quot;What does this program display?&quot;,
+        code: &quot;samples = 2\n\ndef count_samples():\n    samples = 7\n    return samples\n\nprint(count_samples())\nprint(samples)&quot;,
+        options: [
+          &quot;7, then 2&quot;,
+          &quot;7, then 7&quot;,
+          &quot;2, then 2&quot;,
+          &quot;An error&quot;
+        ],
+        answer: 0
+      },
+      {
+        topic: &quot;Boundary conditions&quot;,
+        prompt: &quot;What does this program display for the upper boundary?&quot;,
+        code: &quot;def current_status(current):\n    if 0.0 &lt;= current &lt;= 2.0:\n        return \&quot;Safe\&quot;\n    return \&quot;Alert\&quot;\n\nprint(current_status(2.0))&quot;,
+        options: [
+          &quot;Safe&quot;,
+          &quot;Alert&quot;,
+          &quot;None&quot;,
+          &quot;A boundary error&quot;
+        ],
+        answer: 0
+      },
+      {
+        topic: &quot;Module calls&quot;,
+        prompt: &quot;After import motor_tools, which line correctly calls rpm_to_hz?&quot;,
+        code: &quot;import motor_tools&quot;,
+        options: [
+          &quot;rpm_to_hz(1200)&quot;,
+          &quot;motor_tools.rpm_to_hz(1200)&quot;,
+          &quot;import.rpm_to_hz(1200)&quot;,
+          &quot;motor_tools = rpm_to_hz(1200)&quot;
+        ],
+        answer: 1
+      }
+    ];
+
+    const completedIntervals = new Set();
+    let mode = &quot;menu&quot;;
+    let activeInterval = 0;
+    let activeQuestions = [];
+    let questionIndex = 0;
+    let attempts = 0;
+    let intervalFirstTryCorrect = 0;
+    let peerRetries = 0;
+    let locked = false;
+    let finalAnswers = [];
+
+    function escapeHtml(value) {
+      return value.replace(/[&amp;&lt;&gt;\&quot;]/g, character =&gt; ({
+        &quot;&amp;&quot;: &quot;&amp;amp;&quot;,
+        &quot;&lt;&quot;: &quot;&amp;lt;&quot;,
+        &quot;&gt;&quot;: &quot;&amp;gt;&quot;,
+        &quot;\&quot;&quot;: &quot;&amp;quot;&quot;
+      })[character]);
+    }
+
+    function highlightPython(code) {
+      const keywords = new Set([
+        &quot;and&quot;, &quot;as&quot;, &quot;def&quot;, &quot;elif&quot;, &quot;else&quot;, &quot;False&quot;, &quot;for&quot;, &quot;from&quot;,
+        &quot;if&quot;, &quot;import&quot;, &quot;in&quot;, &quot;None&quot;, &quot;not&quot;, &quot;or&quot;, &quot;return&quot;, &quot;True&quot;, &quot;while&quot;
+      ]);
+      const tokenPattern = /(#[^\n]*|&quot;(?:\\.|[^&quot;\\])*&quot;|&#x27;(?:\\.|[^&#x27;\\])*&#x27;|\b\d+(?:\.\d+)?\b|\b[A-Za-z_]\w*\b|==|!=|&lt;=|&gt;=|-&gt;|[+\-*/%=&lt;&gt;])/g;
+      let highlighted = &quot;&quot;;
+      let cursor = 0;
+      let match;
+
+      while ((match = tokenPattern.exec(code)) !== null) {
+        const token = match[0];
+        highlighted += escapeHtml(code.slice(cursor, match.index));
+
+        let tokenClass = &quot;&quot;;
+        if (token.startsWith(&quot;#&quot;)) {
+          tokenClass = &quot;pilot-token-comment&quot;;
+        } else if (token.startsWith(&quot;\&quot;&quot;) || token.startsWith(&quot;&#x27;&quot;)) {
+          tokenClass = &quot;pilot-token-string&quot;;
+        } else if (keywords.has(token)) {
+          tokenClass = &quot;pilot-token-keyword&quot;;
+        } else if (/^\d/.test(token)) {
+          tokenClass = &quot;pilot-token-number&quot;;
+        } else if (/^[A-Za-z_]/.test(token) &amp;&amp; /^\s*\(/.test(code.slice(tokenPattern.lastIndex))) {
+          tokenClass = &quot;pilot-token-function&quot;;
+        } else if (/^(?:==|!=|&lt;=|&gt;=|-&gt;|[+\-*/%=&lt;&gt;])$/.test(token)) {
+          tokenClass = &quot;pilot-token-operator&quot;;
+        }
+
+        highlighted += tokenClass
+          ? `&lt;span class=&quot;${tokenClass}&quot;&gt;${escapeHtml(token)}&lt;/span&gt;`
+          : escapeHtml(token);
+        cursor = tokenPattern.lastIndex;
+      }
+
+      return highlighted + escapeHtml(code.slice(cursor));
+    }
+
+    function renderMenu() {
+      mode = &quot;menu&quot;;
+      status.textContent = &quot;Choose activity&quot;;
+      const intervalButtons = intervalSets.map((set, setIndex) =&gt; {
+        const completed = completedIntervals.has(setIndex) ? &quot; · Completed&quot; : &quot;&quot;;
+        return `
+          &lt;div class=&quot;pilot-menu-item&quot;&gt;
+            &lt;p class=&quot;pilot-menu-heading&quot; data-interval-status=&quot;${setIndex}&quot;&gt;${escapeHtml(set.label)} · ${escapeHtml(set.timing)}${completed}&lt;/p&gt;
+            &lt;p&gt;${escapeHtml(set.topics)}&lt;/p&gt;
+            &lt;button class=&quot;btn btn-block&quot; type=&quot;button&quot; data-interval=&quot;${setIndex}&quot;&gt;Open ${escapeHtml(set.label)}&lt;/button&gt;
+          &lt;/div&gt;
+        `;
+      }).join(&quot;&quot;);
+
+      stage.innerHTML = `
+        &lt;div class=&quot;pilot-menu-group&quot;&gt;
+          &lt;p class=&quot;pilot-menu-heading&quot;&gt;During the lesson&lt;/p&gt;
+          &lt;p&gt;Open only the checkpoint your instructor announces. Peer discussion and one retry are included.&lt;/p&gt;
+          ${intervalButtons}
+        &lt;/div&gt;
+        &lt;div class=&quot;pilot-menu-group pilot-menu-final&quot;&gt;
+          &lt;p class=&quot;pilot-menu-heading&quot;&gt;End of lesson&lt;/p&gt;
+          &lt;p&gt;Five new questions, answered individually. Results appear after the last question.&lt;/p&gt;
+          &lt;button class=&quot;btn btn-primary btn-block&quot; id=&quot;w3pilot-final-start&quot; type=&quot;button&quot;&gt;Start final 5-question checkout&lt;/button&gt;
+        &lt;/div&gt;
+      `;
+
+      stage.querySelectorAll(&quot;[data-interval]&quot;).forEach(button =&gt; {
+        button.addEventListener(&quot;click&quot;, () =&gt; startInterval(Number(button.dataset.interval)));
+      });
+      stage.querySelector(&quot;#w3pilot-final-start&quot;).addEventListener(&quot;click&quot;, startFinalCheckout);
+    }
+
+    function startInterval(setIndex) {
+      mode = &quot;interval&quot;;
+      activeInterval = setIndex;
+      activeQuestions = intervalSets[setIndex].questions;
+      questionIndex = 0;
+      intervalFirstTryCorrect = 0;
+      peerRetries = 0;
+      renderQuestion();
+    }
+
+    function startFinalCheckout() {
+      mode = &quot;final&quot;;
+      activeQuestions = finalQuestions;
+      questionIndex = 0;
+      finalAnswers = [];
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const question = activeQuestions[questionIndex];
+      attempts = 0;
+      locked = false;
+      status.textContent = mode === &quot;final&quot;
+        ? `Final checkout · ${questionIndex + 1} of ${activeQuestions.length}`
+        : `${intervalSets[activeInterval].label} · ${questionIndex + 1} of ${activeQuestions.length}`;
+
+      const options = question.options.map((option, optionIndex) =&gt; `
+        &lt;div class=&quot;form-check&quot;&gt;
+          &lt;input class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;w3pilot-answer&quot; id=&quot;w3pilot-option-${optionIndex}&quot; value=&quot;${optionIndex}&quot;&gt;
+          &lt;label class=&quot;form-check-label&quot; for=&quot;w3pilot-option-${optionIndex}&quot;&gt;${escapeHtml(option)}&lt;/label&gt;
+        &lt;/div&gt;
+      `).join(&quot;&quot;);
+
+      stage.innerHTML = `
+        &lt;fieldset&gt;
+          &lt;legend&gt;${escapeHtml(question.prompt)}&lt;/legend&gt;
+          &lt;div class=&quot;pilot-code&quot; aria-label=&quot;Python code example&quot;&gt;
+            &lt;span class=&quot;text-small text-muted&quot;&gt;Python code&lt;/span&gt;
+            &lt;pre&gt;&lt;code&gt;${highlightPython(question.code)}&lt;/code&gt;&lt;/pre&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;pilot-options&quot;&gt;
+            &lt;p class=&quot;pilot-options-title&quot;&gt;Choose one answer&lt;/p&gt;
+            ${options}
+          &lt;/div&gt;
+        &lt;/fieldset&gt;
+        &lt;div class=&quot;pilot-feedback&quot; id=&quot;w3pilot-feedback&quot; aria-live=&quot;assertive&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;pilot-actions&quot;&gt;
+          &lt;button class=&quot;btn btn-primary btn-block&quot; id=&quot;w3pilot-submit&quot; type=&quot;button&quot;&gt;${mode === &quot;final&quot; ? (questionIndex === activeQuestions.length - 1 ? &quot;Finish checkout&quot; : &quot;Save answer and continue&quot;) : &quot;Check answer&quot;}&lt;/button&gt;
+        &lt;/div&gt;
+      `;
+
+      stage.querySelector(&quot;#w3pilot-submit&quot;).addEventListener(&quot;click&quot;, submitAnswer);
+    }
+
+    function submitAnswer() {
+      if (locked) return;
+      const selected = stage.querySelector(&#x27;input[name=&quot;w3pilot-answer&quot;]:checked&#x27;);
+      const feedback = stage.querySelector(&quot;#w3pilot-feedback&quot;);
+      const submit = stage.querySelector(&quot;#w3pilot-submit&quot;);
+
+      if (!selected) {
+        feedback.innerHTML = &#x27;&lt;p class=&quot;text-destructive&quot;&gt;Choose one answer first.&lt;/p&gt;&#x27;;
+        return;
+      }
+
+      if (mode === &quot;final&quot;) {
+        finalAnswers[questionIndex] = Number(selected.value);
+        questionIndex += 1;
+        if (questionIndex &lt; activeQuestions.length) {
+          renderQuestion();
+        } else {
+          renderFinalResult();
+        }
+        return;
+      }
+
+      attempts += 1;
+      const question = activeQuestions[questionIndex];
+      const isCorrect = Number(selected.value) === question.answer;
+
+      if (isCorrect) {
+        if (attempts === 1) intervalFirstTryCorrect += 1;
+        locked = true;
+        feedback.innerHTML = `&lt;p&gt;&lt;strong&gt;Correct.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;${escapeHtml(question.explanation)}&lt;/p&gt;`;
+        submit.textContent = questionIndex === activeQuestions.length - 1 ? &quot;Complete checkpoint&quot; : &quot;Next question&quot;;
+        submit.removeEventListener(&quot;click&quot;, submitAnswer);
+        submit.addEventListener(&quot;click&quot;, advanceInterval);
+        return;
+      }
+
+      if (attempts === 1) {
+        peerRetries += 1;
+        feedback.innerHTML = &#x27;&lt;p class=&quot;text-destructive&quot;&gt;&lt;strong&gt;Not yet.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Discuss your reasoning with a neighbor for 45 seconds, then try again.&lt;/p&gt;&#x27;;
+        selected.checked = false;
+        submit.textContent = &quot;Check retry&quot;;
+        return;
+      }
+
+      locked = true;
+      feedback.innerHTML = `&lt;p class=&quot;text-destructive&quot;&gt;&lt;strong&gt;Let’s resolve it.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;The correct answer is &lt;strong&gt;${escapeHtml(question.options[question.answer])}&lt;/strong&gt;.&lt;/p&gt;&lt;p&gt;${escapeHtml(question.explanation)}&lt;/p&gt;`;
+      submit.textContent = questionIndex === activeQuestions.length - 1 ? &quot;Complete checkpoint&quot; : &quot;Next question&quot;;
+      submit.removeEventListener(&quot;click&quot;, submitAnswer);
+      submit.addEventListener(&quot;click&quot;, advanceInterval);
+    }
+
+    function advanceInterval() {
+      questionIndex += 1;
+      if (questionIndex &lt; activeQuestions.length) {
+        renderQuestion();
+      } else {
+        renderIntervalResult();
+      }
+    }
+
+    function renderIntervalResult() {
+      completedIntervals.add(activeInterval);
+      status.textContent = `${intervalSets[activeInterval].label} complete`;
+      stage.innerHTML = `
+        &lt;p class=&quot;pilot-result-heading&quot;&gt;Checkpoint complete&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;${intervalFirstTryCorrect} of ${activeQuestions.length}&lt;/strong&gt; correct before peer retry.&lt;/p&gt;
+        &lt;p&gt;${peerRetries === 0 ? &quot;No peer retry was needed.&quot; : `${peerRetries} question${peerRetries === 1 ? &quot;&quot; : &quot;s&quot;} triggered discussion and retry.`}&lt;/p&gt;
+        &lt;button class=&quot;btn btn-primary btn-block&quot; id=&quot;w3pilot-menu&quot; type=&quot;button&quot;&gt;Return to activity menu&lt;/button&gt;
+      `;
+      stage.querySelector(&quot;#w3pilot-menu&quot;).addEventListener(&quot;click&quot;, renderMenu);
+    }
+
+    function renderFinalResult() {
+      const score = finalQuestions.reduce((total, question, resultIndex) =&gt; {
+        return total + (finalAnswers[resultIndex] === question.answer ? 1 : 0);
+      }, 0);
+      const missedTopics = [...new Set(finalQuestions
+        .filter((question, resultIndex) =&gt; finalAnswers[resultIndex] !== question.answer)
+        .map(question =&gt; question.topic))];
+      const review = missedTopics.length === 0
+        ? &quot;&lt;p&gt;All five concepts were retrieved successfully.&lt;/p&gt;&quot;
+        : `&lt;p class=&quot;pilot-result-heading&quot;&gt;Review next&lt;/p&gt;&lt;ul class=&quot;pilot-topic-list&quot;&gt;${missedTopics.map(topic =&gt; `&lt;li&gt;${escapeHtml(topic)}&lt;/li&gt;`).join(&quot;&quot;)}&lt;/ul&gt;`;
+
+      status.textContent = &quot;Final checkout complete&quot;;
+      stage.innerHTML = `
+        &lt;p&gt;&lt;strong&gt;${score} of ${finalQuestions.length}&lt;/strong&gt; correct.&lt;/p&gt;
+        ${review}
+        &lt;p class=&quot;text-small&quot;&gt;Show this screen to your instructor when asked.&lt;/p&gt;
+        &lt;div class=&quot;pilot-actions&quot;&gt;
+          &lt;button class=&quot;btn btn-primary btn-block&quot; id=&quot;w3pilot-final-retry&quot; type=&quot;button&quot;&gt;Try the final checkout again&lt;/button&gt;
+          &lt;button class=&quot;btn btn-block&quot; id=&quot;w3pilot-menu&quot; type=&quot;button&quot;&gt;Return to activity menu&lt;/button&gt;
+        &lt;/div&gt;
+      `;
+      stage.querySelector(&quot;#w3pilot-final-retry&quot;).addEventListener(&quot;click&quot;, startFinalCheckout);
+      stage.querySelector(&quot;#w3pilot-menu&quot;).addEventListener(&quot;click&quot;, renderMenu);
+    }
+
+    function startRequestedMode(requestedMode) {
+      if (requestedMode === &quot;final&quot;) {
+        startFinalCheckout();
+        return true;
+      }
+
+      const intervalMatch = /^interval-([0-2])$/.exec(requestedMode || &quot;&quot;);
+      if (intervalMatch) {
+        startInterval(Number(intervalMatch[1]));
+        return true;
+      }
+
+      return false;
+    }
+
+    window.addEventListener(&quot;message&quot;, event =&gt; {
+      if (event.data &amp;&amp; event.data.type === &quot;ee1021-lecture3-start&quot;) {
+        if (event.data.presentation) {
+          document.documentElement.style.setProperty(&quot;--font-size-base&quot;, &quot;18px&quot;);
+        }
+        startRequestedMode(event.data.mode);
+      }
+    });
+
+    const directMode = new URLSearchParams(window.location.search).get(&quot;mode&quot;);
+    if (directMode) document.documentElement.style.setProperty(&quot;--font-size-base&quot;, &quot;18px&quot;);
+    if (!startRequestedMode(directMode)) renderMenu();
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: &quot;ee1021-lecture3-ready&quot; }, &quot;*&quot;);
+    }
+  })();
+&lt;/script&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handleLeave = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+<script>
+  (() => {
+    document.documentElement.style.colorScheme = "light";
+    const activityFrame = document.querySelector("iframe");
+    const mode = new URLSearchParams(window.location.search).get("mode");
+    const sendMode = () => activityFrame.contentWindow.postMessage({
+      type: "ee1021-lecture3-start",
+      mode,
+      presentation: Boolean(mode)
+    }, "*");
+
+    activityFrame.addEventListener("load", sendMode);
+    window.addEventListener("message", event => {
+      if (event.data && event.data.type === "ee1021-lecture3-ready") sendMode();
+    });
+  })();
+</script>
+</body>
+</html>
