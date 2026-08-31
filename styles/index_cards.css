@@ -1,0 +1,148 @@
+/* Course landing page (index.qmd only).
+   An aligned index grouped into the course's five modules. Colour carries
+   meaning - which module a lecture belongs to, the midterm break, and the lab
+   as the graded piece - rather than decorating. Every colour below is at or
+   above WCAG AA contrast on both white and its own tint. */
+
+:root {
+  --ee-ink:   #1f2328;
+  --ee-muted: #6b737c;
+  --ee-faint: #7a828b;
+  --ee-rule:  #eceff3;
+}
+
+/* --- module palette --- */
+.m-c    { --mod: #3f6fa8; --mod-tint: #eef4fa; }  /* Embedded C          */
+.m-reg  { --mod: #17756b; --mod-tint: #e9f5f3; }  /* Registers and GPIO  */
+.m-evt  { --mod: #6a4fb8; --mod-tint: #f0edfa; }  /* Events and time     */
+.m-per  { --mod: #9c5a15; --mod-tint: #fdf3e7; }  /* Peripherals         */
+.m-proj { --mod: #a53f68; --mod-tint: #fbedf2; }  /* Integration/project */
+
+#title-block-header .title {
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--ee-ink);
+}
+
+.lead-note {
+  color: #57606a;
+  max-width: 46rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin-bottom: 2.2rem;
+}
+
+.lead-note a { color: #27567f; font-weight: 500; }
+
+/* --- module heading --- */
+.module-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--mod);
+  margin: 1.9rem 0 0.45rem;
+}
+
+/* --- the lecture rows --- */
+.lec-index { border-top: 2px solid var(--mod); }
+
+.lec-row {
+  display: grid;
+  grid-template-columns: 3.1rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0 1rem;
+  padding: 0.6rem 0.55rem;
+  border-bottom: 1px solid var(--ee-rule);
+  border-left: 3px solid var(--mod-tint);
+  transition: background 0.12s ease, border-left-color 0.12s ease;
+}
+
+.lec-row:hover {
+  background: var(--mod-tint);
+  border-left-color: var(--mod);
+}
+
+.lec-main { display: flex; flex-direction: column; gap: 0.12rem; min-width: 0; }
+
+/* the number as a module-coloured chip - the main per-lecture marker */
+.lec-code {
+  justify-self: start;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--mod);
+  background: var(--mod-tint);
+  border-radius: 5px;
+  padding: 0.16rem 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.lec-title {
+  font-size: 0.94rem;
+  font-weight: 500;
+  color: var(--ee-ink);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* the four core resources, in fixed columns so every row lines up */
+.lec-links { display: grid; grid-template-columns: 4rem 5.8rem 5.4rem 3.6rem; }
+
+.lec-links a, .lec-extras a {
+  font-size: 0.8rem;
+  color: var(--ee-muted) !important;
+  text-decoration: none !important;
+  border-radius: 5px;
+  white-space: nowrap;
+  transition: color 0.12s ease, background 0.12s ease;
+}
+
+.lec-links a { padding: 0.12rem 0.34rem; margin-left: -0.34rem; }
+
+.lec-links a:hover, .lec-extras a:hover {
+  color: var(--mod) !important;
+  background: #fff;
+}
+
+/* the lab is the graded piece - module colour, so it stands out from its
+   three grey siblings without introducing a sixth hue to the page */
+.lec-links a:last-child { color: var(--mod) !important; font-weight: 600; }
+.lec-links a:last-child:hover { color: var(--mod) !important; background: var(--mod-tint); }
+
+/* extras only three lectures carry */
+.lec-extras { display: flex; gap: 0.9rem; }
+.lec-extras a {
+  font-size: 0.76rem;
+  color: var(--ee-faint) !important;
+  padding: 0.05rem 0.25rem;
+  margin-left: -0.25rem;
+}
+
+/* --- the midterm, between the two halves of the term --- */
+.midterm-band {
+  margin: 2.1rem 0 0.4rem;
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid #57606a;
+  background: #f2f4f6;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  color: #57606a;
+}
+
+/* --- narrow screens: links wrap under the title --- */
+@media (max-width: 720px) {
+  .lec-row { grid-template-columns: 3rem minmax(0, 1fr); row-gap: 0.35rem; padding: 0.68rem 0.4rem; }
+  .lec-links {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.85rem;
+    row-gap: 0.15rem;
+  }
+  .lec-links a { padding-left: 0; padding-right: 0; margin-left: 0; }
+  .lec-extras { flex-wrap: wrap; gap: 0.85rem; }
+  .lec-extras a { margin-left: 0; padding-left: 0; }
+}

@@ -67,18 +67,17 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<link rel="stylesheet" href="styles/index_cards.css">
 </head>
 
-<body>
+<body class="fullcontent">
 
 <div id="quarto-search-results"></div>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -101,82 +100,143 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="ee1021-programming-for-engineers" class="level1">
-<h1>EE1021 Programming for Engineers</h1>
-<p>This is the 2026-2027 working site.</p>
-<section id="where-things-go" class="level2">
-<h2 class="anchored" data-anchor-id="where-things-go">Where Things Go</h2>
-<ul>
-<li><code>lectures/</code> contains stable lecture-sequence sources (<code>L01</code>, <code>L02</code>, …).</li>
-<li><code>exams/</code> contains exam sources and print material.</li>
-<li><code>private/</code> contains solutions, submissions, grades, and sensitive material.</li>
-<li><code>admin/</code> contains syllabus, schedule, class-list, CATS/Orion, and course-file records.</li>
-<li><code>_site/</code> contains rendered output after <code>quarto render</code>.</li>
-</ul>
-<p>Rendered material should be found in <code>_site/</code>, not <code>dist/</code>.</p>
-<p>Lecture numbers describe instructional order, not calendar weeks. The term-specific <a href="admin/schedule/lecture_delivery_map.csv">delivery map</a> records when each lecture or exam occurs.</p>
-</section>
-<section id="lecture-3-functions-and-modules" class="level2">
-<h2 class="anchored" data-anchor-id="lecture-3-functions-and-modules">Lecture 3 — Functions and Modules</h2>
-<ul>
-<li><a href="./lectures/L03_functions-modules/theory/slides.html">Theory slides</a></li>
-<li><a href="./lectures/L03_functions-modules/lab/slides.html">Lab slides</a></li>
-<li><a href="lectures/L03_functions-modules/mobile/lecture3-mobile-pilot.html">Mobile checkpoint pilot</a></li>
-<li><a href="./lectures/L03_functions-modules/practice/EE1021_Lecture3_Functions_Worksheet.html">Functions and modules worksheet</a></li>
-<li><a href="lectures/L03_functions-modules/practice/EE1021_Lecture3_Functions_Worksheet_Template.py">Worksheet submission template</a></li>
-</ul>
-</section>
-<section id="lecture-4-sequences-tuples-and-lists" class="level2">
-<h2 class="anchored" data-anchor-id="lecture-4-sequences-tuples-and-lists">Lecture 4 — Sequences, Tuples, and Lists</h2>
-<ul>
-<li><a href="./lectures/L04_lists-strings/theory/slides.html">Theory slides</a></li>
-<li><a href="./lectures/L04_lists-strings/lab/slides.html">Lab slides</a></li>
-<li><a href="lectures/L04_lists-strings/lab/starter/lecture4_lab.py">Lab starter</a></li>
-<li><a href="./lectures/L04_lists-strings/lab/checkoff_rubric.html">Individual checkoff rubric</a></li>
-<li><a href="./lectures/L04_lists-strings/practice/EE1021_Lecture4_Sequences_Worksheet.html">Sequences, tuples, and lists worksheet</a></li>
-<li><a href="lectures/L04_lists-strings/practice/EE1021_Lecture4_Sequences_Worksheet_Template.py">Worksheet submission template</a></li>
-</ul>
-</section>
-<section id="lecture-5-dictionaries-and-sets" class="level2">
-<h2 class="anchored" data-anchor-id="lecture-5-dictionaries-and-sets">Lecture 5 — Dictionaries and Sets</h2>
-<ul>
-<li><a href="./lectures/L05_dictionaries-files/theory/slides.html">Theory slides</a></li>
-<li><a href="./lectures/L05_dictionaries-files/lab/slides.html">Lab slides</a></li>
-<li><a href="lectures/L05_dictionaries-files/lab/starter/lecture5_lab.py">Lab starter</a></li>
-<li><a href="lectures/L05_dictionaries-files/lab/starter/sensor_events.txt">Sensor event dataset</a></li>
-<li><a href="./lectures/L05_dictionaries-files/lab/checkoff_rubric.html">Individual checkoff rubric</a></li>
-<li><a href="./lectures/L05_dictionaries-files/practice/EE1021_Lecture5_Dictionaries_Sets_Worksheet.html">Dictionaries and sets worksheet</a></li>
-<li><a href="lectures/L05_dictionaries-files/practice/EE1021_Lecture5_Dictionaries_Sets_Worksheet_Template.py">Worksheet submission template</a></li>
-</ul>
-</section>
-<section id="lecture-6-debugging-and-defensive-error-handling" class="level2">
-<h2 class="anchored" data-anchor-id="lecture-6-debugging-and-defensive-error-handling">Lecture 6 — Debugging and Defensive Error Handling</h2>
-<ul>
-<li><a href="./lectures/L06_error-handling-debugging/theory/slides.html">Theory slides</a></li>
-<li><a href="./lectures/L06_error-handling-debugging/lab/slides.html">Lab slides</a></li>
-<li><a href="lectures/L06_error-handling-debugging/lab/starter/lecture6_lab.py">Lab starter</a></li>
-<li><a href="lectures/L06_error-handling-debugging/lab/starter/stage1_syntax_bug.txt">Syntax-repair starter</a></li>
-<li><a href="lectures/L06_error-handling-debugging/lab/starter/sensor_readings.txt">Sensor-reading dataset</a></li>
-<li><a href="./lectures/L06_error-handling-debugging/lab/checkoff_rubric.html">Individual checkoff rubric</a></li>
-<li><a href="./lectures/L06_error-handling-debugging/practice/EE1021_Lecture6_Debugging_Worksheet.html">Debugging and error-handling worksheet</a></li>
-<li><a href="lectures/L06_error-handling-debugging/practice/EE1021_Lecture6_Debugging_Worksheet_Template.py">Worksheet submission template</a></li>
-</ul>
-</section>
-<section id="lecture-7-classes-objects-and-methods" class="level2">
-<h2 class="anchored" data-anchor-id="lecture-7-classes-objects-and-methods">Lecture 7 — Classes, Objects, and Methods</h2>
-<ul>
-<li><a href="./lectures/L07_object-oriented-programming/theory/slides.html">Theory slides</a></li>
-<li><a href="./lectures/L07_object-oriented-programming/lab/slides.html">Lab slides</a></li>
-<li><a href="lectures/L07_object-oriented-programming/lab/starter/lecture7_lab.py">Lab starter</a></li>
-<li><a href="lectures/L07_object-oriented-programming/lab/starter/sensor_test_data.txt">Sensor test dataset</a></li>
-<li><a href="./lectures/L07_object-oriented-programming/lab/checkoff_rubric.html">Individual checkoff rubric</a></li>
-<li><a href="./lectures/L07_object-oriented-programming/practice/EE1021_Lecture7_Classes_Objects_Worksheet.html">Classes, objects, and methods worksheet</a></li>
-<li><a href="lectures/L07_object-oriented-programming/practice/EE1021_Lecture7_Classes_Objects_Worksheet_Template.py">Worksheet submission template</a></li>
-</ul>
+<div class="lead-note">
+<p>Slides, notes, worksheets and lab guides. Graded work and the weekly calendar are in <a href="https://cats.iku.edu.tr/portal">CATS</a>.</p>
+</div>
+<p class="module-label m-c">Lectures</p>
+<div class="lec-index m-c">
+  <div class="lec-row m-c">
+    <span class="lec-code">L01</span>
+    <span class="lec-main">
+      <span class="lec-title">Course Introduction Python Basics</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L01_course-introduction-python-basics/theory/slides.html">Theory</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L02</span>
+    <span class="lec-main">
+      <span class="lec-title">Control Flow</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L02_control-flow/theory/slides.html">Theory</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L03</span>
+    <span class="lec-main">
+      <span class="lec-title">Functions Modules</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L03_functions-modules/theory/slides.html">Theory</a>
+        <a href="lectures/L03_functions-modules/practice/EE1021_Lecture3_Functions_Worksheet.html">Worksheet</a>
+        <a href="lectures/L03_functions-modules/lab/slides.html">Lab</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L04</span>
+    <span class="lec-main">
+      <span class="lec-title">Lists Strings</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L04_lists-strings/theory/slides.html">Theory</a>
+        <a href="lectures/L04_lists-strings/practice/EE1021_Lecture4_Sequences_Worksheet.html">Worksheet</a>
+        <a href="lectures/L04_lists-strings/lab/slides.html">Lab</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L05</span>
+    <span class="lec-main">
+      <span class="lec-title">Dictionaries Files</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L05_dictionaries-files/theory/slides.html">Theory</a>
+        <a href="lectures/L05_dictionaries-files/practice/EE1021_Lecture5_Dictionaries_Sets_Worksheet.html">Worksheet</a>
+        <a href="lectures/L05_dictionaries-files/lab/slides.html">Lab</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L06</span>
+    <span class="lec-main">
+      <span class="lec-title">Error Handling Debugging</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L06_error-handling-debugging/theory/slides.html">Theory</a>
+        <a href="lectures/L06_error-handling-debugging/practice/EE1021_Lecture6_Debugging_Worksheet.html">Worksheet</a>
+        <a href="lectures/L06_error-handling-debugging/lab/slides.html">Lab</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L07</span>
+    <span class="lec-main">
+      <span class="lec-title">Object Oriented Programming</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L07_object-oriented-programming/theory/slides.html">Theory</a>
+        <a href="lectures/L07_object-oriented-programming/practice/EE1021_Lecture7_Classes_Objects_Worksheet.html">Worksheet</a>
+        <a href="lectures/L07_object-oriented-programming/lab/slides.html">Lab</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L08</span>
+    <span class="lec-main">
+      <span class="lec-title">OOP Applications</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L08_oop-applications/theory/slides.html">Theory</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L09</span>
+    <span class="lec-main">
+      <span class="lec-title">Data And Visualization</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L09_data-and-visualization/theory/slides.html">Theory</a>
+        <a href="lectures/L09_data-and-visualization/practice/EE1021_Lecture9_HomeWorksheet.pdf">Worksheet</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L10</span>
+    <span class="lec-main">
+      <span class="lec-title">File I/O And Csv</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L10_file-io-and-csv/theory/slides.html">Theory</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L11</span>
+    <span class="lec-main">
+      <span class="lec-title">Numerical Computing</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L11_numerical-computing/theory/slides.html">Theory</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L12</span>
+    <span class="lec-main">
+      <span class="lec-title">Matlab Basics</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L12_matlab-basics/theory/slides.html">Theory</a>
+    </span>
+  </div>
+  <div class="lec-row m-c">
+    <span class="lec-code">L13</span>
+    <span class="lec-main">
+      <span class="lec-title">Matlab Visualization Review</span>
+    </span>
+    <span class="lec-links">
+        <a href="lectures/L13_matlab-visualization-review/theory/slides.html">Theory</a>
+        <a href="lectures/L13_matlab-visualization-review/practice/PFE1021_Th_Lecture13_Practice.html">Practice</a>
+    </span>
+  </div>
+</div>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
