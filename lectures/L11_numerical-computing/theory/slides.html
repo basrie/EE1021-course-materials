@@ -1583,19 +1583,6 @@ font-weight: 700;
 <li>Compute with <strong>elementwise arithmetic</strong>, comparisons, <strong>reductions</strong> (<code>sum</code>, <code>min</code>, <code>mean</code>), sorting, and stacking</li>
 <li>Use arrays as <strong>matrices</strong>: <code>@</code> matrix product and <code>np.linalg</code> (<code>solve</code>, <code>inv</code>, <code>det</code>, <code>matrix_rank</code>)</li>
 </ol>
-<aside class="notes">
-<p>The arc: why NumPy exists (vectorization), then the ndarray life cycle — create, inspect, index, operate — and finally matrices and linear algebra. The REPL-style slides show real outputs; run a few of them live in a notebook. Emphasize early that arrays are homogeneous and fixed-size: everything else follows from that.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
 </section>
 <section id="last-time" class="slide level2">
 <h2>Last Time</h2>
@@ -1669,19 +1656,6 @@ display:block!important;
 <li>Works between arrays of the same shape, a scalar and an array, or even arrays of different shapes, provided the smaller one is “expandable” to the larger shape unambiguously.</li>
 </ul></li>
 </ul>
-<aside class="notes">
-<p>The broadcasting rules are covered in the NumPy docs; here students only need the idea that <code>a + 1</code> or <code>a * b</code> works without writing a for loop.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
 </section>
 <section id="using-a-function-from-a-module-recap" class="slide level2">
 <h2>Using a Function from a Module (Recap)</h2>
@@ -1988,19 +1962,6 @@ display:block!important;
 <li>What will be the result?</li>
 <li>What will be the type of the new object?</li>
 </ul>
-<aside class="notes">
-<p>The legacy <code>np.random.random_integers</code> seen in older material was removed from NumPy; <code>np.random.randint(low, high, size)</code> with an exclusive <code>high</code> is the replacement.</p>
-<style type="text/css">
-span.MJX_Assistive_MathML {
-position:absolute!important;
-clip: rect(1px, 1px, 1px, 1px);
-padding: 1px 0 0 0!important;
-border: 0!important;
-height: 1px!important;
-width: 1px!important;
-overflow: hidden!important;
-display:block!important;
-}</style></aside>
 </section>
 <section id="logical-indexing-1" class="slide level2">
 <h2>Logical Indexing</h2>
