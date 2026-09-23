@@ -4814,12 +4814,12 @@ page-break-after: avoid;
 <h2 class="anchored" data-anchor-id="section-c-decision-making">Section C – Decision Making</h2>
 <ol type="1">
 <li><p>Ticket kiosk: ask for a visitor’s age and whether they have a student card (<code>&quot;y&quot;</code>/<code>&quot;n&quot;</code>). Ticket prices are: ages under 6 → free, 6–17 → 8 TL, 18 and above → 12 TL, but students 18+ pay 9 TL. Print the ticket price or an error if the age is negative.</p></li>
-<li><p>Write a program that reads two integers: <code>load_kg</code> and <code>people</code>. Display:</p>
+<li><p>Lift check: a small lift is rated for <strong>400 kg and 5 people</strong>. Its safe zone is <strong>300 kg and 4 people or less</strong>. Write a program that reads two integers: <code>load_kg</code> (the total weight in the lift, people included) and <code>people</code>. Display:</p>
 <ul>
 <li><code>Invalid input</code> if either value is negative</li>
 <li><code>Safe</code> if <code>load_kg &lt;= 300</code> <strong>and</strong> <code>people &lt;= 4</code></li>
 <li><code>Caution</code> if <code>load_kg &lt;= 400</code> <strong>and</strong> <code>people &lt;= 5</code></li>
-<li><code>Reduce load</code> otherwise Test the program with at least one boundary value (such as <code>300</code>, <code>301</code>, <code>400</code>, or <code>401</code>). Briefly explain how your <code>if/elif/else</code> structure guarantees that only one message appears.</li>
+<li><code>Over limit</code> otherwise Test the program with at least one boundary value (such as <code>300</code>, <code>301</code>, <code>400</code>, or <code>401</code>), and with <code>load_kg = 200</code> and <code>people = 6</code>. Briefly explain how your <code>if/elif/else</code> structure guarantees that only one message appears.</li>
 </ul></li>
 <li><p>Ask for a month number (1–12) and print the corresponding season in English: <code>Winter</code>, <code>Spring</code>, <code>Summer</code>, or <code>Autumn</code>. Handle invalid inputs (e.g., 0 or 15) with a helpful message.</p></li>
 </ol>

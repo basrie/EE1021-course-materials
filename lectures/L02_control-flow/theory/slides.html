@@ -1598,6 +1598,20 @@ Basri Erdogan
 <li>Choose a <code>for</code> or <code>while</code> loop, and use <strong><code>break</code></strong> to stop reading input when the user enters a special stop value (such as <code>-1</code>)</li>
 <li>Apply three reusable patterns: <strong>accumulate</strong>, <strong>count</strong>, and <strong>build</strong></li>
 </ol>
+<aside class="notes">
+<p>Lecture 2 turns straight-line programs into programs that make decisions and repeat work. Ask students to trace before running. Reveal checks only after they have committed to an answer.</p>
+<p>Suggested 90-minute pacing: goals and retrieval warm-up, 8 minutes; decisions, 22 minutes; repetition, 35 minutes; reusable patterns, 20 minutes; exit ticket and summary, 5 minutes. If discussion runs long, shorten the for-to-while conversion rather than skipping the reusable patterns.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
 <section id="retrieval-warm-up" class="slide level2">
 <h2>Retrieval Warm-Up</h2>
@@ -1664,24 +1678,24 @@ Basri Erdogan
 <p>Python selects the first true branch.</p>
 </div></div>
 </section>
-<section id="engineering-decision-load-safety" class="slide level2">
-<h2>Engineering Decision: Load Safety</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>load_kg <span class="op">=</span> <span class="dv">350</span></span>
-<span id="cb7-2"><a></a>people <span class="op">=</span> <span class="dv">4</span></span>
-<span id="cb7-3"><a></a></span>
-<span id="cb7-4"><a></a><span class="cf">if</span> load_kg <span class="op">&lt;</span> <span class="dv">0</span> <span class="kw">or</span> people <span class="op">&lt;</span> <span class="dv">0</span>:</span>
-<span id="cb7-5"><a></a>    <span class="bu">print</span>(<span class="st">&quot;Invalid input&quot;</span>)</span>
-<span id="cb7-6"><a></a><span class="cf">elif</span> load_kg <span class="op">&lt;=</span> <span class="dv">300</span> <span class="kw">and</span> people <span class="op">&lt;=</span> <span class="dv">4</span>:</span>
-<span id="cb7-7"><a></a>    <span class="bu">print</span>(<span class="st">&quot;Safe&quot;</span>)</span>
-<span id="cb7-8"><a></a><span class="cf">elif</span> load_kg <span class="op">&lt;=</span> <span class="dv">400</span> <span class="kw">and</span> people <span class="op">&lt;=</span> <span class="dv">5</span>:</span>
-<span id="cb7-9"><a></a>    <span class="bu">print</span>(<span class="st">&quot;Caution&quot;</span>)</span>
-<span id="cb7-10"><a></a><span class="cf">else</span>:</span>
-<span id="cb7-11"><a></a>    <span class="bu">print</span>(<span class="st">&quot;Reduce load&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Python tests branches from top to bottom and stops after the first true condition.</p>
+<section id="engineering-decision-battery-level" class="slide level2">
+<h2>Engineering Decision: Battery Level</h2>
+<p><strong>Rule:</strong> 50% or more → <code>OK</code>. 20% to 49% → <code>Low</code>. Below 20% → <code>Charge now</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>battery <span class="op">=</span> <span class="dv">35</span>   <span class="co"># charge in percent (0 to 100)</span></span>
+<span id="cb7-2"><a></a></span>
+<span id="cb7-3"><a></a><span class="cf">if</span> battery <span class="op">&lt;</span> <span class="dv">0</span> <span class="kw">or</span> battery <span class="op">&gt;</span> <span class="dv">100</span>:</span>
+<span id="cb7-4"><a></a>    <span class="bu">print</span>(<span class="st">&quot;Invalid reading&quot;</span>)</span>
+<span id="cb7-5"><a></a><span class="cf">elif</span> battery <span class="op">&gt;=</span> <span class="dv">50</span>:</span>
+<span id="cb7-6"><a></a>    <span class="bu">print</span>(<span class="st">&quot;OK&quot;</span>)</span>
+<span id="cb7-7"><a></a><span class="cf">elif</span> battery <span class="op">&gt;=</span> <span class="dv">20</span>:</span>
+<span id="cb7-8"><a></a>    <span class="bu">print</span>(<span class="st">&quot;Low&quot;</span>)</span>
+<span id="cb7-9"><a></a><span class="cf">else</span>:</span>
+<span id="cb7-10"><a></a>    <span class="bu">print</span>(<span class="st">&quot;Charge now&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Python tests branches from top to bottom and stops after the first true condition. Here <code>battery &gt;= 50</code> is false, <code>battery &gt;= 20</code> is true, so the program prints <code>Low</code>.</p>
 <div class="try-it">
-<p><strong>Predict:</strong> what changes if <code>load_kg = 420</code>?</p>
+<p><strong>Predict:</strong> what does the program print if <code>battery = 10</code>?</p>
 <div class="fragment">
-<p><strong>Check:</strong> the program prints <code>Reduce load</code>.</p>
+<p><strong>Check:</strong> <code>Charge now</code>. No condition above <code>else</code> is true.</p>
 </div>
 </div>
 </section>
@@ -1702,49 +1716,60 @@ Basri Erdogan
 </section>
 <section id="engineering-checkpoint-test-the-boundaries" class="slide level2">
 <h2>Engineering Checkpoint: Test the Boundaries</h2>
-<p>Use the load-safety program to predict one output for each test case.</p>
+<p>Use the battery program to predict one output for each test case.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: right;"><code>load_kg</code></th>
-<th style="text-align: right;"><code>people</code></th>
+<th style="text-align: right;"><code>battery</code></th>
 <th>Why test it?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">-1</td>
-<td style="text-align: right;">3</td>
-<td>invalid lower boundary</td>
+<td>just below the valid range</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">300</td>
-<td style="text-align: right;">4</td>
-<td>exact safe limits</td>
+<td style="text-align: right;">101</td>
+<td>just above the valid range</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">301</td>
-<td style="text-align: right;">4</td>
-<td>just above one safe limit</td>
+<td style="text-align: right;">50</td>
+<td>exact <code>OK</code> limit</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">5</td>
-<td>exact caution limits</td>
+<td style="text-align: right;">49</td>
+<td>just below the <code>OK</code> limit</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">401</td>
-<td style="text-align: right;">5</td>
-<td>just above a caution limit</td>
+<td style="text-align: right;">20</td>
+<td>exact <code>Low</code> limit</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">19</td>
+<td>just below the <code>Low</code> limit</td>
 </tr>
 </tbody>
 </table>
 <div class="try-it">
 <p><strong>Verify:</strong> trace the branches from top to bottom before running the program.</p>
 <div class="fragment">
-<p><strong>Check:</strong> <code>Invalid input</code>, <code>Safe</code>, <code>Caution</code>, <code>Caution</code>, <code>Reduce load</code>.</p>
+<p><strong>Check:</strong> <code>Invalid reading</code>, <code>Invalid reading</code>, <code>OK</code>, <code>Low</code>, <code>Low</code>, <code>Charge now</code>.</p>
 </div>
 </div>
+<aside class="notes">
+<p>Emphasize that boundary cases test the specification, not just the Python syntax. Then ask about branch order: <code>battery = 80</code> makes both <code>battery &gt;= 50</code> and <code>battery &gt;= 20</code> true. It prints <code>OK</code> only because that branch comes first. If the <code>Low</code> branch were first, 80% would print <code>Low</code>.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section></section>
 <section>
 <section id="part-2-repetition" class="title-slide slide level1 section-divider center">
@@ -2025,6 +2050,19 @@ Basri Erdogan
 <span id="cb23-4"><a></a>    value <span class="op">+=</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <p>The <code>while</code> version makes initialization, condition, and update explicit.</p>
+<aside class="notes">
+<p>Optional two-minute comparison. If the class is behind schedule, state the equivalence and move directly to the exit ticket; preserve the three reusable-pattern slides.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
 <section id="five-minute-exit-ticket" class="slide level2">
 <h2>Five-Minute Exit Ticket</h2>
