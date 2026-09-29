@@ -501,62 +501,74 @@ Basri Erdogan
 <section id="verify-the-boundaries" class="slide level2 checkpoint">
 <h2>Verify the Boundaries</h2>
 <p>Predict the returned status for each call.</p>
+<div class="columns">
+<div class="column" style="font-size: 1.45em;">
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="kw">def</span> voltage_status(voltage):</span>
+<span id="cb16-2"><a></a>    <span class="cf">if</span> voltage <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb16-3"><a></a>        <span class="cf">return</span> <span class="st">"Invalid"</span></span>
+<span id="cb16-4"><a></a>    <span class="cf">if</span> voltage <span class="op">&lt;</span> <span class="fl">4.75</span>:</span>
+<span id="cb16-5"><a></a>        <span class="cf">return</span> <span class="st">"Low"</span></span>
+<span id="cb16-6"><a></a>    <span class="cf">if</span> voltage <span class="op">&lt;=</span> <span class="fl">5.25</span>:</span>
+<span id="cb16-7"><a></a>        <span class="cf">return</span> <span class="st">"Normal"</span></span>
+<span id="cb16-8"><a></a>    <span class="cf">return</span> <span class="st">"High"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:54%;">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th>Call</th>
-<th>Why test it?</th>
+<th>Your prediction</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><code>voltage_status(-0.1)</code></td>
-<td>invalid input</td>
+<td></td>
 </tr>
 <tr class="even">
 <td><code>voltage_status(4.74)</code></td>
-<td>just below normal</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><code>voltage_status(4.75)</code></td>
-<td>exact lower boundary</td>
+<td></td>
 </tr>
 <tr class="even">
 <td><code>voltage_status(5.25)</code></td>
-<td>exact upper boundary</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><code>voltage_status(5.26)</code></td>
-<td>just above normal</td>
+<td></td>
 </tr>
 </tbody>
 </table>
+</div></div>
 <div class="fragment">
-<p><strong>Check:</strong> <code>Invalid</code>, <code>Low</code>, <code>Normal</code>, <code>Normal</code>, <code>High</code>.</p>
+<p><strong>Check:</strong> <code>Invalid</code> (below 0) · <code>Low</code> (just below 4.75) · <code>Normal</code> (exactly 4.75: <code>4.75 &lt; 4.75</code> is false) · <code>Normal</code> (exactly 5.25: <code>5.25 &lt;= 5.25</code> is true) · <code>High</code> (just above 5.25).</p>
+<p>Test each edge and one step either side: <code>&lt;</code> versus <code>&lt;=</code> mistakes hide there. Boundary tests check the specification, not just the syntax.</p>
 </div>
-<p>Boundary tests verify the specification, not just the syntax.</p>
 </section>
 <section id="a-function-can-contain-a-loop" class="slide level2">
 <h2>A Function Can Contain a Loop</h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="kw">def</span> sum_multiples(limit, divisor):</span>
-<span id="cb16-2"><a></a>    <span class="co">"""Return the sum of multiples up to and including limit."""</span></span>
-<span id="cb16-3"><a></a>    total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb16-4"><a></a>    <span class="cf">for</span> value <span class="kw">in</span> <span class="bu">range</span>(divisor, limit <span class="op">+</span> <span class="dv">1</span>, divisor):</span>
-<span id="cb16-5"><a></a>        total <span class="op">+=</span> value</span>
-<span id="cb16-6"><a></a>    <span class="cf">return</span> total</span>
-<span id="cb16-7"><a></a></span>
-<span id="cb16-8"><a></a>result <span class="op">=</span> sum_multiples(<span class="dv">12</span>, <span class="dv">3</span>)</span>
-<span id="cb16-9"><a></a><span class="bu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="kw">def</span> sum_multiples(limit, divisor):</span>
+<span id="cb17-2"><a></a>    <span class="co">"""Return the sum of multiples up to and including limit."""</span></span>
+<span id="cb17-3"><a></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb17-4"><a></a>    <span class="cf">for</span> value <span class="kw">in</span> <span class="bu">range</span>(divisor, limit <span class="op">+</span> <span class="dv">1</span>, divisor):</span>
+<span id="cb17-5"><a></a>        total <span class="op">+=</span> value</span>
+<span id="cb17-6"><a></a>    <span class="cf">return</span> total</span>
+<span id="cb17-7"><a></a></span>
+<span id="cb17-8"><a></a>result <span class="op">=</span> sum_multiples(<span class="dv">12</span>, <span class="dv">3</span>)</span>
+<span id="cb17-9"><a></a><span class="bu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Trace the accumulator: <code>0 → 3 → 9 → 18 → 30</code>.</p>
 <p>The function packages the Lecture 2 <strong>accumulate</strong> pattern behind a descriptive name.</p>
 </section>
 <section id="compose-a-small-processing-pipeline" class="slide level2">
 <h2>Compose a Small Processing Pipeline</h2>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>raw <span class="op">=</span> <span class="fl">4.72</span></span>
-<span id="cb17-2"><a></a>calibrated <span class="op">=</span> calibrate_voltage(raw, <span class="fl">0.05</span>)</span>
-<span id="cb17-3"><a></a>status <span class="op">=</span> voltage_status(calibrated)</span>
-<span id="cb17-4"><a></a></span>
-<span id="cb17-5"><a></a><span class="bu">print</span>(calibrated, status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>raw <span class="op">=</span> <span class="fl">4.72</span></span>
+<span id="cb18-2"><a></a>calibrated <span class="op">=</span> calibrate_voltage(raw, <span class="fl">0.05</span>)</span>
+<span id="cb18-3"><a></a>status <span class="op">=</span> voltage_status(calibrated)</span>
+<span id="cb18-4"><a></a></span>
+<span id="cb18-5"><a></a><span class="bu">print</span>(calibrated, status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol type="1">
 <li><code>calibrate_voltage()</code> returns <code>4.77</code>.</li>
 <li>That returned value becomes the argument to <code>voltage_status()</code>.</li>
@@ -566,11 +578,11 @@ Basri Erdogan
 </section>
 <section id="default-arguments-make-common-calls-shorter" class="slide level2">
 <h2>Default Arguments Make Common Calls Shorter</h2>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="kw">def</span> calibrate_voltage(raw_voltage, offset<span class="op">=</span><span class="fl">0.05</span>):</span>
-<span id="cb18-2"><a></a>    <span class="cf">return</span> raw_voltage <span class="op">+</span> offset</span>
-<span id="cb18-3"><a></a></span>
-<span id="cb18-4"><a></a>standard <span class="op">=</span> calibrate_voltage(<span class="fl">4.92</span>)</span>
-<span id="cb18-5"><a></a>custom <span class="op">=</span> calibrate_voltage(<span class="fl">4.92</span>, <span class="fl">0.10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="kw">def</span> calibrate_voltage(raw_voltage, offset<span class="op">=</span><span class="fl">0.05</span>):</span>
+<span id="cb19-2"><a></a>    <span class="cf">return</span> raw_voltage <span class="op">+</span> offset</span>
+<span id="cb19-3"><a></a></span>
+<span id="cb19-4"><a></a>standard <span class="op">=</span> calibrate_voltage(<span class="fl">4.92</span>)</span>
+<span id="cb19-5"><a></a>custom <span class="op">=</span> calibrate_voltage(<span class="fl">4.92</span>, <span class="fl">0.10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>standard</code> uses the default offset and becomes <code>4.97</code>.</li>
 <li><code>custom</code> overrides the default and becomes <code>5.02</code>.</li>
@@ -584,12 +596,12 @@ Basri Erdogan
 </section>
 <section id="standard-modules-provide-tested-functions" class="slide level2">
 <h2>Standard Modules Provide Tested Functions</h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="im">import</span> math</span>
-<span id="cb19-2"><a></a></span>
-<span id="cb19-3"><a></a>angle_radians <span class="op">=</span> math.pi <span class="op">/</span> <span class="dv">4</span></span>
-<span id="cb19-4"><a></a>component <span class="op">=</span> math.sqrt(<span class="dv">2</span>) <span class="op">*</span> math.sin(angle_radians)</span>
-<span id="cb19-5"><a></a></span>
-<span id="cb19-6"><a></a><span class="bu">print</span>(component)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="im">import</span> math</span>
+<span id="cb20-2"><a></a></span>
+<span id="cb20-3"><a></a>angle_radians <span class="op">=</span> math.pi <span class="op">/</span> <span class="dv">4</span></span>
+<span id="cb20-4"><a></a>component <span class="op">=</span> math.sqrt(<span class="dv">2</span>) <span class="op">*</span> math.sin(angle_radians)</span>
+<span id="cb20-5"><a></a></span>
+<span id="cb20-6"><a></a><span class="bu">print</span>(component)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>import math</code> makes the module available.</li>
 <li><code>math.pi</code>, <code>math.sqrt</code>, and <code>math.sin</code> come from its namespace.</li>
@@ -602,25 +614,25 @@ Basri Erdogan
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong><code>sensor_tools.py</code></strong></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="kw">def</span> calibrate_voltage(raw, offset<span class="op">=</span><span class="fl">0.05</span>):</span>
-<span id="cb20-2"><a></a>    <span class="cf">return</span> raw <span class="op">+</span> offset</span>
-<span id="cb20-3"><a></a></span>
-<span id="cb20-4"><a></a><span class="kw">def</span> voltage_status(voltage):</span>
-<span id="cb20-5"><a></a>    <span class="cf">if</span> voltage <span class="op">&lt;</span> <span class="dv">0</span>:</span>
-<span id="cb20-6"><a></a>        <span class="cf">return</span> <span class="st">"Invalid"</span></span>
-<span id="cb20-7"><a></a>    <span class="cf">if</span> voltage <span class="op">&lt;</span> <span class="fl">4.75</span>:</span>
-<span id="cb20-8"><a></a>        <span class="cf">return</span> <span class="st">"Low"</span></span>
-<span id="cb20-9"><a></a>    <span class="cf">if</span> voltage <span class="op">&lt;=</span> <span class="fl">5.25</span>:</span>
-<span id="cb20-10"><a></a>        <span class="cf">return</span> <span class="st">"Normal"</span></span>
-<span id="cb20-11"><a></a>    <span class="cf">return</span> <span class="st">"High"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="kw">def</span> calibrate_voltage(raw, offset<span class="op">=</span><span class="fl">0.05</span>):</span>
+<span id="cb21-2"><a></a>    <span class="cf">return</span> raw <span class="op">+</span> offset</span>
+<span id="cb21-3"><a></a></span>
+<span id="cb21-4"><a></a><span class="kw">def</span> voltage_status(voltage):</span>
+<span id="cb21-5"><a></a>    <span class="cf">if</span> voltage <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb21-6"><a></a>        <span class="cf">return</span> <span class="st">"Invalid"</span></span>
+<span id="cb21-7"><a></a>    <span class="cf">if</span> voltage <span class="op">&lt;</span> <span class="fl">4.75</span>:</span>
+<span id="cb21-8"><a></a>        <span class="cf">return</span> <span class="st">"Low"</span></span>
+<span id="cb21-9"><a></a>    <span class="cf">if</span> voltage <span class="op">&lt;=</span> <span class="fl">5.25</span>:</span>
+<span id="cb21-10"><a></a>        <span class="cf">return</span> <span class="st">"Normal"</span></span>
+<span id="cb21-11"><a></a>    <span class="cf">return</span> <span class="st">"High"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
 <p><strong><code>main.py</code></strong></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="im">import</span> sensor_tools</span>
-<span id="cb21-2"><a></a></span>
-<span id="cb21-3"><a></a>value <span class="op">=</span> sensor_tools.calibrate_voltage(<span class="fl">4.92</span>)</span>
-<span id="cb21-4"><a></a>status <span class="op">=</span> sensor_tools.voltage_status(value)</span>
-<span id="cb21-5"><a></a></span>
-<span id="cb21-6"><a></a><span class="bu">print</span>(value, status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="im">import</span> sensor_tools</span>
+<span id="cb22-2"><a></a></span>
+<span id="cb22-3"><a></a>value <span class="op">=</span> sensor_tools.calibrate_voltage(<span class="fl">4.92</span>)</span>
+<span id="cb22-4"><a></a>status <span class="op">=</span> sensor_tools.voltage_status(value)</span>
+<span id="cb22-5"><a></a></span>
+<span id="cb22-6"><a></a><span class="bu">print</span>(value, status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <p>Keep both files in the same folder for this Lecture 3 example.</p>
 </section>
