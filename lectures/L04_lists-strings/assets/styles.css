@@ -227,6 +227,27 @@ iframe.tall-anim {
   display: block;
 }
 
+/* Week 4 mobile checkpoints (same as Week 3): light, interactive, and sized for a 16:9 slide. */
+.reveal .slides section.mobile-activity-slide {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  overflow: hidden !important;
+}
+
+.reveal .slides section.mobile-activity-slide > h2 {
+  margin-top: 0 !important;
+  margin-bottom: 0.2em !important;
+}
+
+.reveal .slides section.mobile-activity-slide iframe.mobile-activity {
+  width: 100% !important;
+  height: 72vh !important;
+  max-height: 650px !important;
+  display: block;
+  border: 0;
+  background: #ffffff;
+}
+
 /* Reduce padding and maximize vertical room on the PWM visualizer slide */
 .reveal .slides section#pwm-visualizer {
   padding-top: 8px !important;
@@ -319,6 +340,14 @@ iframe.tall-anim {
   background: #1c5b84;
   color: #ffffff;
   font-weight: 600;
+}
+
+/* Inline code inside dark header cells: the default code colour is too dark on #1c5b84 */
+.reveal table th code {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 0 0.2em;
+  border-radius: 3px;
 }
 
 .reveal table tr:nth-child(even) {

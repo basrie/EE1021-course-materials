@@ -6,8 +6,8 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.43">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.42">
 
   <meta name="author" content="Basri Erdogan">
   <title>EE1021 Programming for Engineers – Sequences, Tuples, and Lists</title>
@@ -332,6 +332,11 @@ Basri Erdogan
 <div class="fragment">
 <p><strong>Check:</strong> T2 24.0. Unpacking binds two new names; the original tuple is immutable.</p>
 </div>
+</section>
+<section id="checkpoint-1-tuples" class="slide level2 mobile-activity-slide">
+<h2>Checkpoint 1 — Tuples</h2>
+<iframe class="mobile-activity embed-surface" src="../mobile/lecture4-mobile-checkpoints.html?mode=interval-0" title="Checkpoint 1: tuples" loading="eager">
+</iframe>
 </section></section>
 <section>
 <section id="part-2-lists" class="title-slide slide level1 section-divider center">
@@ -472,6 +477,11 @@ Basri Erdogan
 <div class="fragment">
 <p>Raw is unchanged; ordered is [4.92, 4.97, 5.08]. Calling raw.sort() would mutate raw and return None.</p>
 </div>
+</section>
+<section id="checkpoint-2-list-methods" class="slide level2 mobile-activity-slide">
+<h2>Checkpoint 2 — List Methods</h2>
+<iframe class="mobile-activity embed-surface" src="../mobile/lecture4-mobile-checkpoints.html?mode=interval-1" title="Checkpoint 2: append versus extend, sort returns None" loading="eager">
+</iframe>
 </section></section>
 <section>
 <section id="part-3-build-lists-concisely" class="title-slide slide level1 section-divider center">
@@ -584,6 +594,11 @@ Basri Erdogan
 <p><strong>Check:</strong> [1, 2, 3] [1, 2, 3] [1, 2, 4]. Names a and b refer to one list; c refers to a separate list.</p>
 </div>
 </section>
+<section id="checkpoint-3-references-and-comprehensions" class="slide level2 mobile-activity-slide">
+<h2>Checkpoint 3 — References and Comprehensions</h2>
+<iframe class="mobile-activity embed-surface" src="../mobile/lecture4-mobile-checkpoints.html?mode=interval-2" title="Checkpoint 3: aliasing and comprehensions" loading="eager">
+</iframe>
+</section>
 <section id="integrated-example-clean-readings" class="slide level2">
 <h2>Integrated Example: Clean Readings</h2>
 <div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a><span class="kw">def</span> clean_readings(readings, low<span class="op">=</span><span class="fl">4.75</span>, high<span class="op">=</span><span class="fl">5.25</span>):</span>
@@ -611,17 +626,10 @@ Basri Erdogan
 </ul>
 <p>Next lecture, dictionaries will give each value a meaningful key.</p>
 </section>
-<section id="exit-ticket" class="slide level2">
-<h2>Exit Ticket</h2>
-<p>Answer without running Python:</p>
-<ol type="1">
-<li>What are the different results of append([3, 4]) and extend([3, 4])?</li>
-<li>After b = a, why can b.append(…) change what is seen through a?</li>
-<li>Write a comprehension that keeps only positive values from readings.</li>
-</ol>
-<div class="fragment">
-<p><strong>Check:</strong> append adds one nested element; extend adds two elements. The names a and b refer to the same list. [value for value in readings if value &gt; 0]</p>
-</div>
+<section id="five-question-checkout" class="slide level2 mobile-activity-slide">
+<h2>Five-Question Checkout</h2>
+<iframe class="mobile-activity embed-surface" src="../mobile/lecture4-mobile-checkpoints.html?mode=final" title="Final five-question checkout" loading="eager">
+</iframe>
 </section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
