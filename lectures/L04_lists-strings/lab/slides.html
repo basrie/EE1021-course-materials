@@ -776,6 +776,24 @@ max-height: 88vh;
 display: block;
 }
 
+.reveal .slides section.mobile-activity-slide {
+padding-top: 8px !important;
+padding-bottom: 8px !important;
+overflow: hidden !important;
+}
+.reveal .slides section.mobile-activity-slide > h2 {
+margin-top: 0 !important;
+margin-bottom: 0.2em !important;
+}
+.reveal .slides section.mobile-activity-slide iframe.mobile-activity {
+width: 100% !important;
+height: 72vh !important;
+max-height: 650px !important;
+display: block;
+border: 0;
+background: #ffffff;
+}
+
 .reveal .slides section#pwm-visualizer {
 padding-top: 8px !important;
 padding-bottom: 8px !important;
@@ -851,6 +869,13 @@ text-align: center;
 background: #1c5b84;
 color: #ffffff;
 font-weight: 600;
+}
+
+.reveal table th code {
+color: #ffffff;
+background: rgba(255, 255, 255, 0.18);
+padding: 0 0.2em;
+border-radius: 3px;
 }
 .reveal table tr:nth-child(even) {
 background: #eef3f8;
