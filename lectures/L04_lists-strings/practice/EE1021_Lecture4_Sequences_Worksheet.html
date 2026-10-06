@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.43">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -4737,31 +4737,14 @@ vertical-align: -.125em;
 
 </head>
 
-<body>
+<body class="fullcontent">
 
 <div id="quarto-search-results"></div>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#instructions" id="toc-instructions" class="nav-link active" data-scroll-target="#instructions">Instructions</a></li>
-  <li><a href="#retrieval-return-and-unpack-a-tuple" id="toc-retrieval-return-and-unpack-a-tuple" class="nav-link" data-scroll-target="#retrieval-return-and-unpack-a-tuple">1. Retrieval: Return and Unpack a Tuple</a></li>
-  <li><a href="#predict-indexing-slicing-and-mutation" id="toc-predict-indexing-slicing-and-mutation" class="nav-link" data-scroll-target="#predict-indexing-slicing-and-mutation">2. Predict Indexing, Slicing, and Mutation</a></li>
-  <li><a href="#choose-the-correct-list-operation" id="toc-choose-the-correct-list-operation" class="nav-link" data-scroll-target="#choose-the-correct-list-operation">3. Choose the Correct List Operation</a></li>
-  <li><a href="#debug-append-versus-extend" id="toc-debug-append-versus-extend" class="nav-link" data-scroll-target="#debug-append-versus-extend">4. Debug append Versus extend</a></li>
-  <li><a href="#build-and-filter-a-list" id="toc-build-and-filter-a-list" class="nav-link" data-scroll-target="#build-and-filter-a-list">5. Build and Filter a List</a></li>
-  <li><a href="#trace-aliasing-and-cloning" id="toc-trace-aliasing-and-cloning" class="nav-link" data-scroll-target="#trace-aliasing-and-cloning">6. Trace Aliasing and Cloning</a></li>
-  <li><a href="#engineering-mini-problem-clean-sensor-readings" id="toc-engineering-mini-problem-clean-sensor-readings" class="nav-link" data-scroll-target="#engineering-mini-problem-clean-sensor-readings">7. Engineering Mini-Problem: Clean Sensor Readings</a></li>
-  <li><a href="#optional-extension-shallow-copies" id="toc-optional-extension-shallow-copies" class="nav-link" data-scroll-target="#optional-extension-shallow-copies">Optional Extension: Shallow Copies</a></li>
-  <li><a href="#submission-checklist" id="toc-submission-checklist" class="nav-link" data-scroll-target="#submission-checklist">Submission Checklist</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -4784,15 +4767,27 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="instructions" class="level2">
-<h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
+<style>
+@media print {
+pre,
+div.sourceCode {
+break-inside: avoid-page;
+page-break-inside: avoid;
+}
+h2 {
+break-after: avoid-page;
+page-break-after: avoid;
+}
+}
+</style>
+<p><em>Topics: tuples and unpacking, list indexing and slicing, list methods (<code>append</code>, <code>extend</code>, <code>insert</code>, <code>remove</code>, <code>pop</code>), list comprehensions, aliasing and copying</em></p>
+<p><em>Workflow: predict first, then run the code in VS Code, compare with your prediction, and explain any difference.</em></p>
+<p><em>Core work: Tasks 1–7. Extension work: Shallow Copies.</em></p>
+<p>Use the submission template <a href="EE1021_Lecture4_Sequences_Worksheet_Template.py"><code>EE1021_Lecture4_Sequences_Worksheet_Template.py</code></a>. Keep the function and variable names it gives you.</p>
 <ul>
-<li>Predict before running code, then compare the actual result with your prediction.</li>
-<li>Unless a task explicitly says <strong>print</strong>, return useful values from functions.</li>
-<li>Keep the supplied function and variable names in the submission template.</li>
-<li>Complete the core tasks before attempting the optional extension.</li>
+<li>Unless a task says <strong>print</strong>, functions return their results.</li>
+<li>Do not use dictionaries yet; they come in Lecture 5.</li>
 </ul>
-</section>
 <section id="retrieval-return-and-unpack-a-tuple" class="level2">
 <h2 class="anchored" data-anchor-id="retrieval-return-and-unpack-a-tuple">1. Retrieval: Return and Unpack a Tuple</h2>
 <p>Write the function below. It must return a tuple containing the minimum and maximum readings.</p>
