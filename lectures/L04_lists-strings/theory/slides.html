@@ -383,35 +383,49 @@ Basri Erdogan
 </div></div>
 <p>Prefer direct iteration unless the index itself has a job.</p>
 </section>
-<section id="append-versus-extend" class="slide level2 checkpoint">
-<h2>append Versus extend</h2>
+<section id="add-to-a-list-append-and-extend" class="slide level2">
+<h2>Add to a List: append and extend</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>readings <span class="op">=</span> [<span class="fl">4.92</span>, <span class="fl">5.08</span>]</span>
+<span id="cb12-2"><a></a></span>
+<span id="cb12-3"><a></a>readings.append(<span class="fl">4.97</span>)           <span class="co"># adds ONE element at the end</span></span>
+<span id="cb12-4"><a></a><span class="bu">print</span>(readings)                 <span class="co"># [4.92, 5.08, 4.97]</span></span>
+<span id="cb12-5"><a></a></span>
+<span id="cb12-6"><a></a>readings.extend([<span class="fl">5.11</span>, <span class="fl">5.02</span>])   <span class="co"># adds EACH element of another list</span></span>
+<span id="cb12-7"><a></a><span class="bu">print</span>(readings)                 <span class="co"># [4.92, 5.08, 4.97, 5.11, 5.02]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>readings.append(...)</code> is a <strong>method</strong>: a function that belongs to the list, called with a dot.</li>
+<li>Both methods change the list itself.</li>
+<li><code>append</code> adds 1 element; <code>extend</code> adds as many elements as the other list has.</li>
+</ul>
+</section>
+<section id="predict-append-a-list-or-extend-with-a-list" class="slide level2 checkpoint">
+<h2>Predict: append a List or extend with a List</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</span>
-<span id="cb12-2"><a></a>result <span class="op">=</span> a.append([<span class="dv">3</span>, <span class="dv">4</span>])</span>
-<span id="cb12-3"><a></a><span class="bu">print</span>(a)</span>
-<span id="cb12-4"><a></a><span class="bu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb13-2"><a></a>a.append([<span class="dv">3</span>, <span class="dv">4</span>])</span>
+<span id="cb13-3"><a></a><span class="bu">print</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>b <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</span>
-<span id="cb13-2"><a></a>b.extend([<span class="dv">3</span>, <span class="dv">4</span>])</span>
-<span id="cb13-3"><a></a><span class="bu">print</span>(b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>b <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb14-2"><a></a>b.extend([<span class="dv">3</span>, <span class="dv">4</span>])</span>
+<span id="cb14-3"><a></a><span class="bu">print</span>(b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <p>Predict both outputs.</p>
 <div class="fragment">
-<p><strong>Check:</strong> append adds one nested-list element and returns None: [1, 2, [3, 4]]. Extend adds each incoming element: [1, 2, 3, 4]. Both methods mutate.</p>
+<p><strong>Check:</strong> <code>[1, 2, [3, 4]]</code>: append adds the whole list as ONE element. <code>[1, 2, 3, 4]</code>: extend adds each element.</p>
 </div>
 </section>
 <section id="insert-or-concatenate" class="slide level2">
 <h2>Insert or Concatenate</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>queue <span class="op">=</span> [<span class="st">"group-01"</span>, <span class="st">"group-03"</span>]</span>
-<span id="cb14-2"><a></a>queue.insert(<span class="dv">1</span>, <span class="st">"group-02"</span>)</span>
-<span id="cb14-3"><a></a><span class="co"># queue is ["group-01", "group-02", "group-03"]</span></span>
-<span id="cb14-4"><a></a></span>
-<span id="cb14-5"><a></a>first <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</span>
-<span id="cb14-6"><a></a>second <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">4</span>]</span>
-<span id="cb14-7"><a></a>combined <span class="op">=</span> first <span class="op">+</span> second</span>
-<span id="cb14-8"><a></a><span class="co"># combined is [1, 2, 3, 4]</span></span>
-<span id="cb14-9"><a></a><span class="co"># first and second are unchanged</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>queue <span class="op">=</span> [<span class="st">"group-01"</span>, <span class="st">"group-03"</span>]</span>
+<span id="cb15-2"><a></a>queue.insert(<span class="dv">1</span>, <span class="st">"group-02"</span>)</span>
+<span id="cb15-3"><a></a><span class="co"># queue is ["group-01", "group-02", "group-03"]</span></span>
+<span id="cb15-4"><a></a></span>
+<span id="cb15-5"><a></a>first <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb15-6"><a></a>second <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">4</span>]</span>
+<span id="cb15-7"><a></a>combined <span class="op">=</span> first <span class="op">+</span> second</span>
+<span id="cb15-8"><a></a><span class="co"># combined is [1, 2, 3, 4]</span></span>
+<span id="cb15-9"><a></a><span class="co"># first and second are unchanged</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><strong>insert</strong> mutates at a chosen position.</li>
 <li>The plus operator creates a new list.</li>
@@ -419,11 +433,11 @@ Basri Erdogan
 </section>
 <section id="remove-elements-intentionally" class="slide level2">
 <h2>Remove Elements Intentionally</h2>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>queue <span class="op">=</span> [<span class="st">"g1"</span>, <span class="st">"g2"</span>, <span class="st">"g3"</span>, <span class="st">"g2"</span>]</span>
-<span id="cb15-2"><a></a></span>
-<span id="cb15-3"><a></a>queue.remove(<span class="st">"g2"</span>)  <span class="co"># remove first matching value</span></span>
-<span id="cb15-4"><a></a>processed <span class="op">=</span> queue.pop(<span class="dv">0</span>)  <span class="co"># remove by index and return it</span></span>
-<span id="cb15-5"><a></a><span class="kw">del</span> queue[<span class="op">-</span><span class="dv">1</span>]       <span class="co"># remove by index, no returned value</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>queue <span class="op">=</span> [<span class="st">"g1"</span>, <span class="st">"g2"</span>, <span class="st">"g3"</span>, <span class="st">"g2"</span>]</span>
+<span id="cb16-2"><a></a></span>
+<span id="cb16-3"><a></a>queue.remove(<span class="st">"g2"</span>)  <span class="co"># remove first matching value</span></span>
+<span id="cb16-4"><a></a>processed <span class="op">=</span> queue.pop(<span class="dv">0</span>)  <span class="co"># remove by index and return it</span></span>
+<span id="cb16-5"><a></a><span class="kw">del</span> queue[<span class="op">-</span><span class="dv">1</span>]       <span class="co"># remove by index, no returned value</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>After all three lines:</p>
 <div class="fragment">
 <ul>
@@ -468,11 +482,11 @@ Basri Erdogan
 </tbody>
 </table>
 </div><div class="column" style="width:42%;">
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>raw <span class="op">=</span> [<span class="fl">5.08</span>, <span class="fl">4.92</span>, <span class="fl">4.97</span>]</span>
-<span id="cb16-2"><a></a>ordered <span class="op">=</span> <span class="bu">sorted</span>(raw)</span>
-<span id="cb16-3"><a></a></span>
-<span id="cb16-4"><a></a><span class="bu">print</span>(raw)</span>
-<span id="cb16-5"><a></a><span class="bu">print</span>(ordered)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>raw <span class="op">=</span> [<span class="fl">5.08</span>, <span class="fl">4.92</span>, <span class="fl">4.97</span>]</span>
+<span id="cb17-2"><a></a>ordered <span class="op">=</span> <span class="bu">sorted</span>(raw)</span>
+<span id="cb17-3"><a></a></span>
+<span id="cb17-4"><a></a><span class="bu">print</span>(raw)</span>
+<span id="cb17-5"><a></a><span class="bu">print</span>(ordered)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <div class="fragment">
 <p>Raw is unchanged; ordered is [4.92, 4.97, 5.08]. Calling raw.sort() would mutate raw and return None.</p>
@@ -493,24 +507,24 @@ Basri Erdogan
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Loop pattern</strong></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>volts <span class="op">=</span> []</span>
-<span id="cb17-2"><a></a><span class="cf">for</span> millivolts <span class="kw">in</span> [<span class="dv">4920</span>, <span class="dv">5080</span>, <span class="dv">4970</span>]:</span>
-<span id="cb17-3"><a></a>    volts.append(millivolts <span class="op">/</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>volts <span class="op">=</span> []</span>
+<span id="cb18-2"><a></a><span class="cf">for</span> millivolts <span class="kw">in</span> [<span class="dv">4920</span>, <span class="dv">5080</span>, <span class="dv">4970</span>]:</span>
+<span id="cb18-3"><a></a>    volts.append(millivolts <span class="op">/</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
 <p><strong>Equivalent comprehension</strong></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>volts <span class="op">=</span> [millivolts <span class="op">/</span> <span class="dv">1000</span></span>
-<span id="cb18-2"><a></a>         <span class="cf">for</span> millivolts <span class="kw">in</span> [<span class="dv">4920</span>, <span class="dv">5080</span>, <span class="dv">4970</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>volts <span class="op">=</span> [millivolts <span class="op">/</span> <span class="dv">1000</span></span>
+<span id="cb19-2"><a></a>         <span class="cf">for</span> millivolts <span class="kw">in</span> [<span class="dv">4920</span>, <span class="dv">5080</span>, <span class="dv">4970</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <p>Read it as: produce one expression for each element in the input sequence.</p>
 </section>
 <section id="filter-while-building" class="slide level2">
 <h2>Filter While Building</h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>readings <span class="op">=</span> [<span class="fl">4.10</span>, <span class="fl">4.92</span>, <span class="fl">5.08</span>, <span class="fl">5.70</span>, <span class="fl">4.97</span>]</span>
-<span id="cb19-2"><a></a></span>
-<span id="cb19-3"><a></a>valid <span class="op">=</span> [value <span class="cf">for</span> value <span class="kw">in</span> readings</span>
-<span id="cb19-4"><a></a>         <span class="cf">if</span> <span class="fl">4.75</span> <span class="op">&lt;=</span> value <span class="op">&lt;=</span> <span class="fl">5.25</span>]</span>
-<span id="cb19-5"><a></a></span>
-<span id="cb19-6"><a></a><span class="bu">print</span>(valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a>readings <span class="op">=</span> [<span class="fl">4.10</span>, <span class="fl">4.92</span>, <span class="fl">5.08</span>, <span class="fl">5.70</span>, <span class="fl">4.97</span>]</span>
+<span id="cb20-2"><a></a></span>
+<span id="cb20-3"><a></a>valid <span class="op">=</span> [value <span class="cf">for</span> value <span class="kw">in</span> readings</span>
+<span id="cb20-4"><a></a>         <span class="cf">if</span> <span class="fl">4.75</span> <span class="op">&lt;=</span> value <span class="op">&lt;=</span> <span class="fl">5.25</span>]</span>
+<span id="cb20-5"><a></a></span>
+<span id="cb20-6"><a></a><span class="bu">print</span>(valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="fragment">
 <p><strong>Output:</strong> [4.92, 5.08, 4.97]</p>
 </div>
@@ -519,10 +533,10 @@ Basri Erdogan
 <section id="comprehension-checkpoint" class="slide level2 checkpoint">
 <h2>Comprehension Checkpoint</h2>
 <p>Write a comprehension that converts Celsius readings to Fahrenheit.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a>celsius <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>]</span>
-<span id="cb20-2"><a></a>fahrenheit <span class="op">=</span> ...  <span class="co"># replace with a comprehension</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>celsius <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>]</span>
+<span id="cb21-2"><a></a>fahrenheit <span class="op">=</span> ...  <span class="co"># replace with a comprehension</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="fragment">
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>fahrenheit <span class="op">=</span> [value <span class="op">*</span> <span class="dv">9</span> <span class="op">/</span> <span class="dv">5</span> <span class="op">+</span> <span class="dv">32</span> <span class="cf">for</span> value <span class="kw">in</span> celsius]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a>fahrenheit <span class="op">=</span> [value <span class="op">*</span> <span class="dv">9</span> <span class="op">/</span> <span class="dv">5</span> <span class="op">+</span> <span class="dv">32</span> <span class="cf">for</span> value <span class="kw">in</span> celsius]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -532,9 +546,9 @@ Basri Erdogan
 </section>
 <section id="aliasing-two-names-one-list" class="slide level2">
 <h2>Aliasing: Two Names, One List</h2>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a>original <span class="op">=</span> [<span class="fl">4.92</span>, <span class="fl">5.08</span>]</span>
-<span id="cb22-2"><a></a>alias <span class="op">=</span> original</span>
-<span id="cb22-3"><a></a>alias.append(<span class="fl">4.97</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a>original <span class="op">=</span> [<span class="fl">4.92</span>, <span class="fl">5.08</span>]</span>
+<span id="cb23-2"><a></a>alias <span class="op">=</span> original</span>
+<span id="cb23-3"><a></a>alias.append(<span class="fl">4.97</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="reference-diagram">
 <div class="reference-name">
 <p>original ──┐</p>
@@ -548,9 +562,9 @@ Basri Erdogan
 </section>
 <section id="clone-two-names-two-lists" class="slide level2">
 <h2>Clone: Two Names, Two Lists</h2>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a>original <span class="op">=</span> [<span class="fl">4.92</span>, <span class="fl">5.08</span>]</span>
-<span id="cb23-2"><a></a>clone <span class="op">=</span> original.copy()   <span class="co"># original[:] also makes a shallow copy</span></span>
-<span id="cb23-3"><a></a>clone.append(<span class="fl">4.97</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a>original <span class="op">=</span> [<span class="fl">4.92</span>, <span class="fl">5.08</span>]</span>
+<span id="cb24-2"><a></a>clone <span class="op">=</span> original.copy()   <span class="co"># original[:] also makes a shallow copy</span></span>
+<span id="cb24-3"><a></a>clone.append(<span class="fl">4.97</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>original ──▶ [4.92, 5.08]</p>
@@ -564,32 +578,32 @@ Basri Erdogan
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Mutation is visible</strong></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="kw">def</span> add_reading(values):</span>
-<span id="cb24-2"><a></a>    values.append(<span class="fl">5.00</span>)</span>
-<span id="cb24-3"><a></a></span>
-<span id="cb24-4"><a></a>data <span class="op">=</span> [<span class="fl">4.92</span>]</span>
-<span id="cb24-5"><a></a>add_reading(data)</span>
-<span id="cb24-6"><a></a><span class="bu">print</span>(data)  <span class="co"># [4.92, 5.0]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:50%;">
-<p><strong>Rebinding stays local</strong></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a><span class="kw">def</span> replace_readings(values):</span>
-<span id="cb25-2"><a></a>    values <span class="op">=</span> [<span class="fl">5.00</span>]</span>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a><span class="kw">def</span> add_reading(values):</span>
+<span id="cb25-2"><a></a>    values.append(<span class="fl">5.00</span>)</span>
 <span id="cb25-3"><a></a></span>
 <span id="cb25-4"><a></a>data <span class="op">=</span> [<span class="fl">4.92</span>]</span>
-<span id="cb25-5"><a></a>replace_readings(data)</span>
-<span id="cb25-6"><a></a><span class="bu">print</span>(data)  <span class="co"># [4.92]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-5"><a></a>add_reading(data)</span>
+<span id="cb25-6"><a></a><span class="bu">print</span>(data)  <span class="co"># [4.92, 5.0]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:50%;">
+<p><strong>Rebinding stays local</strong></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a><span class="kw">def</span> replace_readings(values):</span>
+<span id="cb26-2"><a></a>    values <span class="op">=</span> [<span class="fl">5.00</span>]</span>
+<span id="cb26-3"><a></a></span>
+<span id="cb26-4"><a></a>data <span class="op">=</span> [<span class="fl">4.92</span>]</span>
+<span id="cb26-5"><a></a>replace_readings(data)</span>
+<span id="cb26-6"><a></a><span class="bu">print</span>(data)  <span class="co"># [4.92]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="reference-checkpoint" class="slide level2 checkpoint">
 <h2>Reference Checkpoint</h2>
-<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</span>
-<span id="cb26-2"><a></a>b <span class="op">=</span> a</span>
-<span id="cb26-3"><a></a>c <span class="op">=</span> a.copy()</span>
-<span id="cb26-4"><a></a></span>
-<span id="cb26-5"><a></a>b.append(<span class="dv">3</span>)</span>
-<span id="cb26-6"><a></a>c.append(<span class="dv">4</span>)</span>
-<span id="cb26-7"><a></a></span>
-<span id="cb26-8"><a></a><span class="bu">print</span>(a, b, c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb27-2"><a></a>b <span class="op">=</span> a</span>
+<span id="cb27-3"><a></a>c <span class="op">=</span> a.copy()</span>
+<span id="cb27-4"><a></a></span>
+<span id="cb27-5"><a></a>b.append(<span class="dv">3</span>)</span>
+<span id="cb27-6"><a></a>c.append(<span class="dv">4</span>)</span>
+<span id="cb27-7"><a></a></span>
+<span id="cb27-8"><a></a><span class="bu">print</span>(a, b, c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="fragment">
 <p><strong>Check:</strong> [1, 2, 3] [1, 2, 3] [1, 2, 4]. Names a and b refer to one list; c refers to a separate list.</p>
 </div>
@@ -601,24 +615,24 @@ Basri Erdogan
 </section>
 <section id="integrated-example-clean-readings" class="slide level2">
 <h2>Integrated Example: Clean Readings</h2>
-<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a><span class="kw">def</span> clean_readings(readings, low<span class="op">=</span><span class="fl">4.75</span>, high<span class="op">=</span><span class="fl">5.25</span>):</span>
-<span id="cb27-2"><a></a>    <span class="co">"""Return valid readings without changing the input list."""</span></span>
-<span id="cb27-3"><a></a>    <span class="cf">return</span> [value <span class="cf">for</span> value <span class="kw">in</span> readings <span class="cf">if</span> low <span class="op">&lt;=</span> value <span class="op">&lt;=</span> high]</span>
-<span id="cb27-4"><a></a></span>
-<span id="cb27-5"><a></a>raw <span class="op">=</span> [<span class="fl">4.10</span>, <span class="fl">4.92</span>, <span class="fl">5.08</span>, <span class="fl">5.70</span>, <span class="fl">4.97</span>]</span>
-<span id="cb27-6"><a></a>valid <span class="op">=</span> clean_readings(raw)</span>
-<span id="cb27-7"><a></a>minimum, maximum <span class="op">=</span> <span class="bu">min</span>(valid), <span class="bu">max</span>(valid)</span>
-<span id="cb27-8"><a></a></span>
-<span id="cb27-9"><a></a><span class="bu">print</span>(<span class="st">"Raw:"</span>, raw)</span>
-<span id="cb27-10"><a></a><span class="bu">print</span>(<span class="st">"Valid:"</span>, valid)</span>
-<span id="cb27-11"><a></a><span class="bu">print</span>(<span class="st">"Range:"</span>, minimum, <span class="st">"to"</span>, maximum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a><span class="kw">def</span> clean_readings(readings, low<span class="op">=</span><span class="fl">4.75</span>, high<span class="op">=</span><span class="fl">5.25</span>):</span>
+<span id="cb28-2"><a></a>    <span class="co">"""Return valid readings without changing the input list."""</span></span>
+<span id="cb28-3"><a></a>    <span class="cf">return</span> [value <span class="cf">for</span> value <span class="kw">in</span> readings <span class="cf">if</span> low <span class="op">&lt;=</span> value <span class="op">&lt;=</span> high]</span>
+<span id="cb28-4"><a></a></span>
+<span id="cb28-5"><a></a>raw <span class="op">=</span> [<span class="fl">4.10</span>, <span class="fl">4.92</span>, <span class="fl">5.08</span>, <span class="fl">5.70</span>, <span class="fl">4.97</span>]</span>
+<span id="cb28-6"><a></a>valid <span class="op">=</span> clean_readings(raw)</span>
+<span id="cb28-7"><a></a>minimum, maximum <span class="op">=</span> <span class="bu">min</span>(valid), <span class="bu">max</span>(valid)</span>
+<span id="cb28-8"><a></a></span>
+<span id="cb28-9"><a></a><span class="bu">print</span>(<span class="st">"Raw:"</span>, raw)</span>
+<span id="cb28-10"><a></a><span class="bu">print</span>(<span class="st">"Valid:"</span>, valid)</span>
+<span id="cb28-11"><a></a><span class="bu">print</span>(<span class="st">"Range:"</span>, minimum, <span class="st">"to"</span>, maximum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This combines a function, a list comprehension, and tuple unpacking without mutating the input.</p>
 </section>
 <section id="looking-ahead-parallel-lists" class="slide level2">
 <h2>Looking Ahead: Parallel Lists</h2>
-<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a>sensor_ids <span class="op">=</span> [<span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span>]</span>
-<span id="cb28-2"><a></a>readings <span class="op">=</span> [<span class="fl">4.92</span>, <span class="fl">5.08</span>, <span class="fl">4.97</span>]</span>
-<span id="cb28-3"><a></a>units <span class="op">=</span> [<span class="st">"V"</span>, <span class="st">"V"</span>, <span class="st">"V"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a>sensor_ids <span class="op">=</span> [<span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span>]</span>
+<span id="cb29-2"><a></a>readings <span class="op">=</span> [<span class="fl">4.92</span>, <span class="fl">5.08</span>, <span class="fl">4.97</span>]</span>
+<span id="cb29-3"><a></a>units <span class="op">=</span> [<span class="st">"V"</span>, <span class="st">"V"</span>, <span class="st">"V"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Related data is split across several lists.</li>
 <li>Every list must remain the same length and order.</li>
