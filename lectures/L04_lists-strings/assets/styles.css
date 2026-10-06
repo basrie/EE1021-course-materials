@@ -640,3 +640,11 @@ iframe.tall-anim {
 .reveal .columns .column pre {
   margin-top: 0.25rem;
 }
+
+.reveal svg.ref-svg {
+  display: block;
+  width: 900px;
+  max-width: 100%;
+  height: auto;
+  margin: 0.8rem auto;
+}
