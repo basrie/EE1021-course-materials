@@ -236,37 +236,37 @@ Basri Erdogan
 <p>Choose <strong>list</strong>, <strong>tuple</strong>, <strong>dictionary</strong>, or <strong>set</strong> for each row.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 6%">
-<col style="width: 42%">
-<col style="width: 52%">
+<col style="width: 5%">
+<col style="width: 50%">
+<col style="width: 45%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>#</th>
-<th>Data to store</th>
+<th>What we need to store</th>
 <th>Choice and reason</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>Ordered voltage samples from one sensor</td>
-<td><span class="fragment"><strong>list</strong>: order matters, and new samples are appended as they arrive</span></td>
+<td>Voltages from one sensor, in measurement order<br>e.g.&nbsp;4.92, 5.08, 5.11, …</td>
+<td><span class="fragment"><strong>list</strong> <code>[4.92, 5.08, 5.11]</code>: the order matters, and each new value is added at the end</span></td>
 </tr>
 <tr class="even">
 <td>2</td>
-<td>A fixed pair containing sensor ID and unit</td>
-<td><span class="fragment"><strong>tuple</strong>: two values that belong together and should not change</span></td>
+<td>A sensor’s ID and its unit, which never change<br>e.g.&nbsp;S1 and V</td>
+<td><span class="fragment"><strong>tuple</strong> <code>("S1", "V")</code>: a small group of values that stays the same</span></td>
 </tr>
 <tr class="odd">
 <td>3</td>
-<td>A reading found by sensor ID</td>
-<td><span class="fragment"><strong>dictionary</strong>: the sensor ID is the key, so the reading is looked up directly</span></td>
+<td>The latest reading of each sensor, looked up by ID<br>e.g.&nbsp;S1 → 4.92, S2 → 5.08</td>
+<td><span class="fragment"><strong>dictionary</strong> <code>{"S1": 4.92, "S2": 5.08}</code>: give the ID, get the reading</span></td>
 </tr>
 <tr class="even">
 <td>4</td>
-<td>The unique IDs that reported an alarm</td>
-<td><span class="fragment"><strong>set</strong>: each ID is kept once, and repeated alarms add nothing</span></td>
+<td>The sensors that raised an alarm, each listed once<br>e.g.&nbsp;S2, S3, S2 → S2, S3</td>
+<td><span class="fragment"><strong>set</strong> <code>{"S2", "S3"}</code>: a repeated ID is kept only once</span></td>
 </tr>
 </tbody>
 </table>
