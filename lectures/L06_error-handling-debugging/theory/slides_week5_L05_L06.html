@@ -415,15 +415,38 @@ Basri Erdogan
 </section>
 <section id="choose-the-data-structure" class="slide level2 checkpoint">
 <h2>Choose the Data Structure</h2>
-<p>Choose <strong>list</strong>, <strong>tuple</strong>, or <strong>dictionary</strong>.</p>
-<ol type="1">
-<li>Ordered voltage samples from one sensor</li>
-<li>A fixed pair containing sensor ID and unit</li>
-<li>A reading found by sensor ID</li>
-</ol>
-<div class="fragment">
-<p><strong>Check:</strong> list, tuple, dictionary.</p>
-</div>
+<p>Choose <strong>list</strong>, <strong>tuple</strong>, or <strong>dictionary</strong> for each row.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 42%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Data to store</th>
+<th>Choice and reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Ordered voltage samples from one sensor</td>
+<td><span class="fragment"><strong>list</strong>: order matters, and new samples are appended as they arrive</span></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>A fixed pair containing sensor ID and unit</td>
+<td><span class="fragment"><strong>tuple</strong>: two values that belong together and should not change</span></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>A reading found by sensor ID</td>
+<td><span class="fragment"><strong>dictionary</strong>: the sensor ID is the key, so the reading is looked up directly</span></td>
+</tr>
+</tbody>
+</table>
 </section></section>
 <section>
 <section id="part-2-understand-the-error" class="title-slide slide level1 section-divider center">
