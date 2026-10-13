@@ -4757,7 +4757,7 @@ vertical-align: -.125em;
   <li><a href="#build-a-frequency-dictionary" id="toc-build-a-frequency-dictionary" class="nav-link" data-scroll-target="#build-a-frequency-dictionary">5. Build a Frequency Dictionary</a></li>
   <li><a href="#set-relationships" id="toc-set-relationships" class="nav-link" data-scroll-target="#set-relationships">6. Set Relationships</a></li>
   <li><a href="#engineering-mini-problem-fleet-report" id="toc-engineering-mini-problem-fleet-report" class="nav-link" data-scroll-target="#engineering-mini-problem-fleet-report">7. Engineering Mini-Problem: Fleet Report</a></li>
-  <li><a href="#optional-extension-load-events" id="toc-optional-extension-load-events" class="nav-link" data-scroll-target="#optional-extension-load-events">Optional Extension: Load Events</a></li>
+  <li><a href="#optional-extension-count-a-longer-event-log" id="toc-optional-extension-count-a-longer-event-log" class="nav-link" data-scroll-target="#optional-extension-count-a-longer-event-log">Optional Extension: Count a Longer Event Log</a></li>
   <li><a href="#submission-checklist" id="toc-submission-checklist" class="nav-link" data-scroll-target="#submission-checklist">Submission Checklist</a></li>
   </ul>
 </nav>
@@ -4876,12 +4876,12 @@ vertical-align: -.125em;
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>calibrated <span class="op">=</span> {<span class="st">&quot;S1&quot;</span>, <span class="st">&quot;S4&quot;</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The alarm set should be {“S2”, “S3”}, and the calibration set should be {“S2”, “S3”}.</p>
 </section>
-<section id="optional-extension-load-events" class="level2">
-<h2 class="anchored" data-anchor-id="optional-extension-load-events">Optional Extension: Load Events</h2>
-<p>Place sensor_events.txt beside your Python file and load it safely:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;sensor_events.txt&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    events <span class="op">=</span> <span class="bu">file</span>.read().split()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Reuse the counting pattern from Task 5. Do not duplicate the file-loading code inside a loop.</p>
+<section id="optional-extension-count-a-longer-event-log" class="level2">
+<h2 class="anchored" data-anchor-id="optional-extension-count-a-longer-event-log">Optional Extension: Count a Longer Event Log</h2>
+<p>A sensor reported these events during one shift:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>events <span class="op">=</span> [<span class="st">&quot;normal&quot;</span>, <span class="st">&quot;normal&quot;</span>, <span class="st">&quot;alarm&quot;</span>, <span class="st">&quot;calibration&quot;</span>, <span class="st">&quot;normal&quot;</span>, <span class="st">&quot;offline&quot;</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;alarm&quot;</span>, <span class="st">&quot;normal&quot;</span>, <span class="st">&quot;normal&quot;</span>, <span class="st">&quot;offline&quot;</span>, <span class="st">&quot;alarm&quot;</span>, <span class="st">&quot;normal&quot;</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Reuse the counting pattern from Task 5 to build <code>counts</code>. Then print the event that occurred most often and how many times it occurred.</p>
 </section>
 <section id="submission-checklist" class="level2">
 <h2 class="anchored" data-anchor-id="submission-checklist">Submission Checklist</h2>

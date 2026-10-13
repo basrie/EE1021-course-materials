@@ -4758,7 +4758,7 @@ vertical-align: -.125em;
   <li><a href="#enforce-the-average-contract" id="toc-enforce-the-average-contract" class="nav-link" data-scroll-target="#enforce-the-average-contract">6. Enforce the Average Contract</a></li>
   <li><a href="#narrow-an-overly-broad-handler" id="toc-narrow-an-overly-broad-handler" class="nav-link" data-scroll-target="#narrow-an-overly-broad-handler">7. Narrow an Overly Broad Handler</a></li>
   <li><a href="#engineering-mini-problem-process-records" id="toc-engineering-mini-problem-process-records" class="nav-link" data-scroll-target="#engineering-mini-problem-process-records">8. Engineering Mini-Problem: Process Records</a></li>
-  <li><a href="#optional-extension-load-a-text-file" id="toc-optional-extension-load-a-text-file" class="nav-link" data-scroll-target="#optional-extension-load-a-text-file">Optional Extension: Load a Text File</a></li>
+  <li><a href="#optional-extension-after-l10-files-load-a-text-file" id="toc-optional-extension-after-l10-files-load-a-text-file" class="nav-link" data-scroll-target="#optional-extension-after-l10-files-load-a-text-file">Optional Extension (after L10, Files): Load a Text File</a></li>
   <li><a href="#submission-checklist" id="toc-submission-checklist" class="nav-link" data-scroll-target="#submission-checklist">Submission Checklist</a></li>
   </ul>
 </nav>
@@ -4812,7 +4812,7 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="annotate-a-traceback">2. Annotate a Traceback</h2>
 <pre class="text"><code>Traceback (most recent call last):
   File &quot;monitor.py&quot;, line 11, in &lt;module&gt;
-    print(parse_reading(&quot;T2,error&quot;))
+    print(parse_reading((&quot;T2&quot;, &quot;error&quot;)))
   File &quot;monitor.py&quot;, line 6, in parse_reading
     value = float(value_text)
 ValueError: could not convert string to float: &#39;error&#39;</code></pre>
@@ -4842,11 +4842,11 @@ ValueError: could not convert string to float: &#39;error&#39;</code></pre>
 <h2 class="anchored" data-anchor-id="parse-one-sensor-reading">4. Parse One Sensor Reading</h2>
 <p>Implement:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_reading(record):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Return (sensor_id, value) for SENSOR,VALUE.&quot;&quot;&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Return (sensor_id, value) for a (sensor_id, value_text) tuple.&quot;&quot;&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Contract:</p>
 <ul>
-<li><code>&quot;T1,23.5&quot;</code> returns <code>(&quot;T1&quot;, 23.5)</code>;</li>
-<li>a record with the wrong number of comma-separated fields raises <code>ValueError(&quot;expected SENSOR,VALUE&quot;)</code>;</li>
+<li><code>(&quot;T1&quot;, &quot;23.5&quot;)</code> returns <code>(&quot;T1&quot;, 23.5)</code>;</li>
+<li>a record that does not contain exactly two items raises <code>ValueError(&quot;expected (SENSOR, VALUE)&quot;)</code>;</li>
 <li>a nonnumeric value raises <code>ValueError(&quot;value must be numeric&quot;)</code>;</li>
 <li>the conversion <code>try</code> block must contain only the conversion operation.</li>
 </ul>
@@ -4873,9 +4873,9 @@ ValueError: could not convert string to float: &#39;error&#39;</code></pre>
 </section>
 <section id="narrow-an-overly-broad-handler" class="level2">
 <h2 class="anchored" data-anchor-id="narrow-an-overly-broad-handler">7. Narrow an Overly Broad Handler</h2>
-<p>Rewrite this code so conversion and lookup failures receive different responses and unrelated defects remain visible:</p>
+<p><code>record</code> is a tuple such as <code>(&quot;T2&quot;, &quot;error&quot;)</code>. Rewrite this code so conversion and lookup failures receive different responses and unrelated defects remain visible:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    sensor, value_text <span class="op">=</span> record.split(<span class="st">&quot;,&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    sensor, value_text <span class="op">=</span> record</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    value <span class="op">=</span> <span class="bu">float</span>(value_text)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    limit <span class="op">=</span> limits[sensor]</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensor, value, limit)</span>
@@ -4890,12 +4890,12 @@ ValueError: could not convert string to float: &#39;error&#39;</code></pre>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Return (accepted, errors) after processing all records.&quot;&quot;&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For every valid record, append <code>(sensor, value, status)</code> to <code>accepted</code>. For malformed structure or a nonnumeric value, append the exception message to <code>errors</code> and continue. Unknown sensors are valid parsed records with status <code>&quot;unknown&quot;</code>.</p>
 <p>Test with:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>records <span class="op">=</span> [<span class="st">&quot;T1,23.5&quot;</span>, <span class="st">&quot;T2,error&quot;</span>, <span class="st">&quot;missing-comma&quot;</span>, <span class="st">&quot;T9,21.0&quot;</span>]</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>records <span class="op">=</span> [(<span class="st">&quot;T1&quot;</span>, <span class="st">&quot;23.5&quot;</span>), (<span class="st">&quot;T2&quot;</span>, <span class="st">&quot;error&quot;</span>), (<span class="st">&quot;T5&quot;</span>,), (<span class="st">&quot;T9&quot;</span>, <span class="st">&quot;21.0&quot;</span>)]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>limits <span class="op">=</span> {<span class="st">&quot;T1&quot;</span>: <span class="fl">80.0</span>, <span class="st">&quot;T2&quot;</span>: <span class="fl">75.0</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The result should contain two accepted records and two error messages.</p>
 </section>
-<section id="optional-extension-load-a-text-file" class="level2">
-<h2 class="anchored" data-anchor-id="optional-extension-load-a-text-file">Optional Extension: Load a Text File</h2>
+<section id="optional-extension-after-l10-files-load-a-text-file" class="level2">
+<h2 class="anchored" data-anchor-id="optional-extension-after-l10-files-load-a-text-file">Optional Extension (after L10, Files): Load a Text File</h2>
 <p>Load one record per line from <code>sensor_readings.txt</code>, strip newline characters, and pass the list to <code>process_records</code>. Catch file-system exceptions only at the user-interface boundary, where you can report a filename and decide whether recovery is possible.</p>
 </section>
 <section id="submission-checklist" class="level2">

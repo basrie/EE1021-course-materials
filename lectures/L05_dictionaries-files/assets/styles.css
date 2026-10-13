@@ -590,3 +590,6 @@ iframe.tall-anim {
 .reveal .columns .column pre {
   margin-top: 0.25rem;
 }
+
+/* Bottom notes (::: aside): sit above the reveal.js menu and chalkboard buttons (2026-10-13). */
+.reveal .slides section > aside:not(.notes) { bottom: 72px; }
