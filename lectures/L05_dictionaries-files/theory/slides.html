@@ -250,8 +250,8 @@ Basri Erdogan
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>Voltages from one sensor, in measurement order<br>e.g.&nbsp;4.92, 5.08, 5.11, …</td>
-<td><span class="fragment"><strong>list</strong> <code>[4.92, 5.08, 5.11]</code>: the order matters, and each new value is added at the end</span></td>
+<td>Voltages from one sensor, added as measured<br>e.g.&nbsp;4.92, 5.08, 5.11, then 4.97 arrives</td>
+<td><span class="fragment"><strong>list</strong> <code>samples.append(4.97)</code>: the list grows, and the measurement order is kept</span></td>
 </tr>
 <tr class="even">
 <td>2</td>
