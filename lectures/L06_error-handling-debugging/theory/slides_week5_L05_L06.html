@@ -333,34 +333,25 @@ Basri Erdogan
 <span id="cb5-5"><a></a><span class="fl">4.92</span> <span class="kw">in</span> readings.values()    <span class="co"># True: explicitly tests values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Dictionary membership tests <strong>keys</strong> unless a values view is requested.</p>
 </section>
-<section id="keys-must-be-unique-and-immutable" class="slide level2 very-dense-code">
+<section id="keys-must-be-unique-and-immutable" class="slide level2">
 <h2>Keys Must Be Unique and Immutable</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Common keys: strings, integers, and tuples of these (immutable values).</p>
-<p>Not valid as keys: lists and dictionaries (mutable values).</p>
+<p>Common keys: strings, integers, and tuples of these (immutable values). Not valid as keys: lists and dictionaries (mutable values).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>locations <span class="op">=</span> {(<span class="dv">2</span>, <span class="dv">3</span>): <span class="st">"sensor-A"</span>}  <span class="co"># valid</span></span>
 <span id="cb6-2"><a></a><span class="co"># {[2, 3]: "sensor-A"}            # TypeError</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:50%;">
 <div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>registry <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">4.90</span>, <span class="st">"S2"</span>: <span class="fl">5.08</span>, <span class="st">"S1"</span>: <span class="fl">4.92</span>}</span>
 <span id="cb7-2"><a></a><span class="bu">print</span>(registry)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="fragment">
 <p><code>{"S1": 4.92, "S2": 5.08}</code>: a repeated key replaces its value.</p>
 </div>
-</div></div>
 </section>
-<section id="iterate-over-keys-or-pairs" class="slide level2 very-dense-code">
+<section id="iterate-over-keys-or-pairs" class="slide level2">
 <h2>Iterate Over Keys or Pairs</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
 <p><strong>Keys (direct iteration)</strong></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="cf">for</span> sensor_id <span class="kw">in</span> readings:</span>
 <span id="cb8-2"><a></a>    <span class="bu">print</span>(sensor_id, readings[sensor_id])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:55%;">
 <p><strong>Key–value pairs</strong></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="cf">for</span> sensor_id, value <span class="kw">in</span> readings.items():</span>
 <span id="cb9-2"><a></a>    <span class="bu">print</span>(sensor_id, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
 <ul>
 <li>Direct iteration produces keys; <strong>readings.keys()</strong> is valid but unnecessary.</li>
 <li><strong>readings.values()</strong> gives only the values, e.g., for a total or average.</li>
@@ -453,7 +444,7 @@ Basri Erdogan
 </div>
 </div>
 </section>
-<section id="three-kinds-of-errors" class="slide level2 very-dense-code">
+<section id="three-kinds-of-errors" class="slide level2">
 <h2>Three Kinds of Errors</h2>
 <table class="caption-top">
 <colgroup>
@@ -486,23 +477,29 @@ Basri Erdogan
 </tr>
 </tbody>
 </table>
+</section>
+<section id="examples-of-the-three-kinds-of-errors" class="slide level2">
+<h2>Examples of the Three Kinds of Errors</h2>
 <div class="columns">
-<div class="column" style="width:31%;">
+<div class="column" style="width:50%;">
 <p><strong>Syntax</strong></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>voltage <span class="op">=</span> <span class="fl">5.4</span></span>
 <span id="cb13-2"><a></a><span class="cf">if</span> voltage <span class="op">&gt;</span> <span class="fl">5.0</span></span>
 <span id="cb13-3"><a></a>    <span class="bu">print</span>(<span class="st">"high"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="text"><code>SyntaxError: expected ':'</code></pre>
-</div><div class="column" style="width:31%;">
+</div><div class="column" style="width:50%;">
 <p><strong>Runtime</strong></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>}</span>
 <span id="cb15-2"><a></a><span class="bu">print</span>(limits[<span class="st">"S9"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="text"><code>KeyError: 'S9'</code></pre>
-</div><div class="column" style="width:38%;">
+</div></div>
 <p><strong>Logic</strong></p>
+<div class="columns">
+<div class="column" style="width:62%;">
 <div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>temps <span class="op">=</span> [<span class="fl">20.0</span>, <span class="fl">22.0</span>, <span class="fl">24.0</span>]</span>
 <span id="cb17-2"><a></a>avg <span class="op">=</span> <span class="bu">sum</span>(temps) <span class="op">/</span> (<span class="bu">len</span>(temps) <span class="op">-</span> <span class="dv">1</span>)</span>
 <span id="cb17-3"><a></a><span class="bu">print</span>(avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:38%;">
 <pre class="text"><code>33.0</code></pre>
 <p>The correct average is 22.0.</p>
 </div></div>
@@ -552,10 +549,10 @@ Basri Erdogan
 </tbody>
 </table>
 </section>
-<section id="read-a-traceback-from-the-last-line-up" class="slide level2 very-dense-code">
+<section id="read-a-traceback-from-the-last-line-up" class="slide level2">
 <h2>Read a Traceback from the Last Line Up</h2>
 <div class="columns">
-<div class="column" style="width:44%;">
+<div class="column" style="width:56%;">
 <p><code>monitor.py</code></p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="kw">def</span> to_number(text):</span>
 <span id="cb20-2"><a></a>    <span class="cf">return</span> <span class="bu">float</span>(text)</span>
@@ -565,8 +562,13 @@ Basri Erdogan
 <span id="cb20-6"><a></a><span class="cf">for</span> sensor, text <span class="kw">in</span> records:</span>
 <span id="cb20-7"><a></a>    value <span class="op">=</span> to_number(text)</span>
 <span id="cb20-8"><a></a>    <span class="bu">print</span>(sensor, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:56%;">
-<p>Output:</p>
+</div><div class="column" style="width:44%;">
+<ol type="1">
+<li><strong>Last line:</strong> the error type and the bad value (<code>'error'</code>).</li>
+<li><strong>Line above it:</strong> where it failed (line 2, inside <code>to_number</code>).</li>
+<li><strong>Go up:</strong> who called that function (line 7).</li>
+</ol>
+</div></div>
 <pre class="text"><code>S1 4.92
 Traceback (most recent call last):
   File "monitor.py", line 7, in &lt;module&gt;
@@ -574,12 +576,6 @@ Traceback (most recent call last):
   File "monitor.py", line 2, in to_number
     return float(text)
 ValueError: could not convert string to float: 'error'</code></pre>
-<ol type="1">
-<li><strong>Last line:</strong> the error type and the bad value (<code>'error'</code>).</li>
-<li><strong>Line above it:</strong> where it failed (line 2, inside <code>to_number</code>).</li>
-<li><strong>Go up:</strong> who called that function (line 7).</li>
-</ol>
-</div></div>
 </section>
 <section id="read-this-traceback" class="slide level2 checkpoint dense-code">
 <h2>Read This Traceback</h2>
@@ -827,7 +823,7 @@ Unknown sensor: S9</code></pre>
 <h1>Integration: Dictionaries Meet Exceptions</h1>
 
 </section>
-<section id="sensor-status-report" class="slide level2 very-dense-code">
+<section id="sensor-status-report" class="slide level2 dense-code">
 <h2>Sensor Status Report</h2>
 <div class="columns">
 <div class="column" style="width:58%;">
@@ -836,30 +832,28 @@ Unknown sensor: S9</code></pre>
 <span id="cb36-3"><a></a>           (<span class="st">"S9"</span>, <span class="st">"5.10"</span>), (<span class="st">"S3"</span>, <span class="st">"5.12"</span>),</span>
 <span id="cb36-4"><a></a>           (<span class="st">"S1"</span>, <span class="st">"5.40"</span>)]</span>
 <span id="cb36-5"><a></a>counts <span class="op">=</span> {}</span>
-<span id="cb36-6"><a></a></span>
-<span id="cb36-7"><a></a><span class="cf">for</span> sensor, text <span class="kw">in</span> records:</span>
-<span id="cb36-8"><a></a>    <span class="cf">if</span> sensor <span class="kw">not</span> <span class="kw">in</span> limits:</span>
-<span id="cb36-9"><a></a>        status <span class="op">=</span> <span class="st">"unknown"</span></span>
-<span id="cb36-10"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb36-11"><a></a>        <span class="cf">try</span>:</span>
-<span id="cb36-12"><a></a>            value <span class="op">=</span> <span class="bu">float</span>(text)</span>
-<span id="cb36-13"><a></a>            <span class="cf">if</span> value <span class="op">&gt;</span> limits[sensor]:</span>
-<span id="cb36-14"><a></a>                status <span class="op">=</span> <span class="st">"alarm"</span></span>
-<span id="cb36-15"><a></a>            <span class="cf">else</span>:</span>
-<span id="cb36-16"><a></a>                status <span class="op">=</span> <span class="st">"normal"</span></span>
-<span id="cb36-17"><a></a>        <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb36-18"><a></a>            status <span class="op">=</span> <span class="st">"malformed"</span></span>
-<span id="cb36-19"><a></a>    <span class="cf">if</span> status <span class="kw">in</span> counts:</span>
-<span id="cb36-20"><a></a>        counts[status] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb36-21"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb36-22"><a></a>        counts[status] <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb36-23"><a></a></span>
-<span id="cb36-24"><a></a><span class="bu">print</span>(counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-6"><a></a><span class="cf">for</span> sensor, text <span class="kw">in</span> records:</span>
+<span id="cb36-7"><a></a>    <span class="cf">if</span> sensor <span class="kw">not</span> <span class="kw">in</span> limits:</span>
+<span id="cb36-8"><a></a>        status <span class="op">=</span> <span class="st">"unknown"</span></span>
+<span id="cb36-9"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb36-10"><a></a>        <span class="cf">try</span>:</span>
+<span id="cb36-11"><a></a>            value <span class="op">=</span> <span class="bu">float</span>(text)</span>
+<span id="cb36-12"><a></a>            <span class="cf">if</span> value <span class="op">&gt;</span> limits[sensor]:</span>
+<span id="cb36-13"><a></a>                status <span class="op">=</span> <span class="st">"alarm"</span></span>
+<span id="cb36-14"><a></a>            <span class="cf">else</span>:</span>
+<span id="cb36-15"><a></a>                status <span class="op">=</span> <span class="st">"normal"</span></span>
+<span id="cb36-16"><a></a>        <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb36-17"><a></a>            status <span class="op">=</span> <span class="st">"malformed"</span></span>
+<span id="cb36-18"><a></a>    <span class="cf">if</span> status <span class="kw">in</span> counts:</span>
+<span id="cb36-19"><a></a>        counts[status] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb36-20"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb36-21"><a></a>        counts[status] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb36-22"><a></a><span class="bu">print</span>(counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:42%;">
 <ul>
 <li>An unknown sensor is <strong>checked first</strong> (way 1).</li>
 <li>A bad value is <strong>caught</strong> with <code>try</code> and <code>except</code> (way 2).</li>
-<li>The last four lines are the counting pattern from Part 1.</li>
+<li>Lines 18–21 are the counting pattern from Part 1.</li>
 </ul>
 <p>Predict <code>counts</code> before you look.</p>
 <div class="fragment">
