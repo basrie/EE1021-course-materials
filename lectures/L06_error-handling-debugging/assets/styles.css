@@ -608,3 +608,92 @@ iframe.tall-anim {
 .reveal .slides section.very-dense-code div.sourceCode pre code {
   font-size: 22px !important;
 }
+
+/* ============================================
+   DESIGN PASS (2026-10-13): one slide frame for every slide
+   ============================================ */
+/* Titles: same colour on every content slide (checkpoint slides were black) */
+.reveal .slides section:not(.section-divider) > h2 {
+  color: #1c5b84 !important;
+  margin-bottom: 0.4em;
+}
+
+/* Checkpoint slides keep the normal frame and carry a label instead of a dashed box */
+.reveal .slides section.checkpoint {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+.reveal .slides section.checkpoint::before {
+  content: "CHECKPOINT";
+  position: absolute;
+  top: 12px;
+  right: 0;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: #1c5b84;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* Section dividers fill the whole slide */
+.reveal .slides section.section-divider,
+.reveal .slides section:has(> h1.section-divider) {
+  height: 100% !important;
+  top: 0 !important;
+  border-radius: 0;
+}
+
+/* Code: one box style and consistent spacing */
+.reveal .slides section div.sourceCode {
+  margin: 0.3em 0 0.55em !important;
+  border: 1px solid #d5dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: none;
+}
+.reveal .slides section div.sourceCode pre { margin: 0 !important; box-shadow: none; }
+
+/* Program output: one style everywhere, labelled OUTPUT */
+.reveal .slides section pre.text {
+  margin: 0.3em 0 0.55em !important;
+  padding: 0.25em 0.5em 0.35em;
+  background: #eef3f8;
+  border-left: 6px solid #5d88a8;
+  border-radius: 6px;
+  box-shadow: none;
+  width: 100%;
+}
+.reveal .slides section pre.text::before {
+  content: "OUTPUT";
+  display: block;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #5d88a8;
+}
+.reveal .slides section pre.text code {
+  background: transparent;
+  color: #1f2d3a;
+  padding: 0;
+}
+
+/* Tables: full content width, left-aligned, readable size */
+.reveal .slides section table {
+  width: 100% !important;
+  margin: 0.4em 0 0.6em !important;
+  font-size: 0.8em !important;
+}
+.reveal .slides section table th,
+.reveal .slides section table td {
+  text-align: left !important;
+  vertical-align: top;
+}
+
+/* Columns: a visible gutter between them */
+.reveal .slides section .columns {
+  gap: 1.4rem !important;
+}
