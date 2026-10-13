@@ -310,37 +310,27 @@ Basri Erdogan
 <p>Direct indexing is appropriate when the key <strong>must exist</strong>. A missing required key often indicates a program or data error.</p>
 <p><code>KeyError</code> is a runtime exception. Part 3 shows how a program can respond to it.</p>
 </section>
-<section id="safe-lookup-with-get" class="slide level2">
-<h2>Safe Lookup with get</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>readings.get(<span class="st">"S2"</span>)         <span class="co"># 5.31</span></span>
-<span id="cb4-2"><a></a>readings.get(<span class="st">"S9"</span>)         <span class="co"># None</span></span>
-<span id="cb4-3"><a></a>readings.get(<span class="st">"S9"</span>, <span class="fl">0.0</span>)    <span class="co"># 0.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The optional second argument supplies a default without changing the dictionary.</p>
-<div class="checkpoint">
-<p>When would a default value hide a genuine data error rather than handle an optional key?</p>
-</div>
-</section>
 <section id="add-update-and-delete" class="slide level2">
 <h2>Add, Update, and Delete</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>readings <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">4.92</span>, <span class="st">"S2"</span>: <span class="fl">5.31</span>}</span>
-<span id="cb5-2"><a></a></span>
-<span id="cb5-3"><a></a>readings[<span class="st">"S3"</span>] <span class="op">=</span> <span class="fl">4.97</span>          <span class="co"># new key: add</span></span>
-<span id="cb5-4"><a></a>readings[<span class="st">"S2"</span>] <span class="op">=</span> <span class="fl">5.08</span>          <span class="co"># existing key: replace value</span></span>
-<span id="cb5-5"><a></a></span>
-<span id="cb5-6"><a></a><span class="kw">del</span> readings[<span class="st">"S3"</span>]             <span class="co"># remove a required key</span></span>
-<span id="cb5-7"><a></a>removed <span class="op">=</span> readings.pop(<span class="st">"S2"</span>)   <span class="co"># remove and return the value</span></span>
-<span id="cb5-8"><a></a>fallback <span class="op">=</span> readings.pop(<span class="st">"S9"</span>, <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>readings <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">4.92</span>, <span class="st">"S2"</span>: <span class="fl">5.31</span>}</span>
+<span id="cb4-2"><a></a></span>
+<span id="cb4-3"><a></a>readings[<span class="st">"S3"</span>] <span class="op">=</span> <span class="fl">4.97</span>          <span class="co"># new key: add</span></span>
+<span id="cb4-4"><a></a>readings[<span class="st">"S2"</span>] <span class="op">=</span> <span class="fl">5.08</span>          <span class="co"># existing key: replace value</span></span>
+<span id="cb4-5"><a></a></span>
+<span id="cb4-6"><a></a><span class="kw">del</span> readings[<span class="st">"S3"</span>]             <span class="co"># remove a required key</span></span>
+<span id="cb4-7"><a></a>removed <span class="op">=</span> readings.pop(<span class="st">"S2"</span>)   <span class="co"># remove and return the value</span></span>
+<span id="cb4-8"><a></a>fallback <span class="op">=</span> readings.pop(<span class="st">"S9"</span>, <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="fragment">
 <p>After these lines: <code>readings</code> is <code>{"S1": 4.92}</code>, <code>removed</code> is <code>5.08</code>, <code>fallback</code> is <code>None</code>.</p>
 </div>
 </section>
 <section id="what-does-membership-test" class="slide level2">
 <h2>What Does Membership Test?</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>readings <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">4.92</span>, <span class="st">"S2"</span>: <span class="fl">5.08</span>}</span>
-<span id="cb6-2"><a></a></span>
-<span id="cb6-3"><a></a><span class="co">"S1"</span> <span class="kw">in</span> readings             <span class="co"># True: tests keys</span></span>
-<span id="cb6-4"><a></a><span class="fl">4.92</span> <span class="kw">in</span> readings             <span class="co"># False: not a key</span></span>
-<span id="cb6-5"><a></a><span class="fl">4.92</span> <span class="kw">in</span> readings.values()    <span class="co"># True: explicitly tests values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>readings <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">4.92</span>, <span class="st">"S2"</span>: <span class="fl">5.08</span>}</span>
+<span id="cb5-2"><a></a></span>
+<span id="cb5-3"><a></a><span class="co">"S1"</span> <span class="kw">in</span> readings             <span class="co"># True: tests keys</span></span>
+<span id="cb5-4"><a></a><span class="fl">4.92</span> <span class="kw">in</span> readings             <span class="co"># False: not a key</span></span>
+<span id="cb5-5"><a></a><span class="fl">4.92</span> <span class="kw">in</span> readings.values()    <span class="co"># True: explicitly tests values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Dictionary membership tests <strong>keys</strong> unless a values view is requested.</p>
 </section>
 <section id="keys-must-be-unique-and-immutable" class="slide level2">
@@ -349,11 +339,11 @@ Basri Erdogan
 <div class="column" style="width:50%;">
 <p>Common keys: strings, integers, and tuples of these (immutable values).</p>
 <p>Not valid as keys: lists and dictionaries (mutable values).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>locations <span class="op">=</span> {(<span class="dv">2</span>, <span class="dv">3</span>): <span class="st">"sensor-A"</span>}  <span class="co"># valid</span></span>
-<span id="cb7-2"><a></a><span class="co"># {[2, 3]: "sensor-A"}            # TypeError</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>locations <span class="op">=</span> {(<span class="dv">2</span>, <span class="dv">3</span>): <span class="st">"sensor-A"</span>}  <span class="co"># valid</span></span>
+<span id="cb6-2"><a></a><span class="co"># {[2, 3]: "sensor-A"}            # TypeError</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>registry <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">4.90</span>, <span class="st">"S2"</span>: <span class="fl">5.08</span>, <span class="st">"S1"</span>: <span class="fl">4.92</span>}</span>
-<span id="cb8-2"><a></a><span class="bu">print</span>(registry)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>registry <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">4.90</span>, <span class="st">"S2"</span>: <span class="fl">5.08</span>, <span class="st">"S1"</span>: <span class="fl">4.92</span>}</span>
+<span id="cb7-2"><a></a><span class="bu">print</span>(registry)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="fragment">
 <p><code>{"S1": 4.92, "S2": 5.08}</code>: a repeated key replaces its value.</p>
 </div>
@@ -364,12 +354,12 @@ Basri Erdogan
 <div class="columns">
 <div class="column" style="width:45%;">
 <p><strong>Keys (direct iteration)</strong></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="cf">for</span> sensor_id <span class="kw">in</span> readings:</span>
-<span id="cb9-2"><a></a>    <span class="bu">print</span>(sensor_id, readings[sensor_id])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="cf">for</span> sensor_id <span class="kw">in</span> readings:</span>
+<span id="cb8-2"><a></a>    <span class="bu">print</span>(sensor_id, readings[sensor_id])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:55%;">
 <p><strong>Key–value pairs</strong></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="cf">for</span> sensor_id, value <span class="kw">in</span> readings.items():</span>
-<span id="cb10-2"><a></a>    <span class="bu">print</span>(sensor_id, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="cf">for</span> sensor_id, value <span class="kw">in</span> readings.items():</span>
+<span id="cb9-2"><a></a>    <span class="bu">print</span>(sensor_id, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <ul>
 <li>Direct iteration produces keys; <strong>readings.keys()</strong> is valid but unnecessary.</li>
@@ -377,40 +367,35 @@ Basri Erdogan
 <li>The pair from <strong>items()</strong> is unpacked into two loop variables, as with tuples in Lecture 4.</li>
 </ul>
 </section>
-<section id="count-events-explicit-pattern" class="slide level2">
-<h2>Count Events: Explicit Pattern</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>events <span class="op">=</span> [<span class="st">"normal"</span>, <span class="st">"high"</span>, <span class="st">"normal"</span>, <span class="st">"low"</span>, <span class="st">"normal"</span>]</span>
-<span id="cb11-2"><a></a>counts <span class="op">=</span> {}</span>
-<span id="cb11-3"><a></a></span>
-<span id="cb11-4"><a></a><span class="cf">for</span> event <span class="kw">in</span> events:</span>
-<span id="cb11-5"><a></a>    <span class="cf">if</span> event <span class="kw">in</span> counts:</span>
-<span id="cb11-6"><a></a>        counts[event] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb11-7"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb11-8"><a></a>        counts[event] <span class="op">=</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Each event is either a first occurrence or an update to an existing count.</p>
-</section>
-<section id="count-events-with-get" class="slide level2">
-<h2>Count Events with get</h2>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>counts <span class="op">=</span> {}</span>
-<span id="cb12-2"><a></a></span>
-<span id="cb12-3"><a></a><span class="cf">for</span> event <span class="kw">in</span> events:</span>
-<span id="cb12-4"><a></a>    counts[event] <span class="op">=</span> counts.get(event, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb12-5"><a></a></span>
-<span id="cb12-6"><a></a><span class="bu">print</span>(counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="count-events-with-a-dictionary" class="slide level2">
+<h2>Count Events with a Dictionary</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>events <span class="op">=</span> [<span class="st">"normal"</span>, <span class="st">"high"</span>, <span class="st">"normal"</span>, <span class="st">"low"</span>, <span class="st">"normal"</span>]</span>
+<span id="cb10-2"><a></a>counts <span class="op">=</span> {}</span>
+<span id="cb10-3"><a></a></span>
+<span id="cb10-4"><a></a><span class="cf">for</span> event <span class="kw">in</span> events:</span>
+<span id="cb10-5"><a></a>    <span class="cf">if</span> event <span class="kw">in</span> counts:</span>
+<span id="cb10-6"><a></a>        counts[event] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb10-7"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb10-8"><a></a>        counts[event] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb10-9"><a></a></span>
+<span id="cb10-10"><a></a><span class="bu">print</span>(counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="fragment">
 <p><strong>Output:</strong> {“normal”: 3, “high”: 1, “low”: 1}</p>
 </div>
-<p>The default 0 represents a count before the first occurrence.</p>
+<p>Each event is either a first occurrence or an update to an existing count.</p>
 </section>
 <section id="dictionary-trace-checkpoint" class="slide level2 checkpoint">
 <h2>Dictionary Trace Checkpoint</h2>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>counts <span class="op">=</span> {}</span>
-<span id="cb13-2"><a></a><span class="cf">for</span> code <span class="kw">in</span> [<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>]:</span>
-<span id="cb13-3"><a></a>    counts[code] <span class="op">=</span> counts.get(code, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb13-4"><a></a></span>
-<span id="cb13-5"><a></a><span class="bu">print</span>(counts.get(<span class="st">"A"</span>, <span class="dv">0</span>), counts.get(<span class="st">"C"</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>counts <span class="op">=</span> {}</span>
+<span id="cb11-2"><a></a><span class="cf">for</span> code <span class="kw">in</span> [<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>]:</span>
+<span id="cb11-3"><a></a>    <span class="cf">if</span> code <span class="kw">in</span> counts:</span>
+<span id="cb11-4"><a></a>        counts[code] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-5"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb11-6"><a></a>        counts[code] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb11-7"><a></a></span>
+<span id="cb11-8"><a></a><span class="bu">print</span>(counts[<span class="st">"A"</span>], <span class="st">"C"</span> <span class="kw">in</span> counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="fragment">
-<p><strong>Check:</strong> 2 0. The missing C key is not added by get.</p>
+<p><strong>Check:</strong> 2 False. C never appeared, so it was never added as a key.</p>
 </div>
 </section>
 <section id="choose-the-data-structure" class="slide level2 checkpoint">
@@ -454,8 +439,8 @@ Basri Erdogan
 </section>
 <section id="retrieval-text-to-number" class="slide level2">
 <h2>Retrieval: Text to Number</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="bu">print</span>(<span class="bu">float</span>(<span class="st">"4.92"</span>))</span>
-<span id="cb14-2"><a></a><span class="bu">print</span>(<span class="bu">float</span>(<span class="st">"error"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="bu">print</span>(<span class="bu">float</span>(<span class="st">"4.92"</span>))</span>
+<span id="cb12-2"><a></a><span class="bu">print</span>(<span class="bu">float</span>(<span class="st">"error"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="checkpoint">
 <p>Before running the code, answer:</p>
 <ol type="1">
@@ -504,20 +489,20 @@ Basri Erdogan
 <div class="columns">
 <div class="column" style="width:31%;">
 <p><strong>Syntax</strong></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>voltage <span class="op">=</span> <span class="fl">5.4</span></span>
-<span id="cb15-2"><a></a><span class="cf">if</span> voltage <span class="op">&gt;</span> <span class="fl">5.0</span></span>
-<span id="cb15-3"><a></a>    <span class="bu">print</span>(<span class="st">"high"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>voltage <span class="op">=</span> <span class="fl">5.4</span></span>
+<span id="cb13-2"><a></a><span class="cf">if</span> voltage <span class="op">&gt;</span> <span class="fl">5.0</span></span>
+<span id="cb13-3"><a></a>    <span class="bu">print</span>(<span class="st">"high"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="text"><code>SyntaxError: expected ':'</code></pre>
 </div><div class="column" style="width:31%;">
 <p><strong>Runtime</strong></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>}</span>
-<span id="cb17-2"><a></a><span class="bu">print</span>(limits[<span class="st">"S9"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>}</span>
+<span id="cb15-2"><a></a><span class="bu">print</span>(limits[<span class="st">"S9"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="text"><code>KeyError: 'S9'</code></pre>
 </div><div class="column" style="width:38%;">
 <p><strong>Logic</strong></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>temps <span class="op">=</span> [<span class="fl">20.0</span>, <span class="fl">22.0</span>, <span class="fl">24.0</span>]</span>
-<span id="cb19-2"><a></a>avg <span class="op">=</span> <span class="bu">sum</span>(temps) <span class="op">/</span> (<span class="bu">len</span>(temps) <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb19-3"><a></a><span class="bu">print</span>(avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>temps <span class="op">=</span> [<span class="fl">20.0</span>, <span class="fl">22.0</span>, <span class="fl">24.0</span>]</span>
+<span id="cb17-2"><a></a>avg <span class="op">=</span> <span class="bu">sum</span>(temps) <span class="op">/</span> (<span class="bu">len</span>(temps) <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb17-3"><a></a><span class="bu">print</span>(avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="text"><code>33.0</code></pre>
 <p>The correct average is 22.0.</p>
 </div></div>
@@ -527,8 +512,8 @@ Basri Erdogan
 </div></aside></section>
 <section id="classify-the-errors" class="slide level2 checkpoint">
 <h2>Classify the Errors</h2>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>samples <span class="op">=</span> [<span class="fl">4.92</span>, <span class="fl">5.08</span>, <span class="fl">5.11</span>]</span>
-<span id="cb21-2"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>samples <span class="op">=</span> [<span class="fl">4.92</span>, <span class="fl">5.08</span>, <span class="fl">5.11</span>]</span>
+<span id="cb19-2"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Write <strong>syntax</strong>, <strong>runtime</strong>, or <strong>logic</strong> for each line.</p>
 <table class="caption-top">
 <colgroup>
@@ -572,14 +557,14 @@ Basri Erdogan
 <div class="columns">
 <div class="column" style="width:44%;">
 <p><code>monitor.py</code></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="kw">def</span> to_number(text):</span>
-<span id="cb22-2"><a></a>    <span class="cf">return</span> <span class="bu">float</span>(text)</span>
-<span id="cb22-3"><a></a></span>
-<span id="cb22-4"><a></a>records <span class="op">=</span> [(<span class="st">"S1"</span>, <span class="st">"4.92"</span>), (<span class="st">"S2"</span>, <span class="st">"error"</span>)]</span>
-<span id="cb22-5"><a></a></span>
-<span id="cb22-6"><a></a><span class="cf">for</span> sensor, text <span class="kw">in</span> records:</span>
-<span id="cb22-7"><a></a>    value <span class="op">=</span> to_number(text)</span>
-<span id="cb22-8"><a></a>    <span class="bu">print</span>(sensor, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="kw">def</span> to_number(text):</span>
+<span id="cb20-2"><a></a>    <span class="cf">return</span> <span class="bu">float</span>(text)</span>
+<span id="cb20-3"><a></a></span>
+<span id="cb20-4"><a></a>records <span class="op">=</span> [(<span class="st">"S1"</span>, <span class="st">"4.92"</span>), (<span class="st">"S2"</span>, <span class="st">"error"</span>)]</span>
+<span id="cb20-5"><a></a></span>
+<span id="cb20-6"><a></a><span class="cf">for</span> sensor, text <span class="kw">in</span> records:</span>
+<span id="cb20-7"><a></a>    value <span class="op">=</span> to_number(text)</span>
+<span id="cb20-8"><a></a>    <span class="bu">print</span>(sensor, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:56%;">
 <p>Output:</p>
 <pre class="text"><code>S1 4.92
@@ -601,12 +586,12 @@ ValueError: could not convert string to float: 'error'</code></pre>
 <div class="columns">
 <div class="column" style="width:44%;">
 <p><code>summary.py</code></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="kw">def</span> average_reading(values):</span>
-<span id="cb24-2"><a></a>    total <span class="op">=</span> <span class="bu">sum</span>(values)</span>
-<span id="cb24-3"><a></a>    <span class="cf">return</span> total <span class="op">/</span> <span class="bu">len</span>(values)</span>
-<span id="cb24-4"><a></a></span>
-<span id="cb24-5"><a></a><span class="bu">print</span>(average_reading([<span class="fl">20.0</span>, <span class="fl">22.0</span>]))</span>
-<span id="cb24-6"><a></a><span class="bu">print</span>(average_reading([]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="kw">def</span> average_reading(values):</span>
+<span id="cb22-2"><a></a>    total <span class="op">=</span> <span class="bu">sum</span>(values)</span>
+<span id="cb22-3"><a></a>    <span class="cf">return</span> total <span class="op">/</span> <span class="bu">len</span>(values)</span>
+<span id="cb22-4"><a></a></span>
+<span id="cb22-5"><a></a><span class="bu">print</span>(average_reading([<span class="fl">20.0</span>, <span class="fl">22.0</span>]))</span>
+<span id="cb22-6"><a></a><span class="bu">print</span>(average_reading([]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:56%;">
 <p>Output:</p>
 <pre class="text"><code>21.0
@@ -682,15 +667,15 @@ ZeroDivisionError: division by zero</code></pre>
 <h2><code>try</code> and <code>except</code> Change the Order of Execution</h2>
 <div class="columns">
 <div class="column" style="width:52%;">
-<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a>text <span class="op">=</span> <span class="st">"error"</span></span>
-<span id="cb26-2"><a></a></span>
-<span id="cb26-3"><a></a><span class="cf">try</span>:</span>
-<span id="cb26-4"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
-<span id="cb26-5"><a></a>    <span class="bu">print</span>(<span class="st">"Value:"</span>, value)</span>
-<span id="cb26-6"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb26-7"><a></a>    <span class="bu">print</span>(<span class="st">"Not a number:"</span>, text)</span>
-<span id="cb26-8"><a></a></span>
-<span id="cb26-9"><a></a><span class="bu">print</span>(<span class="st">"Done"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a>text <span class="op">=</span> <span class="st">"error"</span></span>
+<span id="cb24-2"><a></a></span>
+<span id="cb24-3"><a></a><span class="cf">try</span>:</span>
+<span id="cb24-4"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
+<span id="cb24-5"><a></a>    <span class="bu">print</span>(<span class="st">"Value:"</span>, value)</span>
+<span id="cb24-6"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb24-7"><a></a>    <span class="bu">print</span>(<span class="st">"Not a number:"</span>, text)</span>
+<span id="cb24-8"><a></a></span>
+<span id="cb24-9"><a></a><span class="bu">print</span>(<span class="st">"Done"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:48%;">
 <ol type="1">
 <li>Python runs the <code>try</code> block line by line.</li>
@@ -708,14 +693,14 @@ Done</code></pre>
 </section>
 <section id="predict-the-printed-letters" class="slide level2 checkpoint">
 <h2>Predict the Printed Letters</h2>
-<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a><span class="bu">print</span>(<span class="st">"A"</span>)</span>
-<span id="cb28-2"><a></a><span class="cf">try</span>:</span>
-<span id="cb28-3"><a></a>    <span class="bu">print</span>(<span class="st">"B"</span>)</span>
-<span id="cb28-4"><a></a>    value <span class="op">=</span> <span class="bu">int</span>(<span class="st">"4.5"</span>)</span>
-<span id="cb28-5"><a></a>    <span class="bu">print</span>(<span class="st">"C"</span>)</span>
-<span id="cb28-6"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb28-7"><a></a>    <span class="bu">print</span>(<span class="st">"D"</span>)</span>
-<span id="cb28-8"><a></a><span class="bu">print</span>(<span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a><span class="bu">print</span>(<span class="st">"A"</span>)</span>
+<span id="cb26-2"><a></a><span class="cf">try</span>:</span>
+<span id="cb26-3"><a></a>    <span class="bu">print</span>(<span class="st">"B"</span>)</span>
+<span id="cb26-4"><a></a>    value <span class="op">=</span> <span class="bu">int</span>(<span class="st">"4.5"</span>)</span>
+<span id="cb26-5"><a></a>    <span class="bu">print</span>(<span class="st">"C"</span>)</span>
+<span id="cb26-6"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb26-7"><a></a>    <span class="bu">print</span>(<span class="st">"D"</span>)</span>
+<span id="cb26-8"><a></a><span class="bu">print</span>(<span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Write the printed letters in order.</p>
 <div class="fragment">
 <p><strong>Check:</strong> A, B, D, E. <code>int("4.5")</code> raises <code>ValueError</code>, so <code>print("C")</code> never runs.</p>
@@ -723,23 +708,23 @@ Done</code></pre>
 </section>
 <section id="keep-the-try-block-small" class="slide level2">
 <h2>Keep the <code>try</code> Block Small</h2>
-<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>}</span>
-<span id="cb29-2"><a></a>sensor, text <span class="op">=</span> <span class="st">"S2"</span>, <span class="st">"error"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>}</span>
+<span id="cb27-2"><a></a>sensor, text <span class="op">=</span> <span class="st">"S2"</span>, <span class="st">"error"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Too large</strong></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a><span class="cf">try</span>:</span>
-<span id="cb30-2"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
-<span id="cb30-3"><a></a>    limit <span class="op">=</span> limits[sensor]</span>
-<span id="cb30-4"><a></a>    <span class="bu">print</span>(sensor, value <span class="op">&gt;</span> limit)</span>
-<span id="cb30-5"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb30-6"><a></a>    <span class="bu">print</span>(<span class="st">"Not a number:"</span>, text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a><span class="cf">try</span>:</span>
+<span id="cb28-2"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
+<span id="cb28-3"><a></a>    limit <span class="op">=</span> limits[sensor]</span>
+<span id="cb28-4"><a></a>    <span class="bu">print</span>(sensor, value <span class="op">&gt;</span> limit)</span>
+<span id="cb28-5"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb28-6"><a></a>    <span class="bu">print</span>(<span class="st">"Not a number:"</span>, text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
 <p><strong>Small</strong></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a><span class="cf">try</span>:</span>
-<span id="cb31-2"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
-<span id="cb31-3"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb31-4"><a></a>    <span class="bu">print</span>(<span class="st">"Not a number:"</span>, text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a><span class="cf">try</span>:</span>
+<span id="cb29-2"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
+<span id="cb29-3"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb29-4"><a></a>    <span class="bu">print</span>(<span class="st">"Not a number:"</span>, text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <p>Put only the line that can raise the expected error inside <code>try</code>. Never write a bare <code>except:</code>; it also hides errors you did not expect.</p>
 </section>
@@ -747,17 +732,17 @@ Done</code></pre>
 <h2>Two Errors, Two Handlers</h2>
 <div class="columns">
 <div class="column" style="width:58%;">
-<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
-<span id="cb32-2"><a></a>sensor, text <span class="op">=</span> <span class="st">"S9"</span>, <span class="st">"5.10"</span></span>
-<span id="cb32-3"><a></a></span>
-<span id="cb32-4"><a></a><span class="cf">try</span>:</span>
-<span id="cb32-5"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
-<span id="cb32-6"><a></a>    limit <span class="op">=</span> limits[sensor]</span>
-<span id="cb32-7"><a></a>    <span class="bu">print</span>(sensor, <span class="st">"alarm:"</span>, value <span class="op">&gt;</span> limit)</span>
-<span id="cb32-8"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb32-9"><a></a>    <span class="bu">print</span>(<span class="st">"Not a number:"</span>, text)</span>
-<span id="cb32-10"><a></a><span class="cf">except</span> <span class="pp">KeyError</span>:</span>
-<span id="cb32-11"><a></a>    <span class="bu">print</span>(<span class="st">"Unknown sensor:"</span>, sensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
+<span id="cb30-2"><a></a>sensor, text <span class="op">=</span> <span class="st">"S9"</span>, <span class="st">"5.10"</span></span>
+<span id="cb30-3"><a></a></span>
+<span id="cb30-4"><a></a><span class="cf">try</span>:</span>
+<span id="cb30-5"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
+<span id="cb30-6"><a></a>    limit <span class="op">=</span> limits[sensor]</span>
+<span id="cb30-7"><a></a>    <span class="bu">print</span>(sensor, <span class="st">"alarm:"</span>, value <span class="op">&gt;</span> limit)</span>
+<span id="cb30-8"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb30-9"><a></a>    <span class="bu">print</span>(<span class="st">"Not a number:"</span>, text)</span>
+<span id="cb30-10"><a></a><span class="cf">except</span> <span class="pp">KeyError</span>:</span>
+<span id="cb30-11"><a></a>    <span class="bu">print</span>(<span class="st">"Unknown sensor:"</span>, sensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:42%;">
 <p>Output:</p>
 <pre class="text"><code>Unknown sensor: S9</code></pre>
@@ -772,31 +757,27 @@ Done</code></pre>
 </div>
 </div></div>
 </section>
-<section id="three-ways-to-handle-a-missing-key" class="slide level2">
-<h2>Three Ways to Handle a Missing Key</h2>
+<section id="two-ways-to-handle-a-missing-key" class="slide level2">
+<h2>Two Ways to Handle a Missing Key</h2>
 <div class="columns">
 <div class="column" style="width:55%;">
-<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
-<span id="cb34-2"><a></a>sensor <span class="op">=</span> <span class="st">"S9"</span></span>
-<span id="cb34-3"><a></a></span>
-<span id="cb34-4"><a></a><span class="co"># 1. Check first</span></span>
-<span id="cb34-5"><a></a><span class="cf">if</span> sensor <span class="kw">in</span> limits:</span>
-<span id="cb34-6"><a></a>    <span class="bu">print</span>(<span class="st">"Limit:"</span>, limits[sensor])</span>
-<span id="cb34-7"><a></a><span class="cf">else</span>:</span>
-<span id="cb34-8"><a></a>    <span class="bu">print</span>(<span class="st">"No limit for"</span>, sensor)</span>
-<span id="cb34-9"><a></a></span>
-<span id="cb34-10"><a></a><span class="co"># 2. Use a default value</span></span>
-<span id="cb34-11"><a></a><span class="bu">print</span>(<span class="st">"Limit:"</span>, limits.get(sensor, <span class="fl">5.00</span>))</span>
-<span id="cb34-12"><a></a></span>
-<span id="cb34-13"><a></a><span class="co"># 3. Catch the error</span></span>
-<span id="cb34-14"><a></a><span class="cf">try</span>:</span>
-<span id="cb34-15"><a></a>    <span class="bu">print</span>(<span class="st">"Limit:"</span>, limits[sensor])</span>
-<span id="cb34-16"><a></a><span class="cf">except</span> <span class="pp">KeyError</span>:</span>
-<span id="cb34-17"><a></a>    <span class="bu">print</span>(<span class="st">"Unknown sensor:"</span>, sensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
+<span id="cb32-2"><a></a>sensor <span class="op">=</span> <span class="st">"S9"</span></span>
+<span id="cb32-3"><a></a></span>
+<span id="cb32-4"><a></a><span class="co"># 1. Check first</span></span>
+<span id="cb32-5"><a></a><span class="cf">if</span> sensor <span class="kw">in</span> limits:</span>
+<span id="cb32-6"><a></a>    <span class="bu">print</span>(<span class="st">"Limit:"</span>, limits[sensor])</span>
+<span id="cb32-7"><a></a><span class="cf">else</span>:</span>
+<span id="cb32-8"><a></a>    <span class="bu">print</span>(<span class="st">"No limit for"</span>, sensor)</span>
+<span id="cb32-9"><a></a></span>
+<span id="cb32-10"><a></a><span class="co"># 2. Catch the error</span></span>
+<span id="cb32-11"><a></a><span class="cf">try</span>:</span>
+<span id="cb32-12"><a></a>    <span class="bu">print</span>(<span class="st">"Limit:"</span>, limits[sensor])</span>
+<span id="cb32-13"><a></a><span class="cf">except</span> <span class="pp">KeyError</span>:</span>
+<span id="cb32-14"><a></a>    <span class="bu">print</span>(<span class="st">"Unknown sensor:"</span>, sensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:45%;">
 <p>Output:</p>
 <pre class="text"><code>No limit for S9
-Limit: 5.0
 Unknown sensor: S9</code></pre>
 <table class="caption-top">
 <thead>
@@ -811,11 +792,7 @@ Unknown sensor: S9</code></pre>
 <td>you can ask before you act</td>
 </tr>
 <tr class="even">
-<td>2. Default value</td>
-<td>a missing key is normal</td>
-</tr>
-<tr class="odd">
-<td>3. Catch the error</td>
+<td>2. Catch the error</td>
 <td>a missing key means the task failed</td>
 </tr>
 </tbody>
@@ -826,16 +803,16 @@ Unknown sensor: S9</code></pre>
 <h2><code>raise</code>: Report Input a Function Cannot Use</h2>
 <div class="columns">
 <div class="column" style="width:58%;">
-<div class="sourceCode" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a><span class="kw">def</span> average_reading(values):</span>
-<span id="cb36-2"><a></a>    <span class="co">"""Return the average of a non-empty list."""</span></span>
-<span id="cb36-3"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(values) <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb36-4"><a></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"values must not be empty"</span>)</span>
-<span id="cb36-5"><a></a>    <span class="cf">return</span> <span class="bu">sum</span>(values) <span class="op">/</span> <span class="bu">len</span>(values)</span>
-<span id="cb36-6"><a></a></span>
-<span id="cb36-7"><a></a><span class="cf">try</span>:</span>
-<span id="cb36-8"><a></a>    <span class="bu">print</span>(average_reading([]))</span>
-<span id="cb36-9"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb36-10"><a></a>    <span class="bu">print</span>(<span class="st">"No readings yet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a><span class="kw">def</span> average_reading(values):</span>
+<span id="cb34-2"><a></a>    <span class="co">"""Return the average of a non-empty list."""</span></span>
+<span id="cb34-3"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(values) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb34-4"><a></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"values must not be empty"</span>)</span>
+<span id="cb34-5"><a></a>    <span class="cf">return</span> <span class="bu">sum</span>(values) <span class="op">/</span> <span class="bu">len</span>(values)</span>
+<span id="cb34-6"><a></a></span>
+<span id="cb34-7"><a></a><span class="cf">try</span>:</span>
+<span id="cb34-8"><a></a>    <span class="bu">print</span>(average_reading([]))</span>
+<span id="cb34-9"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb34-10"><a></a>    <span class="bu">print</span>(<span class="st">"No readings yet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:42%;">
 <p>Output:</p>
 <pre class="text"><code>No readings yet</code></pre>
@@ -854,32 +831,35 @@ Unknown sensor: S9</code></pre>
 <h2>Sensor Status Report</h2>
 <div class="columns">
 <div class="column" style="width:58%;">
-<div class="sourceCode" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
-<span id="cb38-2"><a></a>records <span class="op">=</span> [(<span class="st">"S1"</span>, <span class="st">"4.92"</span>), (<span class="st">"S2"</span>, <span class="st">"error"</span>),</span>
-<span id="cb38-3"><a></a>           (<span class="st">"S9"</span>, <span class="st">"5.10"</span>), (<span class="st">"S3"</span>, <span class="st">"5.12"</span>),</span>
-<span id="cb38-4"><a></a>           (<span class="st">"S1"</span>, <span class="st">"5.40"</span>)]</span>
-<span id="cb38-5"><a></a>counts <span class="op">=</span> {}</span>
-<span id="cb38-6"><a></a></span>
-<span id="cb38-7"><a></a><span class="cf">for</span> sensor, text <span class="kw">in</span> records:</span>
-<span id="cb38-8"><a></a>    <span class="cf">if</span> sensor <span class="kw">not</span> <span class="kw">in</span> limits:</span>
-<span id="cb38-9"><a></a>        status <span class="op">=</span> <span class="st">"unknown"</span></span>
-<span id="cb38-10"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb38-11"><a></a>        <span class="cf">try</span>:</span>
-<span id="cb38-12"><a></a>            value <span class="op">=</span> <span class="bu">float</span>(text)</span>
-<span id="cb38-13"><a></a>            <span class="cf">if</span> value <span class="op">&gt;</span> limits[sensor]:</span>
-<span id="cb38-14"><a></a>                status <span class="op">=</span> <span class="st">"alarm"</span></span>
-<span id="cb38-15"><a></a>            <span class="cf">else</span>:</span>
-<span id="cb38-16"><a></a>                status <span class="op">=</span> <span class="st">"normal"</span></span>
-<span id="cb38-17"><a></a>        <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb38-18"><a></a>            status <span class="op">=</span> <span class="st">"malformed"</span></span>
-<span id="cb38-19"><a></a>    counts[status] <span class="op">=</span> counts.get(status, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb38-20"><a></a></span>
-<span id="cb38-21"><a></a><span class="bu">print</span>(counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
+<span id="cb36-2"><a></a>records <span class="op">=</span> [(<span class="st">"S1"</span>, <span class="st">"4.92"</span>), (<span class="st">"S2"</span>, <span class="st">"error"</span>),</span>
+<span id="cb36-3"><a></a>           (<span class="st">"S9"</span>, <span class="st">"5.10"</span>), (<span class="st">"S3"</span>, <span class="st">"5.12"</span>),</span>
+<span id="cb36-4"><a></a>           (<span class="st">"S1"</span>, <span class="st">"5.40"</span>)]</span>
+<span id="cb36-5"><a></a>counts <span class="op">=</span> {}</span>
+<span id="cb36-6"><a></a></span>
+<span id="cb36-7"><a></a><span class="cf">for</span> sensor, text <span class="kw">in</span> records:</span>
+<span id="cb36-8"><a></a>    <span class="cf">if</span> sensor <span class="kw">not</span> <span class="kw">in</span> limits:</span>
+<span id="cb36-9"><a></a>        status <span class="op">=</span> <span class="st">"unknown"</span></span>
+<span id="cb36-10"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb36-11"><a></a>        <span class="cf">try</span>:</span>
+<span id="cb36-12"><a></a>            value <span class="op">=</span> <span class="bu">float</span>(text)</span>
+<span id="cb36-13"><a></a>            <span class="cf">if</span> value <span class="op">&gt;</span> limits[sensor]:</span>
+<span id="cb36-14"><a></a>                status <span class="op">=</span> <span class="st">"alarm"</span></span>
+<span id="cb36-15"><a></a>            <span class="cf">else</span>:</span>
+<span id="cb36-16"><a></a>                status <span class="op">=</span> <span class="st">"normal"</span></span>
+<span id="cb36-17"><a></a>        <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb36-18"><a></a>            status <span class="op">=</span> <span class="st">"malformed"</span></span>
+<span id="cb36-19"><a></a>    <span class="cf">if</span> status <span class="kw">in</span> counts:</span>
+<span id="cb36-20"><a></a>        counts[status] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb36-21"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb36-22"><a></a>        counts[status] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb36-23"><a></a></span>
+<span id="cb36-24"><a></a><span class="bu">print</span>(counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:42%;">
 <ul>
 <li>An unknown sensor is <strong>checked first</strong> (way 1).</li>
-<li>A bad value is <strong>caught</strong> with <code>try</code> and <code>except</code> (way 3).</li>
-<li><code>counts.get(status, 0) + 1</code> is the counting pattern from Part 1.</li>
+<li>A bad value is <strong>caught</strong> with <code>try</code> and <code>except</code> (way 2).</li>
+<li>The last four lines are the counting pattern from Part 1.</li>
 </ul>
 <p>Predict <code>counts</code> before you look.</p>
 </div></div>
@@ -910,10 +890,10 @@ Unknown sensor: S9</code></pre>
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td><code>readings = {"S1": 4.92}</code>. Which gives <code>0.0</code> when S9 is missing?</td>
-<td><code>readings["S9"]</code></td>
-<td><code>readings.get("S9", 0.0)</code></td>
-<td><code>readings.get(0.0)</code></td>
+<td><code>readings = {"S1": 4.92}</code>. What does <code>"S9" in readings</code> give?</td>
+<td><code>True</code></td>
+<td><code>False</code></td>
+<td><code>KeyError</code></td>
 </tr>
 <tr class="even">
 <td>2</td>
@@ -945,7 +925,7 @@ Unknown sensor: S9</code></pre>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
 <ul>
-<li>A dictionary maps keys to values. <code>d[key]</code> needs the key; <code>d.get(key, default)</code> accepts a missing key.</li>
+<li>A dictionary maps keys to values. <code>d[key]</code> needs the key; check <code>key in d</code> first when it may be missing.</li>
 <li>Three kinds of errors: <strong>syntax</strong> (before running), <strong>runtime</strong> (an exception while running), <strong>logic</strong> (a wrong result, no message).</li>
 <li>Read a traceback from the last line up: the error type, the failing line, then the caller.</li>
 <li>Debug in small steps: reproduce, reduce, locate, fix one thing, retest.</li>
@@ -958,14 +938,14 @@ Unknown sensor: S9</code></pre>
 <p>For self-study; not needed for Lab Quiz 3.</p>
 <div class="columns">
 <div class="column" style="width:52%;">
-<div class="sourceCode" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a></a>text <span class="op">=</span> <span class="st">"error"</span></span>
-<span id="cb40-2"><a></a></span>
-<span id="cb40-3"><a></a><span class="cf">try</span>:</span>
-<span id="cb40-4"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
-<span id="cb40-5"><a></a><span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> error:</span>
-<span id="cb40-6"><a></a>    <span class="bu">print</span>(<span class="st">"Problem:"</span>, error)</span>
-<span id="cb40-7"><a></a><span class="cf">else</span>:</span>
-<span id="cb40-8"><a></a>    <span class="bu">print</span>(<span class="st">"Value:"</span>, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a>text <span class="op">=</span> <span class="st">"error"</span></span>
+<span id="cb38-2"><a></a></span>
+<span id="cb38-3"><a></a><span class="cf">try</span>:</span>
+<span id="cb38-4"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
+<span id="cb38-5"><a></a><span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> error:</span>
+<span id="cb38-6"><a></a>    <span class="bu">print</span>(<span class="st">"Problem:"</span>, error)</span>
+<span id="cb38-7"><a></a><span class="cf">else</span>:</span>
+<span id="cb38-8"><a></a>    <span class="bu">print</span>(<span class="st">"Value:"</span>, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:48%;">
 <p>Output:</p>
 <pre class="text"><code>Problem: could not convert string to float: 'error'</code></pre>
