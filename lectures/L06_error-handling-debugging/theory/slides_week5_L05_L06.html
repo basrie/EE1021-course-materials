@@ -343,12 +343,12 @@ Basri Erdogan
 <span id="cb6-5"><a></a><span class="fl">4.92</span> <span class="kw">in</span> readings.values()    <span class="co"># True: explicitly tests values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Dictionary membership tests <strong>keys</strong> unless a values view is requested.</p>
 </section>
-<section id="keys-must-be-hashable-and-unique" class="slide level2">
-<h2>Keys Must Be Hashable and Unique</h2>
+<section id="keys-must-be-unique-and-immutable" class="slide level2">
+<h2>Keys Must Be Unique and Immutable</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Common keys: strings, integers, and tuples of hashable values.</p>
-<p>Not valid as keys: lists and dictionaries.</p>
+<p>Common keys: strings, integers, and tuples of these (immutable values).</p>
+<p>Not valid as keys: lists and dictionaries (mutable values).</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>locations <span class="op">=</span> {(<span class="dv">2</span>, <span class="dv">3</span>): <span class="st">"sensor-A"</span>}  <span class="co"># valid</span></span>
 <span id="cb7-2"><a></a><span class="co"># {[2, 3]: "sensor-A"}            # TypeError</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
@@ -358,10 +358,7 @@ Basri Erdogan
 <p><code>{"S1": 4.92, "S2": 5.08}</code>: a repeated key replaces its value. Dictionaries preserve insertion order.</p>
 </div>
 </div></div>
-
-<aside><div>
-<p><em>Hashable</em>: Python computes a fixed number (a hash) from the key to find it quickly, so the key must not change. Immutable <code>str</code>, <code>int</code>, <code>float</code> and tuples of these are hashable; mutable <code>list</code> and <code>dict</code> are not.</p>
-</div></aside></section>
+</section>
 <section id="iterate-over-keys-or-pairs" class="slide level2">
 <h2>Iterate Over Keys or Pairs</h2>
 <div class="columns">

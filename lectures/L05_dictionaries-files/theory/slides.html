@@ -212,7 +212,7 @@ Basri Erdogan
 <ol type="1">
 <li>Store and retrieve related data with <strong>dictionaries</strong></li>
 <li>Add, update, remove, and safely look up dictionary entries</li>
-<li>Explain that dictionary keys are <strong>unique and hashable</strong></li>
+<li>Explain that dictionary keys are <strong>unique and immutable</strong></li>
 <li>Iterate over keys, values, and key–value pairs</li>
 <li>Build a frequency dictionary with an accumulation pattern</li>
 <li>Use <strong>sets</strong> for uniqueness, membership, and relationship operations</li>
@@ -367,24 +367,21 @@ Basri Erdogan
 <span id="cb8-5"><a></a><span class="fl">4.92</span> <span class="kw">in</span> readings.values()    <span class="co"># True: explicitly tests values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Dictionary membership tests <strong>keys</strong> unless a values view is requested.</p>
 </section>
-<section id="keys-must-be-hashable-and-unique" class="slide level2">
-<h2>Keys Must Be Hashable and Unique</h2>
-<p>Common keys:</p>
+<section id="keys-must-be-unique-and-immutable" class="slide level2">
+<h2>Keys Must Be Unique and Immutable</h2>
+<p>Common keys (immutable values):</p>
 <ul>
 <li>strings and integers</li>
-<li>tuples whose elements are also hashable</li>
+<li>tuples of strings and integers</li>
 </ul>
-<p>Not valid as keys:</p>
+<p>Not valid as keys (mutable values):</p>
 <ul>
 <li>lists and dictionaries</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>locations <span class="op">=</span> {(<span class="dv">2</span>, <span class="dv">3</span>): <span class="st">"sensor-A"</span>}  <span class="co"># valid tuple key</span></span>
-<span id="cb9-2"><a></a><span class="co"># {[2, 3]: "sensor-A"}            # TypeError: list is unhashable</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a></a><span class="co"># {[2, 3]: "sensor-A"}            # TypeError: a list cannot be a key</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Avoid measured floating-point quantities as keys when exact equality is uncertain.</p>
-
-<aside><div>
-<p><em>Hashable</em>: Python computes a fixed number (a hash) from the key to find it quickly, so the key must not change. Immutable <code>str</code>, <code>int</code>, <code>float</code> and tuples of these are hashable; mutable <code>list</code> and <code>dict</code> are not.</p>
-</div></aside></section>
+</section>
 <section id="duplicate-keys-and-insertion-order" class="slide level2 checkpoint">
 <h2>Duplicate Keys and Insertion Order</h2>
 <div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>registry <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">4.90</span>, <span class="st">"S2"</span>: <span class="fl">5.08</span>, <span class="st">"S1"</span>: <span class="fl">4.92</span>}</span>
@@ -478,7 +475,7 @@ Basri Erdogan
 <span id="cb18-4"><a></a>empty_set <span class="op">=</span> <span class="bu">set</span>()</span>
 <span id="cb18-5"><a></a>empty_dict <span class="op">=</span> {}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>Sets contain unique hashable elements.</li>
+<li>Sets contain unique, immutable elements.</li>
 <li><strong>set()</strong>, not empty braces, creates an empty set.</li>
 <li>Duplicate input elements collapse to one element.</li>
 </ul>
