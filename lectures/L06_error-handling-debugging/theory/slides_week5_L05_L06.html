@@ -687,7 +687,10 @@ Done</code></pre>
 </section>
 <section id="predict-the-printed-letters" class="slide level2 checkpoint">
 <h2>Predict the Printed Letters</h2>
-<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a><span class="bu">print</span>(<span class="st">"A"</span>)</span>
+<p>Write the printed letters in order, then step through the code line by line.</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="sourceCode" id="cb27" data-fragment-index="1" data-code-line-numbers="|1|2|3|4|6|7|8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a><span class="bu">print</span>(<span class="st">"A"</span>)</span>
 <span id="cb27-2"><a></a><span class="cf">try</span>:</span>
 <span id="cb27-3"><a></a>    <span class="bu">print</span>(<span class="st">"B"</span>)</span>
 <span id="cb27-4"><a></a>    value <span class="op">=</span> <span class="bu">int</span>(<span class="st">"4.5"</span>)</span>
@@ -695,10 +698,39 @@ Done</code></pre>
 <span id="cb27-6"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
 <span id="cb27-7"><a></a>    <span class="bu">print</span>(<span class="st">"D"</span>)</span>
 <span id="cb27-8"><a></a><span class="bu">print</span>(<span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Write the printed letters in order.</p>
-<div class="fragment">
-<p><strong>Check:</strong> A, B, D, E. <code>int("4.5")</code> raises <code>ValueError</code>, so <code>print("C")</code> never runs.</p>
+</div><div class="column" style="width:45%;">
+<div class="output-steps">
+<div class="fragment" data-fragment-index="1">
+<p>A</p>
 </div>
+<div class="fragment" data-fragment-index="3">
+<p>B</p>
+</div>
+<div class="fragment" data-fragment-index="6">
+<p>D</p>
+</div>
+<div class="fragment" data-fragment-index="7">
+<p>E</p>
+</div>
+</div>
+<div class="fragment step-note step-error" data-fragment-index="4">
+<p>Line 4: <code>int("4.5")</code> raises <code>ValueError</code>.</p>
+</div>
+<div class="fragment step-note" data-fragment-index="5">
+<p>Line 5 is skipped; Python jumps to the matching <code>except</code> (line 6).</p>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="8">
+<p><strong>Check:</strong> A, B, D, E. <code>print("C")</code> never runs.</p>
+</div>
+<script>
+/* Quarto's line-highlight plugin reads data-fragment-index from <code>, but Pandoc
+   puts it on div.sourceCode; copy it down so the line steps interleave with the
+   output fragments. Runs before reveal.js initialises. */
+document.querySelectorAll("div.sourceCode[data-fragment-index] pre code").forEach(function (c) {
+  c.setAttribute("data-fragment-index", c.closest("div.sourceCode").getAttribute("data-fragment-index"));
+});
+</script>
 </section>
 <section id="keep-the-try-block-small" class="slide level2">
 <h2>Keep the <code>try</code> Block Small</h2>

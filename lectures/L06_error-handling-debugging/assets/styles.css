@@ -697,3 +697,47 @@ iframe.tall-anim {
 .reveal .slides section .columns {
   gap: 1.4rem !important;
 }
+
+/* Step-through output panel (Predict the Printed Letters, 2026-10-14):
+   same look as program output; lines appear as the highlighted code line runs */
+.reveal .slides section .output-steps {
+  min-height: 7.2em;
+  margin: 0.3em 0 0.55em;
+  padding: 0.25em 0.5em 0.35em;
+  background: #eef3f8;
+  border-left: 6px solid #5d88a8;
+  border-radius: 6px;
+  font-family: var(--r-code-font, monospace);
+  font-size: 28px;
+  line-height: 1.35;
+  color: #1f2d3a;
+}
+.reveal .slides section .output-steps::before {
+  content: "OUTPUT";
+  display: block;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #5d88a8;
+}
+.reveal .slides section .output-steps p { margin: 0; }
+.reveal .slides section .step-note {
+  margin-top: 0.4em;
+  padding: 0.3em 0.6em;
+  border-left: 6px solid #1c5b84;
+  border-radius: 6px;
+  background: #eaf2f9;
+  font-size: 0.8em;
+}
+.reveal .slides section .step-note.step-error {
+  border-left-color: #c0392b;
+  background: #fbeceb;
+}
+/* Line-by-line code steps: the line that runs now gets a highlight bar */
+.reveal .slides section pre code.has-line-highlights > span.highlight-line {
+  display: inline-block;
+  min-width: 100%;
+  background: #fff1b8;
+  border-radius: 3px;
+}
