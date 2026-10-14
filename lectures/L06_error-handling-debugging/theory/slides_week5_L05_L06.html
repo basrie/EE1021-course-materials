@@ -723,14 +723,6 @@ Done</code></pre>
 <div class="fragment" data-fragment-index="8">
 <p><strong>Check:</strong> A, B, D, E. <code>print("C")</code> never runs.</p>
 </div>
-<script>
-/* Quarto's line-highlight plugin reads data-fragment-index from <code>, but Pandoc
-   puts it on div.sourceCode; copy it down so the line steps interleave with the
-   output fragments. Runs before reveal.js initialises. */
-document.querySelectorAll("div.sourceCode[data-fragment-index] pre code").forEach(function (c) {
-  c.setAttribute("data-fragment-index", c.closest("div.sourceCode").getAttribute("data-fragment-index"));
-});
-</script>
 </section>
 <section id="keep-the-try-block-small" class="slide level2">
 <h2>Keep the <code>try</code> Block Small</h2>
@@ -758,7 +750,7 @@ document.querySelectorAll("div.sourceCode[data-fragment-index] pre code").forEac
 <h2>Two Errors, Two Handlers</h2>
 <div class="columns">
 <div class="column" style="width:58%;">
-<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
+<div class="sourceCode" id="cb31" data-fragment-index="1" data-code-line-numbers="|1|2|4|5|6|8|10|11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
 <span id="cb31-2"><a></a>sensor, text <span class="op">=</span> <span class="st">"S9"</span>, <span class="st">"5.10"</span></span>
 <span id="cb31-3"><a></a></span>
 <span id="cb31-4"><a></a><span class="cf">try</span>:</span>
@@ -770,36 +762,52 @@ document.querySelectorAll("div.sourceCode[data-fragment-index] pre code").forEac
 <span id="cb31-10"><a></a><span class="cf">except</span> <span class="pp">KeyError</span>:</span>
 <span id="cb31-11"><a></a>    <span class="bu">print</span>(<span class="st">"Unknown sensor:"</span>, sensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:42%;">
-<pre class="text"><code>Unknown sensor: S9</code></pre>
-<p>Python runs the first <code>except</code> whose error type matches.</p>
-<div class="fragment">
-<p>What prints if <code>sensor, text</code> is:</p>
-<ol type="1">
-<li><code>"S2", "error"</code></li>
-<li><code>"S3", "5.12"</code></li>
-</ol>
-<p><strong>Check:</strong> 1 Not a number: error; 2 S3 alarm: True.</p>
+<div class="output-steps one-line">
+<div class="fragment" data-fragment-index="8">
+<p>Unknown sensor: S9</p>
 </div>
+</div>
+<div class="r-stack">
+<div class="fragment fade-in-then-out step-note" data-fragment-index="4">
+<p>Line 5: <code>float("5.10")</code> works; <code>value</code> is 5.1.</p>
+</div>
+<div class="fragment fade-in-then-out step-note step-error" data-fragment-index="5">
+<p>Line 6: <code>limits["S9"]</code> raises <code>KeyError</code>. Line 7 is skipped.</p>
+</div>
+<div class="fragment fade-in-then-out step-note" data-fragment-index="6">
+<p>Line 8: not a <code>ValueError</code>, so this handler is skipped.</p>
+</div>
+<div class="fragment step-note" data-fragment-index="7">
+<p>Line 10: <code>KeyError</code> matches, so its block runs.</p>
+</div>
+</div>
+<p>Python runs the first <code>except</code> whose error type matches.</p>
 </div></div>
+<div class="fragment" data-fragment-index="9">
+<p>What prints if <code>sensor, text</code> is <code>"S2", "error"</code>? And <code>"S3", "5.12"</code>?</p>
+</div>
+<div class="fragment" data-fragment-index="10">
+<p><strong>Check:</strong> Not a number: error; S3 alarm: True.</p>
+</div>
 </section>
 <section id="two-ways-to-handle-a-missing-key" class="slide level2 dense-code">
 <h2>Two Ways to Handle a Missing Key</h2>
 <div class="columns">
 <div class="column" style="width:55%;">
-<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
-<span id="cb33-2"><a></a>sensor <span class="op">=</span> <span class="st">"S9"</span></span>
-<span id="cb33-3"><a></a></span>
-<span id="cb33-4"><a></a><span class="co"># 1. Check first</span></span>
-<span id="cb33-5"><a></a><span class="cf">if</span> sensor <span class="kw">in</span> limits:</span>
-<span id="cb33-6"><a></a>    <span class="bu">print</span>(<span class="st">"Limit:"</span>, limits[sensor])</span>
-<span id="cb33-7"><a></a><span class="cf">else</span>:</span>
-<span id="cb33-8"><a></a>    <span class="bu">print</span>(<span class="st">"No limit for"</span>, sensor)</span>
-<span id="cb33-9"><a></a></span>
-<span id="cb33-10"><a></a><span class="co"># 2. Catch the error</span></span>
-<span id="cb33-11"><a></a><span class="cf">try</span>:</span>
-<span id="cb33-12"><a></a>    <span class="bu">print</span>(<span class="st">"Limit:"</span>, limits[sensor])</span>
-<span id="cb33-13"><a></a><span class="cf">except</span> <span class="pp">KeyError</span>:</span>
-<span id="cb33-14"><a></a>    <span class="bu">print</span>(<span class="st">"Unknown sensor:"</span>, sensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
+<span id="cb32-2"><a></a>sensor <span class="op">=</span> <span class="st">"S9"</span></span>
+<span id="cb32-3"><a></a></span>
+<span id="cb32-4"><a></a><span class="co"># 1. Check first</span></span>
+<span id="cb32-5"><a></a><span class="cf">if</span> sensor <span class="kw">in</span> limits:</span>
+<span id="cb32-6"><a></a>    <span class="bu">print</span>(<span class="st">"Limit:"</span>, limits[sensor])</span>
+<span id="cb32-7"><a></a><span class="cf">else</span>:</span>
+<span id="cb32-8"><a></a>    <span class="bu">print</span>(<span class="st">"No limit for"</span>, sensor)</span>
+<span id="cb32-9"><a></a></span>
+<span id="cb32-10"><a></a><span class="co"># 2. Catch the error</span></span>
+<span id="cb32-11"><a></a><span class="cf">try</span>:</span>
+<span id="cb32-12"><a></a>    <span class="bu">print</span>(<span class="st">"Limit:"</span>, limits[sensor])</span>
+<span id="cb32-13"><a></a><span class="cf">except</span> <span class="pp">KeyError</span>:</span>
+<span id="cb32-14"><a></a>    <span class="bu">print</span>(<span class="st">"Unknown sensor:"</span>, sensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:45%;">
 <pre class="text"><code>No limit for S9
 Unknown sensor: S9</code></pre>
@@ -827,16 +835,16 @@ Unknown sensor: S9</code></pre>
 <h2><code>raise</code>: Report Input a Function Cannot Use</h2>
 <div class="columns">
 <div class="column" style="width:58%;">
-<div class="sourceCode" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a></a><span class="kw">def</span> average_reading(values):</span>
-<span id="cb35-2"><a></a>    <span class="co">"""Return the average of a non-empty list."""</span></span>
-<span id="cb35-3"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(values) <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb35-4"><a></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"values must not be empty"</span>)</span>
-<span id="cb35-5"><a></a>    <span class="cf">return</span> <span class="bu">sum</span>(values) <span class="op">/</span> <span class="bu">len</span>(values)</span>
-<span id="cb35-6"><a></a></span>
-<span id="cb35-7"><a></a><span class="cf">try</span>:</span>
-<span id="cb35-8"><a></a>    <span class="bu">print</span>(average_reading([]))</span>
-<span id="cb35-9"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb35-10"><a></a>    <span class="bu">print</span>(<span class="st">"No readings yet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a><span class="kw">def</span> average_reading(values):</span>
+<span id="cb34-2"><a></a>    <span class="co">"""Return the average of a non-empty list."""</span></span>
+<span id="cb34-3"><a></a>    <span class="cf">if</span> <span class="bu">len</span>(values) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb34-4"><a></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"values must not be empty"</span>)</span>
+<span id="cb34-5"><a></a>    <span class="cf">return</span> <span class="bu">sum</span>(values) <span class="op">/</span> <span class="bu">len</span>(values)</span>
+<span id="cb34-6"><a></a></span>
+<span id="cb34-7"><a></a><span class="cf">try</span>:</span>
+<span id="cb34-8"><a></a>    <span class="bu">print</span>(average_reading([]))</span>
+<span id="cb34-9"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb34-10"><a></a>    <span class="bu">print</span>(<span class="st">"No readings yet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:42%;">
 <pre class="text"><code>No readings yet</code></pre>
 <ul>
@@ -854,27 +862,27 @@ Unknown sensor: S9</code></pre>
 <h2>Sensor Status Report</h2>
 <div class="columns">
 <div class="column" style="width:64%;">
-<div class="sourceCode" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
-<span id="cb37-2"><a></a>records <span class="op">=</span> [(<span class="st">"S1"</span>, <span class="st">"4.92"</span>), (<span class="st">"S2"</span>, <span class="st">"error"</span>), (<span class="st">"S9"</span>, <span class="st">"5.10"</span>),</span>
-<span id="cb37-3"><a></a>           (<span class="st">"S3"</span>, <span class="st">"5.12"</span>), (<span class="st">"S1"</span>, <span class="st">"5.40"</span>)]</span>
-<span id="cb37-4"><a></a>counts <span class="op">=</span> {}</span>
-<span id="cb37-5"><a></a><span class="cf">for</span> sensor, text <span class="kw">in</span> records:</span>
-<span id="cb37-6"><a></a>    <span class="cf">if</span> sensor <span class="kw">not</span> <span class="kw">in</span> limits:</span>
-<span id="cb37-7"><a></a>        status <span class="op">=</span> <span class="st">"unknown"</span></span>
-<span id="cb37-8"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb37-9"><a></a>        <span class="cf">try</span>:</span>
-<span id="cb37-10"><a></a>            value <span class="op">=</span> <span class="bu">float</span>(text)</span>
-<span id="cb37-11"><a></a>            <span class="cf">if</span> value <span class="op">&gt;</span> limits[sensor]:</span>
-<span id="cb37-12"><a></a>                status <span class="op">=</span> <span class="st">"alarm"</span></span>
-<span id="cb37-13"><a></a>            <span class="cf">else</span>:</span>
-<span id="cb37-14"><a></a>                status <span class="op">=</span> <span class="st">"normal"</span></span>
-<span id="cb37-15"><a></a>        <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
-<span id="cb37-16"><a></a>            status <span class="op">=</span> <span class="st">"malformed"</span></span>
-<span id="cb37-17"><a></a>    <span class="cf">if</span> status <span class="kw">in</span> counts:</span>
-<span id="cb37-18"><a></a>        counts[status] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb37-19"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb37-20"><a></a>        counts[status] <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb37-21"><a></a><span class="bu">print</span>(counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a>limits <span class="op">=</span> {<span class="st">"S1"</span>: <span class="fl">5.25</span>, <span class="st">"S2"</span>: <span class="fl">5.25</span>, <span class="st">"S3"</span>: <span class="fl">5.00</span>}</span>
+<span id="cb36-2"><a></a>records <span class="op">=</span> [(<span class="st">"S1"</span>, <span class="st">"4.92"</span>), (<span class="st">"S2"</span>, <span class="st">"error"</span>), (<span class="st">"S9"</span>, <span class="st">"5.10"</span>),</span>
+<span id="cb36-3"><a></a>           (<span class="st">"S3"</span>, <span class="st">"5.12"</span>), (<span class="st">"S1"</span>, <span class="st">"5.40"</span>)]</span>
+<span id="cb36-4"><a></a>counts <span class="op">=</span> {}</span>
+<span id="cb36-5"><a></a><span class="cf">for</span> sensor, text <span class="kw">in</span> records:</span>
+<span id="cb36-6"><a></a>    <span class="cf">if</span> sensor <span class="kw">not</span> <span class="kw">in</span> limits:</span>
+<span id="cb36-7"><a></a>        status <span class="op">=</span> <span class="st">"unknown"</span></span>
+<span id="cb36-8"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb36-9"><a></a>        <span class="cf">try</span>:</span>
+<span id="cb36-10"><a></a>            value <span class="op">=</span> <span class="bu">float</span>(text)</span>
+<span id="cb36-11"><a></a>            <span class="cf">if</span> value <span class="op">&gt;</span> limits[sensor]:</span>
+<span id="cb36-12"><a></a>                status <span class="op">=</span> <span class="st">"alarm"</span></span>
+<span id="cb36-13"><a></a>            <span class="cf">else</span>:</span>
+<span id="cb36-14"><a></a>                status <span class="op">=</span> <span class="st">"normal"</span></span>
+<span id="cb36-15"><a></a>        <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb36-16"><a></a>            status <span class="op">=</span> <span class="st">"malformed"</span></span>
+<span id="cb36-17"><a></a>    <span class="cf">if</span> status <span class="kw">in</span> counts:</span>
+<span id="cb36-18"><a></a>        counts[status] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb36-19"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb36-20"><a></a>        counts[status] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb36-21"><a></a><span class="bu">print</span>(counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:36%;">
 <ul>
 <li>Unknown sensor: <strong>checked first</strong> (way 1).</li>
@@ -959,14 +967,14 @@ Unknown sensor: S9</code></pre>
 <p>For self-study; not needed for Lab Quiz 3.</p>
 <div class="columns">
 <div class="column" style="width:52%;">
-<div class="sourceCode" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a></a>text <span class="op">=</span> <span class="st">"error"</span></span>
-<span id="cb39-2"><a></a></span>
-<span id="cb39-3"><a></a><span class="cf">try</span>:</span>
-<span id="cb39-4"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
-<span id="cb39-5"><a></a><span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> error:</span>
-<span id="cb39-6"><a></a>    <span class="bu">print</span>(<span class="st">"Problem:"</span>, error)</span>
-<span id="cb39-7"><a></a><span class="cf">else</span>:</span>
-<span id="cb39-8"><a></a>    <span class="bu">print</span>(<span class="st">"Value:"</span>, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a>text <span class="op">=</span> <span class="st">"error"</span></span>
+<span id="cb38-2"><a></a></span>
+<span id="cb38-3"><a></a><span class="cf">try</span>:</span>
+<span id="cb38-4"><a></a>    value <span class="op">=</span> <span class="bu">float</span>(text)</span>
+<span id="cb38-5"><a></a><span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> error:</span>
+<span id="cb38-6"><a></a>    <span class="bu">print</span>(<span class="st">"Problem:"</span>, error)</span>
+<span id="cb38-7"><a></a><span class="cf">else</span>:</span>
+<span id="cb38-8"><a></a>    <span class="bu">print</span>(<span class="st">"Value:"</span>, value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:48%;">
 <pre class="text"><code>Problem: could not convert string to float: 'error'</code></pre>
 <ul>
@@ -974,6 +982,14 @@ Unknown sensor: S9</code></pre>
 <li><code>else</code> runs only when the <code>try</code> block raised <strong>no</strong> error.</li>
 </ul>
 </div></div>
+<script>
+/* Quarto's line-highlight plugin reads data-fragment-index from <code>, but Pandoc
+   puts it on div.sourceCode; copy it down so the line steps interleave with the
+   output fragments. Kept at the end of the deck so it sees every slide; runs before reveal.js initialises. */
+document.querySelectorAll("div.sourceCode[data-fragment-index] pre code").forEach(function (c) {
+  c.setAttribute("data-fragment-index", c.closest("div.sourceCode").getAttribute("data-fragment-index"));
+});
+</script>
 
 
 </section></section>

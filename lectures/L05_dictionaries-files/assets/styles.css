@@ -741,3 +741,5 @@ iframe.tall-anim {
   background: #fff1b8;
   border-radius: 3px;
 }
+/* Output panel for a single output line */
+.reveal .slides section .output-steps.one-line { min-height: 2.6em; }
