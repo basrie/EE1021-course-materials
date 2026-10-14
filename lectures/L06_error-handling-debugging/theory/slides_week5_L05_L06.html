@@ -213,7 +213,7 @@ Basri Erdogan
 <li>Store, retrieve, update, and safely look up data with <strong>dictionaries</strong></li>
 <li>Iterate over dictionary keys and pairs; build a frequency count</li>
 <li>Classify <strong>syntax errors</strong>, <strong>runtime exceptions</strong>, and <strong>logic errors</strong></li>
-<li>Read a traceback from the last line up and debug in small steps</li>
+<li>Read a traceback from the last line up</li>
 <li>Use small <code>try</code> blocks, specific <code>except</code> clauses, and <code>raise</code></li>
 </ol>
 </section>
@@ -607,52 +607,6 @@ ZeroDivisionError: division by zero</code></pre>
 <div class="fragment">
 <p><strong>Check:</strong> line 3 in <code>average_reading</code>; the call on line 6, <code>average_reading([])</code>; <code>len(values)</code> is <code>0</code> because the list is empty.</p>
 </div>
-</section>
-<section id="debug-in-small-steps" class="slide level2">
-<h2>Debug in Small Steps</h2>
-<p>Apply the five steps to the bug from the previous slide:</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 30%">
-<col style="width: 54%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Step</th>
-<th>What it means</th>
-<th>For <code>average_reading([])</code></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1. Reproduce</td>
-<td>Run the failing input again</td>
-<td><span class="fragment"><code>average_reading([])</code> → <code>ZeroDivisionError</code> again</span></td>
-</tr>
-<tr class="even">
-<td>2. Reduce</td>
-<td>Find the smallest input that fails</td>
-<td><span class="fragment"><code>[]</code> is already the smallest; <code>[20.0]</code> works</span></td>
-</tr>
-<tr class="odd">
-<td>3. Locate</td>
-<td>Read the traceback; find the first wrong value</td>
-<td><span class="fragment">line 3: <code>len(values)</code> is <code>0</code></span></td>
-</tr>
-<tr class="even">
-<td>4. Fix one thing</td>
-<td>Change one part of the code</td>
-<td><span class="fragment">Decide: an empty list is not allowed (Part 3 shows how)</span></td>
-</tr>
-<tr class="odd">
-<td>5. Retest</td>
-<td>Run every test again</td>
-<td><span class="fragment"><code>[20.0, 22.0, 24.0]</code> → <code>22.0</code> · <code>[20.0]</code> → <code>20.0</code> · <code>[]</code> → a clear message</span></td>
-</tr>
-</tbody>
-</table>
-<p>Change one thing, then run every test again.</p>
 </section></section>
 <section>
 <section id="part-3-handle-expected-errors" class="title-slide slide level1 section-divider center">
@@ -957,7 +911,6 @@ Unknown sensor: S9</code></pre>
 <li>A dictionary maps keys to values. <code>d[key]</code> needs the key; check <code>key in d</code> first when it may be missing.</li>
 <li>Three kinds of errors: <strong>syntax</strong> (before running), <strong>runtime</strong> (an exception while running), <strong>logic</strong> (a wrong result, no message).</li>
 <li>Read a traceback from the last line up: the error type, the failing line, then the caller.</li>
-<li>Debug in small steps: reproduce, reduce, locate, fix one thing, retest.</li>
 <li>Put only the risky line in <code>try</code> and catch only the error you expect. Use <code>raise</code> when a function gets input it cannot use.</li>
 </ul>
 <p>This week’s lab is <strong>Lab Quiz 3</strong> on dictionaries and errors.</p>
