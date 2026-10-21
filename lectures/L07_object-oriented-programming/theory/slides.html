@@ -211,169 +211,102 @@ Basri Erdogan
 <h2>Lecture Goals</h2>
 <ol type="1">
 <li>Distinguish a <strong>class</strong>, <strong>object</strong>, <strong>instance</strong>, <strong>attribute</strong>, and <strong>method</strong></li>
-<li>Explain why a class combines related state and behavior</li>
+<li>Explain why a class keeps related state and behavior together</li>
 <li>Initialize independent instances with <code>__init__</code></li>
 <li>Trace which object becomes <code>self</code> during a method call</li>
-<li>Write methods that inspect or change object state</li>
-<li>Implement <code>__str__</code> as a useful object interface</li>
+<li>Write methods that change state, report state, or validate input</li>
+<li>Implement <code>__str__</code> and recognize other special methods</li>
 <li>Translate a small class contract into tested Python code</li>
 </ol>
 </section>
-<section id="retrieval-one-sensor-as-a-dictionary" class="slide level2">
-<h2>Retrieval: One Sensor as a Dictionary</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>sensor <span class="op">=</span> {</span>
-<span id="cb1-2"><a></a>    <span class="st">"id"</span>: <span class="st">"T1"</span>,</span>
-<span id="cb1-3"><a></a>    <span class="st">"unit"</span>: <span class="st">"C"</span>,</span>
-<span id="cb1-4"><a></a>    <span class="st">"readings"</span>: [<span class="fl">23.5</span>, <span class="fl">24.0</span>],</span>
-<span id="cb1-5"><a></a>}</span>
-<span id="cb1-6"><a></a></span>
-<span id="cb1-7"><a></a>average <span class="op">=</span> <span class="bu">sum</span>(sensor[<span class="st">"readings"</span>]) <span class="op">/</span> <span class="bu">len</span>(sensor[<span class="st">"readings"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The dictionary stores <strong>state</strong>. The calculation supplies <strong>behavior</strong> elsewhere.</p>
+<section id="every-python-value-is-an-object" class="slide level2">
+<h2>Every Python Value Is an Object</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>name <span class="op">=</span> <span class="st">"sensor-1"</span></span>
+<span id="cb1-2"><a></a>values <span class="op">=</span> [<span class="fl">20.0</span>, <span class="fl">22.0</span>]</span>
+<span id="cb1-3"><a></a></span>
+<span id="cb1-4"><a></a>name.upper()          <span class="co"># method of a str object</span></span>
+<span id="cb1-5"><a></a>values.append(<span class="fl">24.0</span>)   <span class="co"># method of a list object</span></span>
+<span id="cb1-6"><a></a><span class="bu">type</span>(values)          <span class="co"># &lt;class 'list'&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>every object has a <strong>type</strong> (its class), an internal <strong>data representation</strong>, and a set of <strong>methods</strong> for interacting with it</li>
+<li><code>1234</code> is an instance of <code>int</code>; <code>"hello"</code> is an instance of <code>str</code></li>
+<li>today you define your own types</li>
+</ul>
 </section>
-<section id="state-or-behavior" class="slide level2 checkpoint">
-<h2>State or Behavior?</h2>
-<p>Classify each requirement:</p>
-<ol type="1">
-<li>sensor identifier</li>
-<li>measurement unit</li>
-<li>stored readings</li>
-<li>add a reading</li>
-<li>calculate the average</li>
-<li>produce a readable report</li>
-</ol>
-<div class="fragment">
-<p><strong>State:</strong> identifier, unit, readings. <strong>Behavior:</strong> add, average, report.</p>
-</div>
-</section>
-<section id="repeated-data-needs-a-clear-home" class="slide level2">
-<h2>Repeated Data Needs a Clear Home</h2>
-<p>With many sensors, separate dictionaries and functions create repeated coordination work:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>sensor_1 <span class="op">=</span> {<span class="st">"id"</span>: <span class="st">"T1"</span>, <span class="st">"unit"</span>: <span class="st">"C"</span>, <span class="st">"readings"</span>: []}</span>
-<span id="cb2-2"><a></a>sensor_2 <span class="op">=</span> {<span class="st">"id"</span>: <span class="st">"P1"</span>, <span class="st">"unit"</span>: <span class="st">"kPa"</span>, <span class="st">"readings"</span>: []}</span>
-<span id="cb2-3"><a></a></span>
-<span id="cb2-4"><a></a>add_reading(sensor_1, <span class="fl">23.5</span>)</span>
-<span id="cb2-5"><a></a><span class="bu">print</span>(sensor_average(sensor_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>A class defines one type whose objects keep related state and behavior together.</p>
+<section id="a-list-hides-its-internal-representation" class="slide level2">
+<h2>A List Hides Its Internal Representation</h2>
+<svg viewbox="0 0 1100 320" width="1100" height="320" role="img" aria-label="L points to a list object that stores length 3, room 4 and a row of addresses. The row has four places: 1040, 2208 and 3176, and one empty place. Each address points to a value stored elsewhere in memory: 1 at address 1040, 2 at 2208 and 3 at 3176.">
+<defs> <marker id="arr" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse"> <path d="M0,0 L10,5 L0,10 z" fill="#1c5b84"></path> </marker> </defs> <text x="10" y="128" font-family="Menlo, monospace" font-size="38" fill="#1f2d3a">L</text> <line x1="42" y1="116" x2="98" y2="116" stroke="#1c5b84" stroke-width="4" marker-end="url(#arr)"></line> <g font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#526878"> <text x="105" y="40">list object</text> <text x="520" y="40">row of memory addresses</text> <text x="520" y="314">the values, stored elsewhere in memory</text> </g> <rect x="105" y="55" width="270" height="150" rx="6" fill="#eaf1f8" stroke="#2f6ea3" stroke-width="3"></rect> <g font-family="Menlo, monospace" font-size="27" fill="#1f2d3a"> <text x="125" y="95">length = 3</text> <text x="125" y="140">room = 4</text> <text x="125" y="185">addresses ●</text> </g> <path d="M 300 178 C 420 178, 400 85, 518 85" fill="none" stroke="#1c5b84" stroke-width="4" marker-end="url(#arr)"></path> <g stroke="#ffffff" stroke-width="3"> <rect x="520" y="55" width="110" height="60" fill="#2f6ea3"></rect> <rect x="630" y="55" width="110" height="60" fill="#2f6ea3"></rect> <rect x="740" y="55" width="110" height="60" fill="#2f6ea3"></rect> <rect x="850" y="55" width="110" height="60" fill="#c9d7e1"></rect> </g> <g font-family="Menlo, monospace" font-size="27" font-weight="700" fill="#ffffff" text-anchor="middle"> <text x="575" y="95">1040</text><text x="685" y="95">2208</text><text x="795" y="95">3176</text> </g> <text x="905" y="93" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#526878" text-anchor="middle">empty</text> <g stroke="#1c5b84" stroke-width="4" fill="none" marker-end="url(#arr)"> <line x1="575" y1="117" x2="545" y2="188"></line> <line x1="685" y1="117" x2="735" y2="200"></line> <line x1="795" y1="117" x2="905" y2="186"></line> </g> <g font-family="Menlo, monospace" font-size="30" font-weight="700" fill="#ffffff" text-anchor="middle"> <rect x="505" y="190" width="80" height="50" rx="6" fill="#4f86b8"></rect><text x="545" y="226">1</text> <rect x="695" y="202" width="80" height="50" rx="6" fill="#4f86b8"></rect><text x="735" y="238">2</text> <rect x="865" y="188" width="80" height="50" rx="6" fill="#4f86b8"></rect><text x="905" y="224">3</text> </g> <g font-family="Helvetica, Arial, sans-serif" font-size="19" fill="#526878" text-anchor="middle"> <text x="545" y="263">at 1040</text> <text x="735" y="275">at 2208</text> <text x="905" y="261">at 3176</text> </g>
+</svg>
+<ul>
+<li>inside, a list is a row of memory addresses, one for each value</li>
+<li>the row has empty places, so <code>append()</code> is fast</li>
+<li>you never see the addresses; you use the <strong>interface</strong>: <code>L[i]</code>, <code>len(L)</code>, <code>L.append()</code></li>
+<li>a class gives your own data the same deal: the data and its operations stay together, behind an interface</li>
+</ul>
 </section>
 <section>
-<section id="part-1-build-the-mental-model" class="title-slide slide level1 section-divider center">
-<h1>Part 1: Build the Mental Model</h1>
+<section id="part-1-classes-and-instances" class="title-slide slide level1 section-divider center">
+<h1>Part 1: Classes and Instances</h1>
 </section>
-<section id="you-already-use-objects" class="slide level2">
-<h2>You Already Use Objects</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>name <span class="op">=</span> <span class="st">"sensor-1"</span></span>
-<span id="cb3-2"><a></a>values <span class="op">=</span> [<span class="fl">20.0</span>, <span class="fl">22.0</span>]</span>
-<span id="cb3-3"><a></a></span>
-<span id="cb3-4"><a></a>name.upper()          <span class="co"># method of a str object</span></span>
-<span id="cb3-5"><a></a>values.append(<span class="fl">24.0</span>)  <span class="co"># method of a list object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Every Python value has a type and supports operations defined by that type.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="bu">type</span>(name)    <span class="co"># str</span></span>
-<span id="cb4-2"><a></a><span class="bu">type</span>(values)  <span class="co"># list</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="a-class-defines-a-type" class="slide level2">
-<h2>A Class Defines a Type</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">class</span> Sensor:</span>
-<span id="cb5-2"><a></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="a-class-defines-a-new-type" class="slide level2">
+<h2>A Class Defines a New Type</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">class</span> Coordinate:</span>
+<span id="cb2-2"><a></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li><code>Sensor</code> is the class name and the new type.</li>
-<li>The indented block defines the type’s behavior.</li>
-<li><code>class Sensor:</code> uses modern Python 3 syntax.</li>
+<li><code>Coordinate</code> is the class name and the new type; the indented block defines the type</li>
+<li><strong>creating</strong> the class: define the name and its attributes (once)</li>
+<li><strong>using</strong> the class: create instances and operate on them (many times)</li>
 </ul>
-<p>The class is a definition—not one particular sensor.</p>
-</section>
-<section id="an-instance-is-one-particular-object" class="slide level2">
-<h2>An Instance Is One Particular Object</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>temperature <span class="op">=</span> Sensor()</span>
-<span id="cb6-2"><a></a>pressure <span class="op">=</span> Sensor()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>temperature</code> and <code>pressure</code> refer to two distinct <code>Sensor</code> instances.</p>
-<p>They share the structure defined by the class but can hold different state.</p>
-</section>
-<section id="class-instance-attribute-or-method" class="slide level2 checkpoint">
-<h2>Class, Instance, Attribute, or Method?</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">class</span> Sensor:</span>
-<span id="cb7-2"><a></a>    <span class="kw">def</span> add_reading(<span class="va">self</span>, value):</span>
-<span id="cb7-3"><a></a>        <span class="va">self</span>.readings.append(value)</span>
-<span id="cb7-4"><a></a></span>
-<span id="cb7-5"><a></a>t1 <span class="op">=</span> Sensor()</span>
-<span id="cb7-6"><a></a>t1.readings <span class="op">=</span> []</span>
-<span id="cb7-7"><a></a>t1.add_reading(<span class="fl">23.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Identify <code>Sensor</code>, <code>t1</code>, <code>readings</code>, and <code>add_reading</code>.</p>
-<div class="fragment">
-<p><strong>Check:</strong> class, instance, data attribute, method.</p>
-</div>
-</section>
-<section id="a-class-is-useful-when-state-and-behavior-belong-together" class="slide level2">
-<h2>A Class Is Useful When State and Behavior Belong Together</h2>
-<p>Use a class when:</p>
-<ul>
-<li>many objects share the same structure;</li>
-<li>operations depend on each object’s state;</li>
-<li>a clear interface prevents repeated coordination code.</li>
-</ul>
-<p>A standalone function is still better when no persistent object state is needed.</p>
-</section></section>
-<section>
-<section id="part-2-construct-independent-objects" class="title-slide slide level1 section-divider center">
-<h1>Part 2: Construct Independent Objects</h1>
-
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>c <span class="op">=</span> Coordinate()</span>
+<span id="cb3-2"><a></a>origin <span class="op">=</span> Coordinate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>c</code> and <code>origin</code> are two distinct instances of the same class.</p>
 </section>
 <section id="init__-establishes-initial-state" class="slide level2">
 <h2><code>__init__</code> Establishes Initial State</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">class</span> Sensor:</span>
-<span id="cb8-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sensor_id, unit):</span>
-<span id="cb8-3"><a></a>        <span class="va">self</span>.sensor_id <span class="op">=</span> sensor_id</span>
-<span id="cb8-4"><a></a>        <span class="va">self</span>.unit <span class="op">=</span> unit</span>
-<span id="cb8-5"><a></a>        <span class="va">self</span>.readings <span class="op">=</span> []</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Python creates a new instance and then calls <code>__init__</code> to initialize it.</p>
-<p><code>self</code> refers to that newly created instance.</p>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div class="sourceCode" id="cb4" data-code-line-numbers="|2|2|3-4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">class</span> Coordinate:</span>
+<span id="cb4-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):</span>
+<span id="cb4-3"><a></a>        <span class="va">self</span>.x <span class="op">=</span> x</span>
+<span id="cb4-4"><a></a>        <span class="va">self</span>.y <span class="op">=</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:54%;">
+<div class="annot">
+<ul>
+<li><span class="key"><code>__init__</code></span> — special method Python calls right after it creates the instance; double underscores mark it as special</li>
+<li><span class="key"><code>self</code></span> — parameter that refers to the instance being initialized</li>
+<li><span class="key"><code>self.x</code>, <code>self.y</code></span> — two data attributes stored on every <code>Coordinate</code> object</li>
+</ul>
+</div>
+</div></div>
 </section>
-<section id="constructor-arguments-become-attributes" class="slide level2">
-<h2>Constructor Arguments Become Attributes</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>t1 <span class="op">=</span> Sensor(<span class="st">"T1"</span>, <span class="st">"C"</span>)</span>
-<span id="cb9-2"><a></a>p1 <span class="op">=</span> Sensor(<span class="st">"P1"</span>, <span class="st">"kPa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>name</th>
-<th><code>sensor_id</code></th>
-<th><code>unit</code></th>
-<th><code>readings</code></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>t1</code></td>
-<td><code>"T1"</code></td>
-<td><code>"C"</code></td>
-<td><code>[]</code></td>
-</tr>
-<tr class="even">
-<td><code>p1</code></td>
-<td><code>"P1"</code></td>
-<td><code>"kPa"</code></td>
-<td><code>[]</code></td>
-</tr>
-</tbody>
-</table>
-<p>Do not supply an argument for <code>self</code>; Python supplies the new object automatically.</p>
-</section>
-<section id="trace-one-construction" class="slide level2">
-<h2>Trace One Construction</h2>
-<p>For:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>t1 <span class="op">=</span> Sensor(<span class="st">"T1"</span>, <span class="st">"C"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Python calls the initializer conceptually as:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>Sensor.<span class="fu">__init__</span>(new_sensor_object, <span class="st">"T1"</span>, <span class="st">"C"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Inside that call, <code>self</code> refers to <code>new_sensor_object</code>.</p>
+<section id="creating-instances-and-accessing-attributes" class="slide level2">
+<h2>Creating Instances and Accessing Attributes</h2>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div class="sourceCode" id="cb5" data-code-line-numbers="|1|3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>c <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb5-2"><a></a>origin <span class="op">=</span> Coordinate(<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb5-3"><a></a><span class="bu">print</span>(c.x)        <span class="co"># 3</span></span>
+<span id="cb5-4"><a></a><span class="bu">print</span>(origin.x)   <span class="co"># 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:54%;">
+<div class="annot">
+<ul>
+<li><span class="key"><code>Coordinate(3, 4)</code></span> — creates a new object and passes 3 and 4 to <code>__init__</code>; you never pass <code>self</code></li>
+<li><span class="key"><code>c.x</code></span> — the dot accesses an attribute of instance <code>c</code></li>
+</ul>
+</div>
+</div></div>
+<p>Data attributes of an instance are called <strong>instance variables</strong>. Python runs <code>__init__</code> conceptually as <code>Coordinate.__init__(new_object, 3, 4)</code>.</p>
 </section>
 <section id="predict-both-objects-state" class="slide level2 checkpoint">
 <h2>Predict Both Objects’ State</h2>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>t1 <span class="op">=</span> Sensor(<span class="st">"T1"</span>, <span class="st">"C"</span>)</span>
-<span id="cb12-2"><a></a>p1 <span class="op">=</span> Sensor(<span class="st">"P1"</span>, <span class="st">"kPa"</span>)</span>
-<span id="cb12-3"><a></a></span>
-<span id="cb12-4"><a></a>t1.readings.append(<span class="fl">23.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>What are <code>t1.readings</code> and <code>p1.readings</code>?</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>c <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb6-2"><a></a>origin <span class="op">=</span> Coordinate(<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb6-3"><a></a></span>
+<span id="cb6-4"><a></a>c.x <span class="op">=</span> <span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What are <code>c.x</code>, <code>c.y</code>, <code>origin.x</code>, and <code>origin.y</code> now?</p>
 <div class="fragment">
-<p><code>t1.readings</code> is <code>[23.5]</code>; <code>p1.readings</code> remains <code>[]</code>. Each initializer call created a separate list.</p>
+<p><code>c.x</code> is <code>10</code>, <code>c.y</code> is <code>4</code>; <code>origin.x</code> and <code>origin.y</code> remain <code>0</code>. Each <code>__init__</code> call filled a separate object.</p>
 </div>
 </section>
 <section id="instance-state-must-be-stored-on-self" class="slide level2">
@@ -381,251 +314,267 @@ Basri Erdogan
 <div class="columns">
 <div class="column" style="width:48%;">
 <p><strong>Local variables disappear</strong></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sensor_id, unit):</span>
-<span id="cb13-2"><a></a>    sensor_id <span class="op">=</span> sensor_id</span>
-<span id="cb13-3"><a></a>    unit <span class="op">=</span> unit</span>
-<span id="cb13-4"><a></a>    readings <span class="op">=</span> []</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):</span>
+<span id="cb7-2"><a></a>    x <span class="op">=</span> x</span>
+<span id="cb7-3"><a></a>    y <span class="op">=</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After <code>__init__</code> returns, the object has no attributes.</p>
 </div><div class="column" style="width:52%;">
 <p><strong>Attributes remain with the object</strong></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sensor_id, unit):</span>
-<span id="cb14-2"><a></a>    <span class="va">self</span>.sensor_id <span class="op">=</span> sensor_id</span>
-<span id="cb14-3"><a></a>    <span class="va">self</span>.unit <span class="op">=</span> unit</span>
-<span id="cb14-4"><a></a>    <span class="va">self</span>.readings <span class="op">=</span> []</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):</span>
+<span id="cb8-2"><a></a>    <span class="va">self</span>.x <span class="op">=</span> x</span>
+<span id="cb8-3"><a></a>    <span class="va">self</span>.y <span class="op">=</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>self.x</code> survives because it belongs to the object, not to the call.</p>
 </div></div>
-<p>Use <code>self.attribute</code> for state that must survive after the method returns.</p>
-</section>
-<section id="avoid-shared-mutable-state" class="slide level2">
-<h2>Avoid Shared Mutable State</h2>
-<p>Do not place a mutable collection where every instance will share it:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="kw">class</span> Sensor:</span>
-<span id="cb15-2"><a></a>    readings <span class="op">=</span> []  <span class="co"># one list shared by the class</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Create a new collection for each object:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sensor_id, unit):</span>
-<span id="cb16-2"><a></a>    <span class="va">self</span>.readings <span class="op">=</span> []</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="repair-the-initializer" class="slide level2 checkpoint">
-<h2>Repair the Initializer</h2>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="kw">class</span> Sensor:</span>
-<span id="cb17-2"><a></a>    readings <span class="op">=</span> []</span>
-<span id="cb17-3"><a></a></span>
-<span id="cb17-4"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sensor_id):</span>
-<span id="cb17-5"><a></a>        sensor_id <span class="op">=</span> sensor_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Make both <code>sensor_id</code> and <code>readings</code> independent instance attributes.</p>
-<div class="fragment">
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sensor_id):</span>
-<span id="cb18-2"><a></a>    <span class="va">self</span>.sensor_id <span class="op">=</span> sensor_id</span>
-<span id="cb18-3"><a></a>    <span class="va">self</span>.readings <span class="op">=</span> []</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>A list written directly under <code>class</code>, outside <code>__init__</code>, is created once and shared by every object. Write <code>self.readings = []</code> inside <code>__init__</code> so each object gets its own list.</p>
 </section></section>
 <section>
-<section id="part-3-give-the-object-behavior" class="title-slide slide level1 section-divider center">
-<h1>Part 3: Give the Object Behavior</h1>
+<section id="part-2-methods-and-self" class="title-slide slide level1 section-divider center">
+<h1>Part 2: Methods and <code>self</code></h1>
 </section>
-<section id="a-method-can-change-object-state" class="slide level2">
-<h2>A Method Can Change Object State</h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="kw">class</span> Sensor:</span>
-<span id="cb19-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sensor_id, unit):</span>
-<span id="cb19-3"><a></a>        <span class="va">self</span>.sensor_id <span class="op">=</span> sensor_id</span>
-<span id="cb19-4"><a></a>        <span class="va">self</span>.unit <span class="op">=</span> unit</span>
-<span id="cb19-5"><a></a>        <span class="va">self</span>.readings <span class="op">=</span> []</span>
-<span id="cb19-6"><a></a></span>
-<span id="cb19-7"><a></a>    <span class="kw">def</span> add_reading(<span class="va">self</span>, value):</span>
-<span id="cb19-8"><a></a>        <span class="va">self</span>.readings.append(value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>add_reading</code> changes the receiver object’s readings list.</p>
-</section>
-<section id="trace-a-method-call" class="slide level2">
-<h2>Trace a Method Call</h2>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a>t1.add_reading(<span class="fl">23.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This call is equivalent to:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>Sensor.add_reading(t1, <span class="fl">23.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>parameter</th>
-<th>value during the call</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>self</code></td>
-<td>the object referenced by <code>t1</code></td>
-</tr>
-<tr class="even">
-<td><code>value</code></td>
-<td><code>23.5</code></td>
-</tr>
-</tbody>
-</table>
+<section id="a-method-is-a-function-that-belongs-to-the-class" class="slide level2">
+<h2>A Method Is a Function That Belongs to the Class</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="sourceCode" id="cb9" data-code-line-numbers="|5|5|6-7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">class</span> Coordinate:</span>
+<span id="cb9-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):</span>
+<span id="cb9-3"><a></a>        <span class="va">self</span>.x <span class="op">=</span> x</span>
+<span id="cb9-4"><a></a>        <span class="va">self</span>.y <span class="op">=</span> y</span>
+<span id="cb9-5"><a></a>    <span class="kw">def</span> distance(<span class="va">self</span>, other):</span>
+<span id="cb9-6"><a></a>        dx_sq <span class="op">=</span> (<span class="va">self</span>.x <span class="op">-</span> other.x) <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb9-7"><a></a>        dy_sq <span class="op">=</span> (<span class="va">self</span>.y <span class="op">-</span> other.y) <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb9-8"><a></a>        <span class="cf">return</span> (dx_sq <span class="op">+</span> dy_sq) <span class="op">**</span> <span class="fl">0.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:42%;">
+<div class="annot">
+<ul>
+<li><span class="key"><code>self</code></span> — the instance the method is called on</li>
+<li><span class="key"><code>other</code></span> — an ordinary parameter; here another <code>Coordinate</code></li>
+<li><span class="key"><code>self.x</code>, <code>other.x</code></span> — dot notation reads data from either object</li>
+</ul>
+</div>
+</div></div>
+<p>Two equivalent calls: <code>c.distance(origin)</code> and <code>Coordinate.distance(c, origin)</code>. Python passes the receiver as <code>self</code> automatically.</p>
 </section>
 <section id="which-object-becomes-self" class="slide level2 checkpoint">
 <h2>Which Object Becomes <code>self</code>?</h2>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a>t1.add_reading(<span class="fl">20.0</span>)</span>
-<span id="cb22-2"><a></a>p1.add_reading(<span class="fl">100.0</span>)</span>
-<span id="cb22-3"><a></a>t1.add_reading(<span class="fl">22.0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Predict the final readings stored in each object.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>a <span class="op">=</span> Coordinate(<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb10-2"><a></a>b <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb10-3"><a></a></span>
+<span id="cb10-4"><a></a><span class="bu">print</span>(b.distance(a))</span>
+<span id="cb10-5"><a></a><span class="bu">print</span>(a.distance(b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In each call, which object is <code>self</code> and which is <code>other</code>? What is printed?</p>
 <div class="fragment">
-<p><code>t1.readings</code> is <code>[20.0, 22.0]</code>; <code>p1.readings</code> is <code>[100.0]</code>.</p>
+<p>First call: <code>self</code> is <code>b</code>, <code>other</code> is <code>a</code>. Second call: the roles swap. Both print <code>5.0</code>, because distance is symmetric.</p>
 </div>
 </section>
-<section id="a-query-method-returns-information" class="slide level2">
-<h2>A Query Method Returns Information</h2>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="kw">def</span> reading_count(<span class="va">self</span>):</span>
-<span id="cb23-2"><a></a>    <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.readings)</span>
-<span id="cb23-3"><a></a></span>
-<span id="cb23-4"><a></a><span class="kw">def</span> average(<span class="va">self</span>):</span>
-<span id="cb23-5"><a></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.readings:</span>
-<span id="cb23-6"><a></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"sensor has no readings"</span>)</span>
-<span id="cb23-7"><a></a>    <span class="cf">return</span> <span class="bu">sum</span>(<span class="va">self</span>.readings) <span class="op">/</span> <span class="bu">len</span>(<span class="va">self</span>.readings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>These methods observe existing state and return useful values.</p>
-<p>The empty-data contract reuses Lecture 6 exception handling.</p>
-</section>
-<section id="return-and-mutation-serve-different-jobs" class="slide level2">
-<h2><code>return</code> and Mutation Serve Different Jobs</h2>
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="kw">def</span> add_reading(<span class="va">self</span>, value):</span>
-<span id="cb24-2"><a></a>    <span class="va">self</span>.readings.append(value)  <span class="co"># changes state</span></span>
-<span id="cb24-3"><a></a></span>
-<span id="cb24-4"><a></a><span class="kw">def</span> average(<span class="va">self</span>):</span>
-<span id="cb24-5"><a></a>    <span class="cf">return</span> <span class="bu">sum</span>(<span class="va">self</span>.readings) <span class="op">/</span> <span class="bu">len</span>(<span class="va">self</span>.readings)  <span class="co"># reports state</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="a-method-can-change-object-state" class="slide level2">
+<h2>A Method Can Change Object State</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="kw">class</span> Battery:</span>
+<span id="cb11-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, capacity_mah):</span>
+<span id="cb11-3"><a></a>        <span class="va">self</span>.capacity_mah <span class="op">=</span> capacity_mah</span>
+<span id="cb11-4"><a></a>        <span class="va">self</span>.charge_mah <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-5"><a></a></span>
+<span id="cb11-6"><a></a>    <span class="kw">def</span> charge(<span class="va">self</span>, amount_mah):</span>
+<span id="cb11-7"><a></a>        <span class="va">self</span>.charge_mah <span class="op">=</span> <span class="bu">min</span>(<span class="va">self</span>.capacity_mah, <span class="va">self</span>.charge_mah <span class="op">+</span> amount_mah)</span>
+<span id="cb11-8"><a></a></span>
+<span id="cb11-9"><a></a>    <span class="kw">def</span> level_percent(<span class="va">self</span>):</span>
+<span id="cb11-10"><a></a>        <span class="cf">return</span> <span class="dv">100</span> <span class="op">*</span> <span class="va">self</span>.charge_mah <span class="op">/</span> <span class="va">self</span>.capacity_mah</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>A command-like method usually changes state.</li>
-<li>A query-like method usually returns information.</li>
-<li>Avoid printing inside reusable domain methods.</li>
+<li><code>charge</code> is a <strong>command</strong>: it changes the receiver’s state and returns nothing</li>
+<li><code>level_percent</code> is a <strong>query</strong>: it reports state and changes nothing</li>
+<li>avoid printing inside reusable methods; return values instead</li>
 </ul>
 </section>
 <section id="str__-supplies-a-readable-interface" class="slide level2">
 <h2><code>__str__</code> Supplies a Readable Interface</h2>
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a><span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
-<span id="cb25-2"><a></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>sensor_id<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(<span class="va">self</span>.readings)<span class="sc">}</span><span class="ss"> readings (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>unit<span class="sc">}</span><span class="ss">)"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a><span class="bu">print</span>(t1)</span>
-<span id="cb26-2"><a></a><span class="co"># T1: 2 readings (C)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>__str__</code> must <strong>return a string</strong>. <code>print</code> displays that returned string.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> pack <span class="op">=</span> Battery(<span class="dv">2000</span>)</span>
+<span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(pack)</span>
+<span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>__main__.Battery <span class="bu">object</span> at <span class="bn">0x7fa918510488</span><span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The default text is uninformative. Define <code>__str__</code>; <code>print</code> calls it for you.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb13-2"><a></a>    pct <span class="op">=</span> <span class="va">self</span>.level_percent()</span>
+<span id="cb13-3"><a></a>    <span class="cf">return</span> <span class="ss">f"Battery </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>charge_mah<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>capacity_mah<span class="sc">}</span><span class="ss"> mAh (</span><span class="sc">{</span>pct<span class="sc">:.0f}</span><span class="ss">%)"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> pack.charge(<span class="dv">500</span>)</span>
+<span id="cb14-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(pack)</span>
+<span id="cb14-3"><a aria-hidden="true" tabindex="-1"></a>Battery <span class="dv">500</span><span class="op">/</span><span class="dv">2000</span> mAh (<span class="dv">25</span><span class="op">%</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>__str__</code> must <strong>return a string</strong>.</p>
 </section>
 <section id="repair-__str__" class="slide level2 checkpoint">
 <h2>Repair <code>__str__</code></h2>
-<p>What is wrong with this implementation?</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a><span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
-<span id="cb27-2"><a></a>    <span class="bu">print</span>(<span class="va">self</span>.sensor_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What is wrong with this implementation, and what does <code>print(pack)</code> do?</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb15-2"><a></a>    <span class="bu">print</span>(<span class="va">self</span>.charge_mah)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="fragment">
-<p>It prints but returns <code>None</code>. Replace the body with <code>return self.sensor_id</code> or a more informative string.</p>
+<p>It prints but returns <code>None</code>, and <code>print(pack)</code> raises <code>TypeError: __str__ returned non-string</code>. Replace the body with a <code>return</code> of an f-string.</p>
 </div>
-</section>
-<section id="the-interface-hides-coordination-work" class="slide level2">
-<h2>The Interface Hides Coordination Work</h2>
-<p>Client code can use the class without repeating its formulas:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a>t1 <span class="op">=</span> Sensor(<span class="st">"T1"</span>, <span class="st">"C"</span>)</span>
-<span id="cb28-2"><a></a>t1.add_reading(<span class="fl">20.0</span>)</span>
-<span id="cb28-3"><a></a>t1.add_reading(<span class="fl">22.0</span>)</span>
-<span id="cb28-4"><a></a></span>
-<span id="cb28-5"><a></a><span class="bu">print</span>(t1)</span>
-<span id="cb28-6"><a></a><span class="bu">print</span>(t1.average())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The class owns the readings and the operations that depend on them.</p>
 </section></section>
 <section>
-<section id="part-4-complete-and-verify-the-class" class="title-slide slide level1 section-divider center">
-<h1>Part 4: Complete and Verify the Class</h1>
-
+<section id="part-3-contracts-operators-and-tests" class="title-slide slide level1 section-divider center">
+<h1>Part 3: Contracts, Operators, and Tests</h1>
 </section>
-<section id="a-complete-core-class" class="slide level2">
-<h2>A Complete Core Class</h2>
-<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a><span class="kw">class</span> Sensor:</span>
-<span id="cb29-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, sensor_id, unit):</span>
-<span id="cb29-3"><a></a>        <span class="va">self</span>.sensor_id <span class="op">=</span> sensor_id</span>
-<span id="cb29-4"><a></a>        <span class="va">self</span>.unit <span class="op">=</span> unit</span>
-<span id="cb29-5"><a></a>        <span class="va">self</span>.readings <span class="op">=</span> []</span>
-<span id="cb29-6"><a></a></span>
-<span id="cb29-7"><a></a>    <span class="kw">def</span> add_reading(<span class="va">self</span>, value):</span>
-<span id="cb29-8"><a></a>        <span class="va">self</span>.readings.append(value)</span>
-<span id="cb29-9"><a></a></span>
-<span id="cb29-10"><a></a>    <span class="kw">def</span> average(<span class="va">self</span>):</span>
-<span id="cb29-11"><a></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.readings:</span>
-<span id="cb29-12"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"sensor has no readings"</span>)</span>
-<span id="cb29-13"><a></a>        <span class="cf">return</span> <span class="bu">sum</span>(<span class="va">self</span>.readings) <span class="op">/</span> <span class="bu">len</span>(<span class="va">self</span>.readings)</span>
-<span id="cb29-14"><a></a></span>
-<span id="cb29-15"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
-<span id="cb29-16"><a></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>sensor_id<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(<span class="va">self</span>.readings)<span class="sc">}</span><span class="ss"> readings (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>unit<span class="sc">}</span><span class="ss">)"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="validate-input-in-__init__" class="slide level2">
+<h2>Validate Input in <code>__init__</code></h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="kw">class</span> Resistor:</span>
+<span id="cb16-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, label, ohms):</span>
+<span id="cb16-3"><a></a>        <span class="cf">if</span> ohms <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb16-4"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"resistance must be positive"</span>)</span>
+<span id="cb16-5"><a></a>        <span class="va">self</span>.label <span class="op">=</span> label</span>
+<span id="cb16-6"><a></a>        <span class="va">self</span>.ohms <span class="op">=</span> ohms</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>a constructor is the right place to reject an object that could never be valid</li>
+<li>the caller handles it with <code>try</code> / <code>except ValueError</code>, exactly as in Lecture 6</li>
+<li>after <code>__init__</code> returns, every <code>Resistor</code> satisfies its contract</li>
+</ul>
 </section>
-<section id="test-independent-instances" class="slide level2">
-<h2>Test Independent Instances</h2>
-<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a>t1 <span class="op">=</span> Sensor(<span class="st">"T1"</span>, <span class="st">"C"</span>)</span>
-<span id="cb30-2"><a></a>p1 <span class="op">=</span> Sensor(<span class="st">"P1"</span>, <span class="st">"kPa"</span>)</span>
-<span id="cb30-3"><a></a></span>
-<span id="cb30-4"><a></a>t1.add_reading(<span class="fl">20.0</span>)</span>
-<span id="cb30-5"><a></a>t1.add_reading(<span class="fl">22.0</span>)</span>
-<span id="cb30-6"><a></a>p1.add_reading(<span class="fl">100.0</span>)</span>
-<span id="cb30-7"><a></a></span>
-<span id="cb30-8"><a></a><span class="cf">assert</span> t1.average() <span class="op">==</span> <span class="fl">21.0</span></span>
-<span id="cb30-9"><a></a><span class="cf">assert</span> p1.average() <span class="op">==</span> <span class="fl">100.0</span></span>
-<span id="cb30-10"><a></a><span class="cf">assert</span> t1.readings <span class="kw">is</span> <span class="kw">not</span> p1.readings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>A second instance is an important regression test for accidental shared state.</p>
+<section id="a-complete-small-class" class="slide level2">
+<h2>A Complete Small Class</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="kw">class</span> Resistor:</span>
+<span id="cb17-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, label, ohms):</span>
+<span id="cb17-3"><a></a>        <span class="cf">if</span> ohms <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb17-4"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"resistance must be positive"</span>)</span>
+<span id="cb17-5"><a></a>        <span class="va">self</span>.label <span class="op">=</span> label</span>
+<span id="cb17-6"><a></a>        <span class="va">self</span>.ohms <span class="op">=</span> ohms</span>
+<span id="cb17-7"><a></a></span>
+<span id="cb17-8"><a></a>    <span class="kw">def</span> current(<span class="va">self</span>, volts):</span>
+<span id="cb17-9"><a></a>        <span class="cf">return</span> volts <span class="op">/</span> <span class="va">self</span>.ohms</span>
+<span id="cb17-10"><a></a></span>
+<span id="cb17-11"><a></a>    <span class="kw">def</span> power(<span class="va">self</span>, volts):</span>
+<span id="cb17-12"><a></a>        <span class="cf">return</span> volts <span class="op">*</span> <span class="va">self</span>.current(volts)</span>
+<span id="cb17-13"><a></a></span>
+<span id="cb17-14"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb17-15"><a></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>label<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>ohms<span class="sc">}</span><span class="ss"> ohm"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>power</code> reuses <code>self.current</code>: methods call other methods through <code>self</code>.</p>
 </section>
-<section id="translate-a-contract-into-a-class" class="slide level2 checkpoint">
-<h2>Translate a Contract into a Class</h2>
-<p>A <code>Resistor</code> has a label and positive resistance. It calculates current for a supplied voltage and prints as <code>R1: 220 ohm</code>.</p>
-<p>Identify:</p>
-<ol type="1">
-<li>constructor parameters;</li>
-<li>instance attributes;</li>
-<li>ordinary method;</li>
-<li>special method;</li>
-<li>one invalid construction case.</li>
-</ol>
-<div class="fragment">
-<p>Parameters and attributes: label, resistance; method: <code>current(voltage)</code>; special method: <code>__str__</code>; reject resistance less than or equal to zero.</p>
-</div>
+<section id="test-with-two-independent-instances" class="slide level2">
+<h2>Test With Two Independent Instances</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>r1 <span class="op">=</span> Resistor(<span class="st">"R1"</span>, <span class="dv">220</span>)</span>
+<span id="cb18-2"><a></a>r2 <span class="op">=</span> Resistor(<span class="st">"R2"</span>, <span class="dv">1000</span>)</span>
+<span id="cb18-3"><a></a></span>
+<span id="cb18-4"><a></a><span class="cf">assert</span> r1.current(<span class="dv">5</span>) <span class="op">==</span> <span class="dv">5</span> <span class="op">/</span> <span class="dv">220</span></span>
+<span id="cb18-5"><a></a><span class="cf">assert</span> r2.current(<span class="dv">5</span>) <span class="op">==</span> <span class="fl">0.005</span></span>
+<span id="cb18-6"><a></a><span class="cf">assert</span> <span class="bu">str</span>(r1) <span class="op">==</span> <span class="st">"R1: 220 ohm"</span></span>
+<span id="cb18-7"><a></a></span>
+<span id="cb18-8"><a></a><span class="cf">try</span>:</span>
+<span id="cb18-9"><a></a>    Resistor(<span class="st">"R3"</span>, <span class="dv">0</span>)</span>
+<span id="cb18-10"><a></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb18-11"><a></a>    <span class="bu">print</span>(<span class="st">"invalid resistor rejected"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test normal values, a boundary, an invalid construction, and that one instance does not disturb another.</p>
 </section>
-<section id="optional-extension-operator-methods" class="slide level2">
-<h2>Optional Extension: Operator Methods</h2>
-<p>Python maps selected operations to special methods:</p>
+<section id="special-methods-map-operators-to-your-class" class="slide level2">
+<h2>Special Methods Map Operators to Your Class</h2>
+<div class="columns">
+<div class="column" style="width:46%;">
+<ul>
+<li><code>print</code>, <code>+</code>, <code>-</code>, <code>==</code>, <code>&lt;</code>, <code>len()</code> each look for a special method</li>
+<li>define them with double underscores before and after the name</li>
+<li>implement an operator only when its meaning for your type is natural</li>
+<li>full list: <a href="https://docs.python.org/3/reference/datamodel.html#basic-customization">Python data model reference</a></li>
+</ul>
+</div><div class="column" style="width:54%;">
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>expression</th>
-<th>method</th>
+<th>special method</th>
+<th>expression it implements</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>str(obj)</code></td>
-<td><code>obj.__str__()</code></td>
+<td><code>__str__(self)</code></td>
+<td><code>print(self)</code>, <code>str(self)</code></td>
 </tr>
 <tr class="even">
-<td><code>a + b</code></td>
-<td><code>a.__add__(b)</code></td>
+<td><code>__add__(self, other)</code></td>
+<td><code>self + other</code></td>
 </tr>
 <tr class="odd">
-<td><code>a == b</code></td>
-<td><code>a.__eq__(b)</code></td>
+<td><code>__sub__(self, other)</code></td>
+<td><code>self - other</code></td>
+</tr>
+<tr class="even">
+<td><code>__eq__(self, other)</code></td>
+<td><code>self == other</code></td>
+</tr>
+<tr class="odd">
+<td><code>__lt__(self, other)</code></td>
+<td><code>self &lt; other</code></td>
+</tr>
+<tr class="even">
+<td><code>__len__(self)</code></td>
+<td><code>len(self)</code></td>
 </tr>
 </tbody>
 </table>
-<p>Only implement an operator when its meaning is natural and its contract is clear.</p>
-<p>Inheritance, class variables, properties, and overriding begin in Lecture 8.</p>
+</div></div>
+</section>
+<section id="example-on-a-fraction-type" class="slide level2">
+<h2>Example: <code>+</code> on a <code>Fraction</code> Type</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="kw">class</span> Fraction:</span>
+<span id="cb19-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, num, denom):</span>
+<span id="cb19-3"><a></a>        <span class="va">self</span>.num <span class="op">=</span> num</span>
+<span id="cb19-4"><a></a>        <span class="va">self</span>.denom <span class="op">=</span> denom</span>
+<span id="cb19-5"><a></a></span>
+<span id="cb19-6"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb19-7"><a></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>num<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>denom<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb19-8"><a></a></span>
+<span id="cb19-9"><a></a>    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other):</span>
+<span id="cb19-10"><a></a>        top <span class="op">=</span> <span class="va">self</span>.num <span class="op">*</span> other.denom <span class="op">+</span> <span class="va">self</span>.denom <span class="op">*</span> other.num</span>
+<span id="cb19-11"><a></a>        bottom <span class="op">=</span> <span class="va">self</span>.denom <span class="op">*</span> other.denom</span>
+<span id="cb19-12"><a></a>        <span class="cf">return</span> Fraction(top, bottom)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(Fraction(<span class="dv">1</span>, <span class="dv">2</span>) <span class="op">+</span> Fraction(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb20-2"><a aria-hidden="true" tabindex="-1"></a><span class="dv">5</span><span class="op">/</span><span class="dv">6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>__add__</code> returns a <strong>new</strong> <code>Fraction</code>; neither operand changes.</p>
+</section>
+<section id="type-and-isinstance-report-the-class" class="slide level2">
+<h2><code>type()</code> and <code>isinstance()</code> Report the Class</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> c <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb21-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(c)</span>
+<span id="cb21-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span><span class="kw">class</span> <span class="st">'__main__.Coordinate'</span><span class="op">&gt;</span></span>
+<span id="cb21-4"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">isinstance</span>(c, Coordinate)</span>
+<span id="cb21-5"><a aria-hidden="true" tabindex="-1"></a><span class="va">True</span></span>
+<span id="cb21-6"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(Coordinate)</span>
+<span id="cb21-7"><a aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span><span class="kw">class</span> <span class="st">'type'</span><span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>type(c)</code> is the class you wrote</li>
+<li><code>isinstance</code> checks membership and is the safe way to test an object’s type</li>
+<li>the class itself is an object too, of type <code>type</code></li>
+</ul>
+</section>
+<section id="translate-a-contract-into-a-class" class="slide level2 checkpoint">
+<h2>Translate a Contract into a Class</h2>
+<p>A <code>Motor</code> has a name and a maximum speed in rpm. <code>set_speed(rpm)</code> stores a speed and rejects values above the maximum or below zero. It prints as <code>M1: 1500/3000 rpm</code>.</p>
+<p>Identify:</p>
+<ol type="1">
+<li>constructor parameters;</li>
+<li>instance attributes;</li>
+<li>ordinary method and what it validates;</li>
+<li>special method;</li>
+<li>two test cases, one valid and one invalid.</li>
+</ol>
+<div class="fragment">
+<p>Parameters: name, max rpm. Attributes: name, max rpm, current speed (starts at 0). <code>set_speed</code> raises <code>ValueError</code> outside <code>0 … max</code>. <code>__str__</code> builds the string. Tests: <code>set_speed(1500)</code> then <code>str(m)</code>; <code>set_speed(5000)</code> inside <code>try</code>/<code>except</code>.</p>
+</div>
 </section>
 <section id="exit-ticket" class="slide level2 checkpoint">
 <h2>Exit Ticket</h2>
-<p>Implement and test:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a><span class="kw">def</span> latest(<span class="va">self</span>):</span>
-<span id="cb31-2"><a></a>    <span class="co">"""Return the most recent reading.</span></span>
-<span id="cb31-3"><a></a></span>
-<span id="cb31-4"><a></a><span class="co">    Raise ValueError when there are no readings.</span></span>
-<span id="cb31-5"><a></a><span class="co">    """</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then explain which object becomes <code>self</code> in <code>t1.latest()</code>.</p>
+<p>Add to <code>Coordinate</code> and test:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="kw">def</span> move(<span class="va">self</span>, dx, dy):</span>
+<span id="cb22-2"><a></a>    <span class="co">"""Shift this point by dx and dy. Returns nothing."""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then explain which object becomes <code>self</code> in <code>origin.move(1, 2)</code>, and whether <code>move</code> is a command or a query.</p>
 <div class="fragment">
-<p>Return <code>self.readings[-1]</code> after an empty-list check. In <code>t1.latest()</code>, <code>self</code> refers to the object referenced by <code>t1</code>.</p>
+<p>Body: <code>self.x += dx</code> and <code>self.y += dy</code>. In <code>origin.move(1, 2)</code>, <code>self</code> refers to the object referenced by <code>origin</code>. It is a command: it changes state and returns <code>None</code>.</p>
 </div>
 </section>
 <section id="a-class-is-a-tested-contract" class="slide level2">
 <h2>A Class Is a Tested Contract</h2>
 <ul>
-<li>The class defines a reusable type.</li>
-<li>Each instance holds its own state.</li>
-<li><code>__init__</code> establishes valid initial attributes.</li>
-<li><code>self</code> is the receiver object during a method call.</li>
-<li>Methods either change state or return information.</li>
-<li><code>__str__</code> returns a readable string.</li>
-<li>Tests verify normal, boundary, invalid, and independent-instance behavior.</li>
+<li>a class defines a reusable type; each instance holds its own state</li>
+<li><code>__init__</code> establishes valid initial attributes and may reject invalid ones</li>
+<li><code>self</code> is the receiver object during a method call</li>
+<li>methods change state (commands) or return information (queries)</li>
+<li><code>__str__</code>, <code>__add__</code>, and other special methods connect your type to Python syntax</li>
+<li>tests cover normal, boundary, invalid, and independent-instance behavior</li>
 </ul>
-<p>In the lab, you will build and test the complete <code>Sensor</code> class.</p>
+<p>In the lab you apply all of this to a new type, a <code>Sensor</code> with readings, that you build and test from a contract.</p>
 
 
 </section></section>
