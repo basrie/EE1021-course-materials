@@ -5485,6 +5485,10 @@ ValueError: could not convert string to float: &#39;five&#39;</code></pre>
 <p><strong>D3.</strong> Write <code>count_letters(word)</code> that returns a dictionary with how often each character occurs. <code>count_letters(&quot;level&quot;)</code> returns <code>{&#39;l&#39;: 2, &#39;e&#39;: 2, &#39;v&#39;: 1}</code>.</p>
 <p><strong>D4.</strong> Write <code>parse_numbers(texts)</code> that returns a tuple <code>(numbers, bad)</code>: <code>numbers</code> is the list of <code>float</code> values that convert, <code>bad</code> is how many texts raised <code>ValueError</code>. Use <code>try</code> / <code>except</code>. <code>parse_numbers([&quot;2.5&quot;, &quot;x&quot;, &quot;4&quot;, &quot;&quot;])</code> returns <code>([2.5, 4.0], 2)</code>.</p>
 <p><strong>D5.</strong> A <code>Thermostat</code> has a name and a minimum and maximum temperature. Its target starts at the minimum. <code>set_target(t)</code> raises <code>ValueError</code> when <code>t</code> is below the minimum or above the maximum and otherwise stores it. It prints as <code>TH1: target 21 (16-28)</code>. Write the class, then a test that makes <code>TH1</code> with limits 16 and 28, sets 21, prints it, and catches the error of <code>set_target(30)</code> with <code>try</code> / <code>except</code> and prints <code>rejected</code>.</p>
+<p><strong>D6.</strong> Write <code>in_range(values, low, high)</code> that uses a <code>for</code> loop and <code>append</code> to return a <strong>new</strong> list with the values from <code>low</code> to <code>high</code> (both included), in their original order. The input list must not change. <code>in_range([4.1, 4.9, 5.3, 5.0], 4.75, 5.25)</code> returns <code>[4.9, 5.0]</code>.</p>
+<p><strong>D7.</strong> Write <code>largest(values)</code> that returns a tuple <code>(value, index)</code> with the largest value of a non-empty list and the position of its <strong>first</strong> occurrence. Do not use <code>max()</code>. <code>largest([3, 9, 2, 9])</code> returns <code>(9, 1)</code>.</p>
+<p><strong>D8.</strong> <code>prices</code> is a dictionary of part prices. Write <code>order_total(prices, items)</code> that returns a tuple <code>(total, unknown)</code>: the sum of the prices of the items in the list (an item can appear more than once), and how many items are not keys of <code>prices</code>. Use <code>in</code>, not <code>try</code>. <code>order_total({&quot;R1&quot;: 2, &quot;C1&quot;: 5}, [&quot;R1&quot;, &quot;X9&quot;, &quot;C1&quot;, &quot;R1&quot;])</code> returns <code>(9, 1)</code>.</p>
+<p><strong>D9.</strong> An <code>Inventory</code> keeps a dictionary that maps part names to quantities. Write the class: <code>__init__(self)</code> starts with an empty dictionary; <code>add(self, part, n)</code> raises <code>ValueError</code> when <code>n</code> is not positive and otherwise increases the quantity (a new part starts at 0); <code>take(self, part, n)</code> raises <code>ValueError</code> when there are fewer than <code>n</code> of that part and otherwise decreases the quantity; <code>quantity(self, part)</code> returns the quantity, or <code>0</code> for a part that was never added; <code>__str__</code> returns <code>Inventory: 2 part types</code> (the number of keys).</p>
 </section>
 </section>
 <section id="answers" class="level2">
@@ -5602,6 +5606,60 @@ done</code></pre>
 <span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    th.set_target(<span class="dv">30</span>)</span>
 <span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ValueError</span>:</span>
 <span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;rejected&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>D6.</strong></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> in_range(values, low, high):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> []</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> v <span class="kw">in</span> values:</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> low <span class="op">&lt;=</span> v <span class="op">&lt;=</span> high:</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>            result.append(v)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A comprehension, <code>[v for v in values if low &lt;= v &lt;= high]</code>, gives the same list; the question asked for the loop form.</p>
+<p><strong>D7.</strong></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> largest(values):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    best <span class="op">=</span> values[<span class="dv">0</span>]</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    best_i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(values)):</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> values[i] <span class="op">&gt;</span> best:</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>            best <span class="op">=</span> values[i]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>            best_i <span class="op">=</span> i</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best, best_i</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Start from the first element, not from <code>0</code>: a list of negative numbers would otherwise give <code>0</code>. Strict <code>&gt;</code> keeps the first occurrence.</p>
+<p><strong>D8.</strong></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> order_total(prices, items):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    unknown <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> items:</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> item <span class="kw">in</span> prices:</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>            total <span class="op">+=</span> prices[item]</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>            unknown <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total, unknown</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>D9.</strong></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Inventory:</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.stock <span class="op">=</span> {}</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> add(<span class="va">self</span>, part, n):</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&quot;quantity must be positive&quot;</span>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> part <span class="kw">in</span> <span class="va">self</span>.stock:</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.stock[part] <span class="op">+=</span> n</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.stock[part] <span class="op">=</span> n</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> take(<span class="va">self</span>, part, n):</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.quantity(part) <span class="op">&lt;</span> n:</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&quot;not enough &quot;</span> <span class="op">+</span> part)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.stock[part] <span class="op">-=</span> n</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> quantity(<span class="va">self</span>, part):</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> part <span class="kw">in</span> <span class="va">self</span>.stock:</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">self</span>.stock[part]</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f&quot;Inventory: </span><span class="sc">{</span><span class="bu">len</span>(<span class="va">self</span>.stock)<span class="sc">}</span><span class="ss"> part types&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>take</code> uses <code>quantity</code>, so a part that was never added counts as 0 and raises <code>ValueError</code> instead of <code>KeyError</code>.</p>
 
 
 </section>
