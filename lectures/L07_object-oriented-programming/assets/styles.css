@@ -623,3 +623,46 @@ iframe.tall-anim {
 }
 .reveal .slides section .annot ul { margin: 0; font-size: 0.78em; line-height: 1.3; }
 .reveal .slides section .annot li { margin-bottom: 0.25em; }
+
+/* Checkpoint answers (2026-11-10): one box, results as aligned rows, then "Why" on the next click */
+.reveal .slides section .answer {
+  margin-top: 0.5em;
+  padding: 0.45em 0.8em 0.5em;
+  border: 2px solid #2e7d32;
+  border-radius: 10px;
+  background: #f3faf4;
+  font-size: 0.8em;
+  line-height: 1.32;
+  text-align: left;
+}
+.reveal .slides section .answer::before {
+  content: "ANSWER";
+  display: inline-block;
+  margin-bottom: 0.35em;
+  padding: 0.05em 0.6em;
+  border-radius: 999px;
+  background: #2e7d32;
+  color: #ffffff;
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.reveal .slides section .answer p { margin: 0; }
+.reveal .slides section .answer table { font-size: 1em; margin: 0; }
+.reveal .slides section .answer pre { margin: 0.2em 0 0.4em; }
+.reveal .slides section .answer .ans-rows {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 0.6em;
+  row-gap: 0.2em;
+  align-items: baseline;
+}
+.reveal .slides section .answer .ans-rows.two { grid-template-columns: max-content 1fr max-content 1fr; column-gap: 0.6em; }
+.reveal .slides section .answer .ans-rows > p { display: contents; }
+.reveal .slides section .answer .ans-key { font-weight: 700; color: #1c5b84; white-space: nowrap; }
+.reveal .slides section .answer .ans-key::after { content: " →"; color: #2e7d32; }
+.reveal .slides section .answer .ans-why {
+  margin-top: 0.45em;
+  padding-top: 0.4em;
+  border-top: 1px solid #b9dcbf;
+}

@@ -306,8 +306,16 @@ Basri Erdogan
 <span id="cb6-3"><a></a></span>
 <span id="cb6-4"><a></a>c.x <span class="op">=</span> <span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>What are <code>c.x</code>, <code>c.y</code>, <code>origin.x</code>, and <code>origin.y</code> now?</p>
-<div class="fragment">
-<p><code>c.x</code> is <code>10</code>, <code>c.y</code> is <code>4</code>; <code>origin.x</code> and <code>origin.y</code> remain <code>0</code>. Each <code>__init__</code> call filled a separate object.</p>
+<div class="answer fragment">
+<div class="ans-rows two">
+<p><span class="ans-key"><code>c.x</code></span> <span class="ans-val"><code>10</code></span></p>
+<p><span class="ans-key"><code>origin.x</code></span> <span class="ans-val"><code>0</code></span></p>
+<p><span class="ans-key"><code>c.y</code></span> <span class="ans-val"><code>4</code></span></p>
+<p><span class="ans-key"><code>origin.y</code></span> <span class="ans-val"><code>0</code></span></p>
+</div>
+<div class="ans-why fragment">
+<p><strong>Why:</strong> each <code>__init__</code> call filled a separate object, so <code>c.x = 10</code> changes only <code>c</code>.</p>
+</div>
 </div>
 </section>
 <section id="instance-state-must-be-stored-on-self" class="slide level2">
@@ -363,8 +371,14 @@ Basri Erdogan
 <span id="cb10-4"><a></a><span class="bu">print</span>(b.distance(a))</span>
 <span id="cb10-5"><a></a><span class="bu">print</span>(a.distance(b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In each call, which object is <code>self</code> and which is <code>other</code>? What is printed?</p>
-<div class="fragment">
-<p>First call: <code>self</code> is <code>b</code>, <code>other</code> is <code>a</code>. Second call: the roles swap. Both print <code>5.0</code>, because distance is symmetric.</p>
+<div class="answer fragment">
+<div class="ans-rows">
+<p><span class="ans-key"><code>b.distance(a)</code></span> <span class="ans-val"><code>self</code> is <code>b</code>, <code>other</code> is <code>a</code> · prints <code>5.0</code></span></p>
+<p><span class="ans-key"><code>a.distance(b)</code></span> <span class="ans-val"><code>self</code> is <code>a</code>, <code>other</code> is <code>b</code> · prints <code>5.0</code></span></p>
+</div>
+<div class="ans-why fragment">
+<p><strong>Why:</strong> the object before the dot becomes <code>self</code>. The distance is the same in both directions, so both calls print <code>5.0</code>.</p>
+</div>
 </div>
 </section>
 <section id="a-method-can-change-object-state" class="slide level2">
@@ -404,8 +418,14 @@ Basri Erdogan
 <p>What is wrong with this implementation, and what does <code>print(pack)</code> do?</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
 <span id="cb15-2"><a></a>    <span class="bu">print</span>(<span class="va">self</span>.charge_mah)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="fragment">
-<p>It prints but returns <code>None</code>, and <code>print(pack)</code> raises <code>TypeError: __str__ returned non-string</code>. Replace the body with a <code>return</code> of an f-string.</p>
+<div class="answer fragment">
+<div class="ans-rows">
+<p><span class="ans-key">what is wrong</span> <span class="ans-val">it <strong>prints</strong> the value but <strong>returns</strong> <code>None</code></span></p>
+<p><span class="ans-key"><code>print(pack)</code></span> <span class="ans-val"><code>TypeError: __str__ returned non-string</code></span></p>
+</div>
+<div class="ans-why fragment">
+<p><strong>Fix:</strong> <code>__str__</code> must return a string. Replace the body with <code>return f"Battery {self.charge_mah} mAh"</code>.</p>
+</div>
 </div>
 </section></section>
 <section>
@@ -556,6 +576,8 @@ Basri Erdogan
 <section id="translate-a-contract-into-a-class" class="slide level2 checkpoint">
 <h2>Translate a Contract into a Class</h2>
 <p>A <code>Motor</code> has a name and a maximum speed in rpm. <code>set_speed(rpm)</code> stores a speed and rejects values above the maximum or below zero. It prints as <code>M1: 1500/3000 rpm</code>.</p>
+<div class="columns">
+<div class="column" style="width:40%;">
 <p>Identify:</p>
 <ol type="1">
 <li>constructor parameters;</li>
@@ -564,9 +586,17 @@ Basri Erdogan
 <li>special method;</li>
 <li>two test cases, one valid and one invalid.</li>
 </ol>
-<div class="fragment">
-<p>Parameters: name, max rpm. Attributes: name, max rpm, current speed (starts at 0). <code>set_speed</code> raises <code>ValueError</code> outside <code>0 … max</code>. <code>__str__</code> builds the string. Tests: <code>set_speed(1500)</code> then <code>str(m)</code>; <code>set_speed(5000)</code> inside <code>try</code>/<code>except</code>.</p>
+</div><div class="column" style="width:60%;">
+<div class="answer fragment">
+<div class="ans-rows">
+<p><span class="ans-key">1</span> <span class="ans-val"><code>name</code>, <code>max_rpm</code></span></p>
+<p><span class="ans-key">2</span> <span class="ans-val"><code>name</code>, <code>max_rpm</code>, <code>speed</code> (starts at <code>0</code>)</span></p>
+<p><span class="ans-key">3</span> <span class="ans-val"><code>set_speed</code> raises <code>ValueError</code> below <code>0</code> or above <code>max_rpm</code></span></p>
+<p><span class="ans-key">4</span> <span class="ans-val"><code>__str__</code> returns <code>"M1: 1500/3000 rpm"</code></span></p>
+<p><span class="ans-key">5</span> <span class="ans-val">valid: <code>set_speed(1500)</code>, then check <code>str(m)</code>; invalid: <code>set_speed(5000)</code> inside <code>try</code>/<code>except</code></span></p>
 </div>
+</div>
+</div></div>
 </section>
 <section id="exit-ticket" class="slide level2 checkpoint">
 <h2>Exit Ticket</h2>
@@ -574,8 +604,15 @@ Basri Erdogan
 <div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="kw">def</span> move(<span class="va">self</span>, dx, dy):</span>
 <span id="cb24-2"><a></a>    <span class="co">"""Shift this point by dx and dy. Returns nothing."""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Then explain which object becomes <code>self</code> in <code>origin.move(1, 2)</code>, and whether <code>move</code> is a command or a query.</p>
-<div class="fragment">
-<p>Body: <code>self.x += dx</code> and <code>self.y += dy</code>. In <code>origin.move(1, 2)</code>, <code>self</code> refers to the object referenced by <code>origin</code>. It is a command: it changes state and returns <code>None</code>.</p>
+<div class="answer fragment">
+<div class="ans-rows">
+<p><span class="ans-key">body</span> <span class="ans-val"><code>self.x += dx</code> and <code>self.y += dy</code></span></p>
+<p><span class="ans-key"><code>self</code> in <code>origin.move(1, 2)</code></span> <span class="ans-val">the object that <code>origin</code> refers to</span></p>
+<p><span class="ans-key">command or query?</span> <span class="ans-val">a <strong>command</strong></span></p>
+</div>
+<div class="ans-why fragment">
+<p><strong>Why:</strong> <code>move</code> changes the state of the object and returns <code>None</code>.</p>
+</div>
 </div>
 </section>
 <section id="a-class-is-a-tested-contract" class="slide level2">
