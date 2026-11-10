@@ -6,8 +6,8 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.42">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.43">
 
   <meta name="author" content="Basri Erdogan">
   <title>EE1021 Programming for Engineers – OOP II: Inheritance and Applications</title>
@@ -322,6 +322,9 @@ Basri Erdogan
 </div>
 </div>
 </div></div>
+<div class="fragment fade-up takeaway">
+<p><strong>Information hiding:</strong> code outside the class calls <code>set_ohms()</code> and <code>get_ohms()</code> and never uses <code>_ohms</code>. The class can later store the value in a different way (for example in kΩ), and that code still works.</p>
+</div>
 </section>
 <section id="property-runs-the-check-for-r1.ohms" class="slide level2 dense-code" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"><code>@property</code> Runs the Check for <code>r1.ohms</code></h2>
@@ -465,6 +468,9 @@ Basri Erdogan
 </div>
 </div>
 </div></div>
+<div class="fragment fade-up takeaway" data-fragment-index="4">
+<p><strong>Other names:</strong> parent class = superclass = base class; subclass = derived class. A class with no parent in its parentheses has the built-in class <code>object</code> as its parent.</p>
+</div>
 </section>
 <section id="the-parent-class-device" class="slide level2">
 <h2>The Parent Class: <code>Device</code></h2>
@@ -538,6 +544,9 @@ Basri Erdogan
 </div>
 </div>
 </div></div>
+<div class="fragment fade-up takeaway">
+<p><strong>Lumen (lm):</strong> the unit for the amount of visible light a lamp gives. A typical LED lamp gives about 90 lm per watt, so <code>lumens()</code> returns <code>90 * self.power()</code>.</p>
+</div>
 </section>
 <section id="python-looks-in-the-class-of-the-object-first" class="slide level2">
 <h2>Python Looks in the Class of the Object First</h2>
@@ -599,7 +608,7 @@ Basri Erdogan
 </div>
 </div>
 <div class="fragment fade-up takeaway" data-fragment-index="4">
-<p>The search goes <strong>up</strong> only. A <code>Device</code> object never gets the methods of <code>Lamp</code>.</p>
+<p><strong>Method lookup:</strong> the search starts in the class of the object and goes <strong>up</strong> one level at a time; Python runs the <strong>first</strong> method it finds. A <code>Device</code> object never gets the methods of <code>Lamp</code>.</p>
 </div>
 </div></div>
 </section>
@@ -683,6 +692,9 @@ Basri Erdogan
 </div>
 </div>
 </div></div>
+<div class="fragment fade-up takeaway">
+<p><strong>Every <code>self.method()</code> call starts the search in the class of the object.</strong> <code>super()</code> does not repeat the name of the parent class, so the code still works if the parent class changes.</p>
+</div>
 </section>
 <section id="what-goes-wrong-without-super.__init__" class="slide level2 checkpoint">
 <h2>What Goes Wrong Without <code>super().__init__()</code>?</h2>
@@ -794,8 +806,14 @@ Basri Erdogan
 <div class="step fragment fade-up" data-fragment-index="4" data-focus="2:3-6" data-show="2:3-6">
 <p>read and change a class variable through the class name: <code>Board.next_serial</code></p>
 </div>
+<div class="step fragment fade-up" data-fragment-index="5" data-focus="1:9-10;2:3-4" data-show="2:3-6">
+<p><code>{self.serial:03d}</code> writes the number with 3 digits and leading zeros: 1 → <code>001</code></p>
+</div>
 </div>
 </div></div>
+<div class="fragment fade-up takeaway" data-fragment-index="6">
+<p><strong>Link to Lecture 7:</strong> a list written directly under <code>class</code> was shared by all objects by mistake. It is the same mechanism; here the sharing is the purpose.</p>
+</div>
 </section>
 <section id="eq__-defines-what-means-for-your-class" class="slide level2 dense-code">
 <h2><code>__eq__</code> Defines What <code>==</code> Means for Your Class</h2>
@@ -875,6 +893,9 @@ Basri Erdogan
 </div>
 </div>
 </div></div>
+<div class="fragment fade-up takeaway">
+<p><strong>Composition and inheritance together:</strong> <code>total_power</code> is the loop from Part 2 that works for every type of <code>Device</code>, now inside a class.</p>
+</div>
 </section>
 <section id="inheritance-or-composition" class="slide level2 checkpoint">
 <h2>Inheritance or Composition?</h2>
