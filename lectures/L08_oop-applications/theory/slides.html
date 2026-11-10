@@ -6,8 +6,8 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.43">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.42">
 
   <meta name="author" content="Basri Erdogan">
   <title>EE1021 Programming for Engineers – OOP II: Inheritance and Applications</title>
@@ -189,9 +189,6 @@
       margin-right: 0; 
     }
   </style>
-  <script src="../../../site_libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="../../../site_libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="../../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -199,7 +196,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">OOP II: Inheritance and Applications</h1>
-  <p class="subtitle">EE1021 Programming for Engineers - Lecture 8</p>
+  <p class="subtitle">EE1021 Programming for Engineers · Lecture 8 · 2026–2027</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -210,543 +207,763 @@ Basri Erdogan
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- Inline tweaks for EE1021 dense programming tables/code within the robotics slide style -->
-<div class="hidden">
-<style>
-.reveal pre { max-width: 100%; overflow-x: auto; box-sizing: border-box; }
-.reveal pre code { white-space: pre; font-size: 0.92em; display: block; }
-.reveal .columns .column pre { margin-top: 0.25rem; }
-.reveal code { color: #111; }
-.sourceCode span.kw { color: #0000ff !important; font-weight: normal !important; }
-.sourceCode span.co { color: #007300 !important; font-style: normal !important; }
-.sourceCode span.st { color: #b200b2 !important; }
-.sourceCode span.dv { color: #ad0000 !important; }
-.reveal li code:not(.sourceCode):not([class*="language-"]) {
-  color: #1c5b84;
-  font-weight: 700;
-}
-.compact-table table { font-size: 0.58em; }
-.operator-table table { font-size: 0.66em; }
-.centered-figure { text-align: center; }
-.centered-figure img { max-height: 58vh; }
-</style>
-</div>
-</section>
 <section id="lecture-goals" class="slide level2">
 <h2>Lecture Goals</h2>
+<div class="card-grid">
+<div class="card">
+<p><strong>Part 1 · Protect the data</strong></p>
 <ol type="1">
-<li>Use <strong>getters and setters</strong> and explain why <strong>information hiding</strong> matters</li>
-<li>Build class <strong>hierarchies</strong> with inheritance: subclasses that add, extend, or override behavior</li>
-<li>Initialize parent classes correctly with <code>super().__init__()</code></li>
-<li>Use <strong>class variables</strong> shared across all instances, and special methods such as <code>__add__</code> and <code>__eq__</code></li>
-<li>Choose between <strong>composition and inheritance</strong>, and use <code>@property</code> decorators</li>
+<li>Check every new value with a <strong>setter</strong></li>
+<li>Keep the <code>object.attribute</code> syntax with <code>@property</code></li>
 </ol>
+</div>
+<div class="card">
+<p><strong>Part 2 · Inheritance</strong></p>
+<ol start="3" type="1">
+<li>Write a <strong>subclass</strong> that inherits, adds, and replaces methods</li>
+<li>Call the parent constructor with <code>super().__init__()</code></li>
+<li>Predict which method Python runs</li>
+</ol>
+</div>
+<div class="card">
+<p><strong>Part 3 · Share and combine</strong></p>
+<ol start="6" type="1">
+<li>Use a <strong>class variable</strong> for data that all instances share</li>
+<li>Choose <strong>inheritance</strong> (is a) or <strong>composition</strong> (has a)</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="predict-the-output-lecture-7-resistor" class="slide level2 checkpoint dense-code">
+<h2>Predict the Output: Lecture 7 <code>Resistor</code></h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">class</span> Resistor:</span>
+<span id="cb1-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, label, ohms):</span>
+<span id="cb1-3"><a></a>        <span class="cf">if</span> ohms <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb1-4"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"resistance must be positive"</span>)</span>
+<span id="cb1-5"><a></a>        <span class="va">self</span>.label <span class="op">=</span> label</span>
+<span id="cb1-6"><a></a>        <span class="va">self</span>.ohms <span class="op">=</span> ohms</span>
+<span id="cb1-7"><a></a></span>
+<span id="cb1-8"><a></a>    <span class="kw">def</span> current(<span class="va">self</span>, volts):</span>
+<span id="cb1-9"><a></a>        <span class="cf">return</span> volts <span class="op">/</span> <span class="va">self</span>.ohms</span>
+<span id="cb1-10"><a></a></span>
+<span id="cb1-11"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb1-12"><a></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>label<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>ohms<span class="sc">}</span><span class="ss"> ohm"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:35%;">
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>r1 <span class="op">=</span> Resistor(<span class="st">"R1"</span>, <span class="dv">100</span>)</span>
+<span id="cb2-2"><a></a>r2 <span class="op">=</span> Resistor(<span class="st">"R2"</span>, <span class="dv">200</span>)</span>
+<span id="cb2-3"><a></a>r2.ohms <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb2-4"><a></a></span>
+<span id="cb2-5"><a></a><span class="bu">print</span>(r1)</span>
+<span id="cb2-6"><a></a><span class="bu">print</span>(r2.current(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Write the two printed lines.</p>
+<div class="fragment fade-up" data-focus="2:3">
+<p><code>R1: 100 ohm</code> and <code>0.1</code>. Each object has its own <code>ohms</code>. Line 3 changed only <code>r2</code>.</p>
+</div>
+</div></div>
 </section>
 <section>
-<section id="part-1-recap-and-encapsulation" class="title-slide slide level1 section-divider center">
-<h1>Part 1: Recap and Encapsulation</h1>
-
+<section id="part-1-protect-the-data-of-an-object" class="title-slide slide level1 section-divider center">
+<h1>Part 1: Protect the Data of an Object</h1>
 </section>
-<section id="last-time" class="slide level2">
-<h2>Last Time</h2>
-<ul>
-<li>Abstract data types through classes</li>
-<li><code>Coordinate</code> example</li>
-<li><code>Fraction</code> example</li>
-</ul>
+<section id="outside-code-can-skip-the-check-in-__init__" class="slide level2">
+<h2>Outside Code Can Skip the Check in <code>__init__</code></h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>r1 <span class="op">=</span> Resistor(<span class="st">"R1"</span>, <span class="dv">100</span>)</span>
+<span id="cb3-2"><a></a>r1.ohms <span class="op">=</span> <span class="op">-</span><span class="dv">50</span></span>
+<span id="cb3-3"><a></a><span class="bu">print</span>(r1.current(<span class="dv">5</span>))        <span class="co"># -0.1</span></span>
+<span id="cb3-4"><a></a></span>
+<span id="cb3-5"><a></a>r1.omhs <span class="op">=</span> <span class="dv">220</span></span>
+<span id="cb3-6"><a></a><span class="bu">print</span>(r1.ohms)              <span class="co"># -50</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps row">
+<div class="step fragment fade-up" data-focus="1">
+<p><code>__init__</code> checks the value <strong>one time</strong>, when the object is created</p>
+</div>
+<div class="step fragment fade-up" data-show="2-3" data-focus="2-3">
+<p>after that, Python accepts any value: a wrong result, and no error</p>
+</div>
+<div class="step fragment fade-up" data-show="5-6" data-focus="5-6">
+<p>a spelling mistake creates a <strong>new</strong> attribute; <code>ohms</code> does not change</p>
+</div>
+</div>
+<div class="fragment fade-up takeaway">
+<p>We need a check that runs <strong>every time</strong> the value changes.</p>
+</div>
 </section>
-<section id="today" class="slide level2">
-<h2>Today</h2>
-<ul>
-<li>More on classes:
-<ul>
-<li>getters and setters</li>
-<li>information hiding</li>
-<li>class variables</li>
-</ul></li>
-<li>Inheritance</li>
-</ul>
-</section>
-<section id="class-definition-vs-instance-of-a-class-recap" class="slide level2">
-<h2>Class Definition vs Instance of a Class (Recap)</h2>
+<section id="a-setter-method-checks-every-new-value" class="slide level2 dense-code" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">A Setter Method Checks Every New Value</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>The class definition</strong></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">class</span> Coordinate(<span class="bu">object</span>):</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>The class name is the <strong>type</strong>.</li>
-<li>The class is defined <strong>generically</strong>:
-<ul>
-<li>use <code>self</code> to refer to <em>some</em> instance while defining the class, e.g.&nbsp;<code>(self.x - self.y)**2</code></li>
-<li><code>self</code> is a parameter to methods in the class definition</li>
-</ul></li>
-<li>The class defines data and methods <strong>common across all instances</strong>.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>An instance</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>coord <span class="op">=</span> Coordinate(<span class="dv">1</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>An instance is <strong>one specific object</strong>.</li>
-<li>Data attribute values vary between instances:</li>
-</ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>c1 <span class="op">=</span> Coordinate(<span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb3-2"><a></a>c2 <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>c1</code> and <code>c2</code> have different values of <code>c1.x</code> and <code>c2.x</code> because they are different objects.</li>
-<li>An instance has the <strong>structure of the class</strong>.</li>
-</ul>
+<div class="column" style="width:58%;">
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode python hljs"><span id="cb4-1" class="hljs-ln-code"><a></a><span class="kw">class</span> Resistor:</span>
+<span id="cb4-2" class="hljs-ln-code"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, label, ohms):</span>
+<span id="cb4-3" class="hljs-ln-code"><a></a>        <span class="va">self</span>.label <span class="op">=</span> label</span>
+<span id="cb4-4" class="hljs-ln-code"><a></a>        <span class="va">self</span>.set_ohms(ohms)</span>
+<span id="cb4-5" class="hljs-ln-code"><a></a></span>
+<span id="cb4-6" class="hljs-ln-code"><a></a>    <span class="kw">def</span> get_ohms(<span class="va">self</span>):</span>
+<span id="cb4-7" class="hljs-ln-code"><a></a>        <span class="cf">return</span> <span class="va">self</span>._ohms</span>
+<span id="cb4-8" class="hljs-ln-code"><a></a></span>
+<span id="cb4-9" class="hljs-ln-code"><a></a>    <span class="kw">def</span> set_ohms(<span class="va">self</span>, value):</span>
+<span id="cb4-10" class="hljs-ln-code"><a></a>        <span class="cf">if</span> value <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb4-11" class="hljs-ln-code"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"ohms must be positive"</span>)</span>
+<span id="cb4-12" class="hljs-ln-code"><a></a>        <span class="va">self</span>._ohms <span class="op">=</span> value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:42%;">
+<div class="steps">
+<div class="step fragment fade-up" data-show="9-12" data-focus="9-12">
+<p><span class="tag">setter</span> checks the value, then stores it: <code>r1.set_ohms(330)</code></p>
+</div>
+<div class="step fragment fade-up" data-show="6-7" data-focus="6-7">
+<p><span class="tag">getter</span> returns the value: <code>r1.get_ohms()</code></p>
+</div>
+<div class="step fragment fade-up" data-show="4" data-focus="4">
+<p>the constructor calls the setter, so the check is written <strong>once</strong></p>
+</div>
+<div class="step fragment fade-up" data-focus="7,12">
+<p>the name <code>_ohms</code> starts with <code>_</code>. It means “internal: do not use outside the class”. Python does not block <code>r1._ohms = -50</code>; it is a rule for programmers.</p>
+</div>
+</div>
 </div></div>
 </section>
-<section id="how-to-define-a-class-recap" class="slide level2">
-<h2>How to Define a Class (Recap)</h2>
-<p>This lecture’s running example — the <code>Animal</code> class:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">class</span> Animal(<span class="bu">object</span>):</span>
-<span id="cb4-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, age):</span>
-<span id="cb4-3"><a></a>        <span class="va">self</span>.age <span class="op">=</span> age</span>
-<span id="cb4-4"><a></a>        <span class="va">self</span>.name <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb4-5"><a></a></span>
-<span id="cb4-6"><a></a>myanimal <span class="op">=</span> Animal(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>Animal</code> — class name; <code>object</code> — class parent</li>
-<li><code>self</code> — variable that refers to an instance of the class</li>
-<li><code>age</code> — the data that initializes an <code>Animal</code></li>
-<li><code>name</code> is a data attribute even though an instance is not initialized with it as a parameter</li>
-<li><code>myanimal = Animal(3)</code> creates an instance; the <code>3</code> maps to <code>self.age</code> in the class definition</li>
-</ul>
-</section>
-<section id="getter-and-setter-methods" class="slide level2">
-<h2>Getter and Setter Methods</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">class</span> Animal(<span class="bu">object</span>):</span>
-<span id="cb5-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, age):</span>
-<span id="cb5-3"><a></a>        <span class="va">self</span>.age <span class="op">=</span> age</span>
-<span id="cb5-4"><a></a>        <span class="va">self</span>.name <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb5-5"><a></a>    <span class="kw">def</span> get_age(<span class="va">self</span>):              <span class="co"># getter</span></span>
-<span id="cb5-6"><a></a>        <span class="cf">return</span> <span class="va">self</span>.age</span>
-<span id="cb5-7"><a></a>    <span class="kw">def</span> get_name(<span class="va">self</span>):             <span class="co"># getter</span></span>
-<span id="cb5-8"><a></a>        <span class="cf">return</span> <span class="va">self</span>.name</span>
-<span id="cb5-9"><a></a>    <span class="kw">def</span> set_age(<span class="va">self</span>, newage):      <span class="co"># setter</span></span>
-<span id="cb5-10"><a></a>        <span class="va">self</span>.age <span class="op">=</span> newage</span>
-<span id="cb5-11"><a></a>    <span class="kw">def</span> set_name(<span class="va">self</span>, newname<span class="op">=</span><span class="st">""</span>): <span class="co"># setter</span></span>
-<span id="cb5-12"><a></a>        <span class="va">self</span>.name <span class="op">=</span> newname</span>
-<span id="cb5-13"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
-<span id="cb5-14"><a></a>        <span class="cf">return</span> <span class="st">"animal:"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.name) <span class="op">+</span> <span class="st">":"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Getters and setters should be used <strong>outside of the class</strong> to access data attributes.</p>
-</section>
-<section id="an-instance-and-dot-notation-recap" class="slide level2">
-<h2>An Instance and Dot Notation (Recap)</h2>
-<ul>
-<li>Instantiation creates an instance of an object:</li>
-</ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>a <span class="op">=</span> Animal(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Dot notation is used to access attributes (data and methods), though it is better to use getters and setters to access <strong>data</strong> attributes:</li>
-</ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>a.age        <span class="co"># access data attribute directly:</span></span>
-<span id="cb7-2"><a></a>             <span class="co">#   allowed, but NOT recommended</span></span>
-<span id="cb7-3"><a></a>a.get_age()  <span class="co"># access method:</span></span>
-<span id="cb7-4"><a></a>             <span class="co">#   best to use getters and setters</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="information-hiding" class="slide level2">
-<h2>Information Hiding</h2>
-<p>The author of a class definition may change data attribute variable names:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">class</span> Animal(<span class="bu">object</span>):</span>
-<span id="cb8-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, age):</span>
-<span id="cb8-3"><a></a>        <span class="va">self</span>.years <span class="op">=</span> age       <span class="co"># replaced the age data</span></span>
-<span id="cb8-4"><a></a>    <span class="kw">def</span> get_age(<span class="va">self</span>):         <span class="co"># attribute by years</span></span>
-<span id="cb8-5"><a></a>        <span class="cf">return</span> <span class="va">self</span>.years</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>If you access data attributes outside the class and the class definition changes, you may get errors.</li>
-<li>Outside of the class, use getters and setters instead: use <code>a.get_age()</code>, <strong>not</strong> <code>a.age</code>
-<ul>
-<li>good style</li>
-<li>easy to maintain code</li>
-<li>prevents bugs</li>
-</ul></li>
-</ul>
-</section>
-<section id="python-is-not-great-at-information-hiding" class="slide level2">
-<h2>Python Is Not Great at Information Hiding</h2>
-<p>Python allows you to:</p>
-<ul>
-<li><strong>access</strong> data from outside the class definition:</li>
-</ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="bu">print</span>(a.age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><strong>write</strong> to data from outside the class definition:</li>
-</ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>a.age <span class="op">=</span> <span class="st">'infinite'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><strong>create</strong> data attributes for an instance from outside the class definition:</li>
-</ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>a.size <span class="op">=</span> <span class="st">"tiny"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>It’s not good style to do any of these!</p>
-</section>
-<section id="default-arguments" class="slide level2">
-<h2>Default Arguments</h2>
-<ul>
-<li>Default arguments for formal parameters are used if no actual argument is given:</li>
-</ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="kw">def</span> set_name(<span class="va">self</span>, newname<span class="op">=</span><span class="st">""</span>):</span>
-<span id="cb12-2"><a></a>    <span class="va">self</span>.name <span class="op">=</span> newname</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="property-runs-the-check-for-r1.ohms" class="slide level2 dense-code" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"><code>@property</code> Runs the Check for <code>r1.ohms</code></h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Default argument used here</strong></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>a <span class="op">=</span> Animal(<span class="dv">3</span>)</span>
-<span id="cb13-2"><a></a>a.set_name()</span>
-<span id="cb13-3"><a></a><span class="bu">print</span>(a.get_name())   <span class="co"># prints ""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:50%;">
-<p><strong>Argument passed in is used here</strong></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>a <span class="op">=</span> Animal(<span class="dv">3</span>)</span>
-<span id="cb14-2"><a></a>a.set_name(<span class="st">"charlie"</span>)</span>
-<span id="cb14-3"><a></a><span class="bu">print</span>(a.get_name())   <span class="co"># prints "charlie"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="column" style="width:58%;">
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">class</span> Resistor:</span>
+<span id="cb5-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, label, ohms):</span>
+<span id="cb5-3"><a></a>        <span class="va">self</span>.label <span class="op">=</span> label</span>
+<span id="cb5-4"><a></a>        <span class="va">self</span>.ohms <span class="op">=</span> ohms</span>
+<span id="cb5-5"><a></a></span>
+<span id="cb5-6"><a></a>    <span class="at">@property</span></span>
+<span id="cb5-7"><a></a>    <span class="kw">def</span> ohms(<span class="va">self</span>):</span>
+<span id="cb5-8"><a></a>        <span class="cf">return</span> <span class="va">self</span>._ohms</span>
+<span id="cb5-9"><a></a></span>
+<span id="cb5-10"><a></a>    <span class="at">@ohms.setter</span></span>
+<span id="cb5-11"><a></a>    <span class="kw">def</span> ohms(<span class="va">self</span>, value):</span>
+<span id="cb5-12"><a></a>        <span class="cf">if</span> value <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb5-13"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"ohms must be positive"</span>)</span>
+<span id="cb5-14"><a></a>        <span class="va">self</span>._ohms <span class="op">=</span> value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:42%;">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1 <span class="op">=</span> Resistor(<span class="st">"R1"</span>, <span class="dv">100</span>)</span>
+<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1.ohms</span>
+<span id="cb6-3"><a aria-hidden="true" tabindex="-1"></a><span class="dv">100</span></span>
+<span id="cb6-4"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1.ohms <span class="op">=</span> <span class="dv">330</span></span>
+<span id="cb6-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1.ohms <span class="op">=</span> <span class="op">-</span><span class="dv">50</span></span>
+<span id="cb6-6"><a aria-hidden="true" tabindex="-1"></a><span class="pp">ValueError</span>: ohms must be positive</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:6-8;2:2-3" data-show="2:2-3">
+<p><span class="tag"><code>@property</code></span> this method runs when code <strong>reads</strong> <code>r1.ohms</code></p>
+</div>
+<div class="step fragment fade-up" data-focus="1:10-14;2:4-6" data-show="2:4-6">
+<p><span class="tag t-replace"><code>@ohms.setter</code></span> this method runs when code <strong>writes</strong> <code>r1.ohms = ...</code></p>
+</div>
+<div class="step fragment fade-up" data-focus="1:4">
+<p>the constructor writes <code>self.ohms</code>, so it runs the setter too</p>
+</div>
+</div>
 </div></div>
+<div class="fragment fade-up takeaway">
+<p>The code outside the class does not change: it still reads and writes <code>r1.ohms</code>.</p>
+</div>
+</section>
+<section id="a-property-without-a-setter-is-read-only" class="slide level2">
+<h2>A Property Without a Setter Is Read-Only</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">class</span> Resistor:</span>
+<span id="cb7-2"><a></a>    <span class="co"># __init__ and ohms: the same as before</span></span>
+<span id="cb7-3"><a></a></span>
+<span id="cb7-4"><a></a>    <span class="at">@property</span></span>
+<span id="cb7-5"><a></a>    <span class="kw">def</span> conductance(<span class="va">self</span>):</span>
+<span id="cb7-6"><a></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="va">self</span>._ohms</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:45%;">
+<div class="steps swap">
+<div class="step fragment fade-up" data-focus="1:4-6;2:2-3" data-show="2:2-3">
+<p><code>conductance</code> is <strong>calculated</strong> from <code>_ohms</code> each time code reads it. The class stores only <code>_ohms</code>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:4-6" data-show="2:4-6">
+<p>change <code>ohms</code>, and <code>conductance</code> changes too. The two values always agree.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:7-8" data-show="2:7-8">
+<p>there is no setter, so code cannot write to <code>conductance</code>: it is <strong>read-only</strong></p>
+</div>
+</div>
+</div></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1 <span class="op">=</span> Resistor(<span class="st">"R1"</span>, <span class="dv">100</span>)</span>
+<span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1.conductance</span>
+<span id="cb8-3"><a aria-hidden="true" tabindex="-1"></a><span class="fl">0.01</span></span>
+<span id="cb8-4"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1.ohms <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb8-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1.conductance</span>
+<span id="cb8-6"><a aria-hidden="true" tabindex="-1"></a><span class="fl">0.005</span></span>
+<span id="cb8-7"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1.conductance <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb8-8"><a aria-hidden="true" tabindex="-1"></a><span class="pp">AttributeError</span>: <span class="bu">property</span> <span class="st">'conductance'</span> of <span class="st">'Resistor'</span> <span class="bu">object</span> has no setter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="which-lines-raise-an-error" class="slide level2 checkpoint">
+<h2>Which Lines Raise an Error?</h2>
+<p><code>Resistor</code> has the <code>ohms</code> property with a setter and the <code>conductance</code> property without a setter.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>r <span class="op">=</span> Resistor(<span class="st">"R1"</span>, <span class="dv">100</span>)</span>
+<span id="cb9-2"><a></a>r.ohms <span class="op">=</span> <span class="dv">220</span>           <span class="co"># line A</span></span>
+<span id="cb9-3"><a></a>r.conductance <span class="op">=</span> <span class="dv">1</span>      <span class="co"># line B</span></span>
+<span id="cb9-4"><a></a>r.ohms <span class="op">=</span> <span class="dv">0</span>             <span class="co"># line C</span></span>
+<span id="cb9-5"><a></a><span class="bu">print</span>(r.ohms)          <span class="co"># line D</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="1">
+<li>Write the letters of the lines that raise an error.</li>
+<li>Delete those lines. What does line D print?</li>
+</ol>
+<div class="fragment fade-up" data-focus="3-4">
+<p>Lines <strong>B</strong> and <strong>C</strong>. B: <code>AttributeError</code>, because <code>conductance</code> has no setter. C: <code>ValueError</code>, because the setter rejects <code>0</code>. Line D prints <code>220</code>.</p>
+</div>
 </section></section>
 <section>
 <section id="part-2-inheritance" class="title-slide slide level1 section-divider center">
 <h1>Part 2: Inheritance</h1>
-
 </section>
-<section id="hierarchies" class="slide level2">
-<h2>Hierarchies</h2>
+<section id="a-subclass-is-a-special-type-of-its-parent-class" class="slide level2">
+<h2>A Subclass Is a Special Type of Its Parent Class</h2>
 <div class="columns">
-<div class="column" style="width:48%;">
-<ul>
-<li><strong>Parent class</strong> (superclass)</li>
-<li><strong>Child class</strong> (subclass):
-<ul>
-<li>inherits all data and behaviors of the parent class</li>
-<li>adds more info</li>
-<li>adds more behavior</li>
-<li>overrides behavior</li>
-</ul></li>
-</ul>
-</div><div class="column" style="width:52%;">
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    O[object] --&gt; A[Animal]
-    A --&gt; C[Cat]
-    A --&gt; P[Person]
-    A --&gt; R[Rabbit]
-    P --&gt; S[Student]
-</pre>
+<div class="column" style="width:50%;">
+<svg viewbox="0 0 700 560" width="700" height="560" role="img" aria-label="Three classes in a column. Device is at the top with name, watts, is_on, switch_on, power and __str__. Lamp is below Device and adds lumens and its own __str__. DimmableLamp is below Lamp and adds level and its own power. An arrow labelled is a points from each class up to its parent.">
+  <defs>
+    <marker id="up" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1c5b84"></path>
+    </marker>
+  </defs>
+  <g>
+    <rect x="20" y="10" width="660" height="130" rx="8" fill="#eaf1f8" stroke="#2f6ea3" stroke-width="3"></rect>
+    <text x="40" y="55" font-family="Menlo, monospace" font-size="32" font-weight="700" fill="#1c5b84">Device</text>
+    <text x="40" y="92" font-family="Menlo, monospace" font-size="23" fill="#1f2d3a">name, watts, is_on</text>
+    <text x="40" y="124" font-family="Menlo, monospace" font-size="23" fill="#1f2d3a">switch_on()  power()  __str__()</text>
+  </g>
+  <g class="fragment" data-fragment-index="1">
+    <rect x="20" y="215" width="660" height="130" rx="8" fill="#eaf1f8" stroke="#2f6ea3" stroke-width="3"></rect>
+    <text x="40" y="260" font-family="Menlo, monospace" font-size="32" font-weight="700" fill="#1c5b84">Lamp</text>
+    <text x="40" y="297" font-family="Menlo, monospace" font-size="23" fill="#2e7d32">adds: lumens()</text>
+    <text x="40" y="329" font-family="Menlo, monospace" font-size="23" fill="#b02a1f">replaces: __str__()</text>
+    <line x1="350" y1="213" x2="350" y2="146" stroke="#1c5b84" stroke-width="4" marker-end="url(#up)"></line>
+    <text x="368" y="188" font-family="Helvetica, Arial, sans-serif" font-size="24" fill="#526878">is a</text>
+  </g>
+  <g class="fragment" data-fragment-index="2">
+    <rect x="20" y="420" width="660" height="130" rx="8" fill="#eaf1f8" stroke="#2f6ea3" stroke-width="3"></rect>
+    <text x="40" y="465" font-family="Menlo, monospace" font-size="32" font-weight="700" fill="#1c5b84">DimmableLamp</text>
+    <text x="40" y="502" font-family="Menlo, monospace" font-size="23" fill="#2e7d32">adds: level</text>
+    <text x="40" y="534" font-family="Menlo, monospace" font-size="23" fill="#b02a1f">replaces: power()</text>
+    <line x1="350" y1="418" x2="350" y2="351" stroke="#1c5b84" stroke-width="4" marker-end="url(#up)"></line>
+    <text x="368" y="393" font-family="Helvetica, Arial, sans-serif" font-size="24" fill="#526878">is a</text>
+  </g>
+</svg>
+</div><div class="column" style="width:50%;">
+<div class="steps">
+<div class="step">
+<p>a <strong>parent class</strong> holds the data and methods that several types share</p>
 </div>
-<p></p></figure><p></p>
+<div class="step fragment fade-up" data-fragment-index="1">
+<p>a <strong>subclass</strong> starts with everything its parent has. It can <span class="tag t-add">add</span> methods and <span class="tag t-replace">replace</span> methods (this is called <strong>overriding</strong>).</p>
 </div>
+<div class="step fragment fade-up" data-fragment-index="2">
+<p>a subclass can be a parent too: the chain can have many levels</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="3">
+<p>test sentence: “a lamp <strong>is a</strong> device”. Write the shared code one time, in the parent.</p>
 </div>
 </div>
 </div></div>
 </section>
-<section id="inheritance-parent-class" class="slide level2">
-<h2>Inheritance: Parent Class</h2>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="kw">class</span> Animal(<span class="bu">object</span>):</span>
-<span id="cb15-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, age):</span>
-<span id="cb15-3"><a></a>        <span class="va">self</span>.age <span class="op">=</span> age</span>
-<span id="cb15-4"><a></a>        <span class="va">self</span>.name <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb15-5"><a></a>    <span class="kw">def</span> get_age(<span class="va">self</span>):</span>
-<span id="cb15-6"><a></a>        <span class="cf">return</span> <span class="va">self</span>.age</span>
-<span id="cb15-7"><a></a>    <span class="kw">def</span> get_name(<span class="va">self</span>):</span>
-<span id="cb15-8"><a></a>        <span class="cf">return</span> <span class="va">self</span>.name</span>
-<span id="cb15-9"><a></a>    <span class="kw">def</span> set_age(<span class="va">self</span>, newage):</span>
-<span id="cb15-10"><a></a>        <span class="va">self</span>.age <span class="op">=</span> newage</span>
-<span id="cb15-11"><a></a>    <span class="kw">def</span> set_name(<span class="va">self</span>, newname<span class="op">=</span><span class="st">""</span>):</span>
-<span id="cb15-12"><a></a>        <span class="va">self</span>.name <span class="op">=</span> newname</span>
-<span id="cb15-13"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
-<span id="cb15-14"><a></a>        <span class="cf">return</span> <span class="st">"animal:"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.name) <span class="op">+</span> <span class="st">":"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Everything is an object; the class <code>object</code> implements basic operations in Python.</li>
-<li>In Python 3, <code>object</code> is automatically inherited.</li>
-</ul>
+<section id="the-parent-class-device" class="slide level2">
+<h2>The Parent Class: <code>Device</code></h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="kw">class</span> Device:</span>
+<span id="cb10-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, watts):</span>
+<span id="cb10-3"><a></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
+<span id="cb10-4"><a></a>        <span class="va">self</span>.watts <span class="op">=</span> watts</span>
+<span id="cb10-5"><a></a>        <span class="va">self</span>.is_on <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb10-6"><a></a></span>
+<span id="cb10-7"><a></a>    <span class="kw">def</span> switch_on(<span class="va">self</span>):</span>
+<span id="cb10-8"><a></a>        <span class="va">self</span>.is_on <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb10-9"><a></a></span>
+<span id="cb10-10"><a></a>    <span class="kw">def</span> power(<span class="va">self</span>):</span>
+<span id="cb10-11"><a></a>        <span class="cf">if</span> <span class="va">self</span>.is_on:</span>
+<span id="cb10-12"><a></a>            <span class="cf">return</span> <span class="va">self</span>.watts</span>
+<span id="cb10-13"><a></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb10-14"><a></a></span>
+<span id="cb10-15"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb10-16"><a></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>power()<span class="sc">}</span><span class="ss"> W"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:42%;">
+<div class="steps">
+<div class="step">
+<p>Nothing new here. <code>Device</code> is an ordinary class, as in Lecture 7.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2-5">
+<p>three attributes: <code>name</code>, <code>watts</code>, <code>is_on</code></p>
+</div>
+<div class="step fragment fade-up" data-focus="7-8">
+<p><span class="tag">command</span> <code>switch_on</code> changes the state</p>
+</div>
+<div class="step fragment fade-up" data-focus="10-13">
+<p><span class="tag">query</span> <code>power</code> returns the watts when the device is on, and <code>0</code> when it is off</p>
+</div>
+<div class="step fragment fade-up" data-focus="15-16">
+<p><code>__str__</code> calls <code>self.power()</code>. Remember this line: it matters later.</p>
+</div>
+</div>
+</div></div>
 </section>
-<section id="inheritance-subclass" class="slide level2">
-<h2>Inheritance: Subclass</h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="kw">class</span> Cat(Animal):</span>
-<span id="cb16-2"><a></a>    <span class="kw">def</span> speak(<span class="va">self</span>):</span>
-<span id="cb16-3"><a></a>        <span class="bu">print</span>(<span class="st">"meow"</span>)</span>
-<span id="cb16-4"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
-<span id="cb16-5"><a></a>        <span class="cf">return</span> <span class="st">"cat:"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.name) <span class="op">+</span> <span class="st">":"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>Cat</code> inherits all attributes of <code>Animal</code>: <code>__init__()</code>, <code>age</code>, <code>name</code>, <code>get_age()</code>, <code>get_name()</code>, <code>set_age()</code>, <code>set_name()</code>, <code>__str__()</code></li>
-<li>Adds new functionality with <code>speak()</code>:
-<ul>
-<li>an instance of type <code>Cat</code> can be called with the new method</li>
-<li>an instance of type <code>Animal</code> throws an error if called with <code>Cat</code>’s new method</li>
-</ul></li>
-<li>Overrides <code>__str__</code></li>
-<li><code>__init__</code> is not missing — <code>Cat</code> uses the <code>Animal</code> version.</li>
-</ul>
+<section id="lamp-inherits-adds-and-replaces" class="slide level2 dense-code">
+<h2><code>Lamp</code> Inherits, Adds, and Replaces</h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="kw">class</span> Lamp(Device):</span>
+<span id="cb11-2"><a></a>    <span class="kw">def</span> lumens(<span class="va">self</span>):</span>
+<span id="cb11-3"><a></a>        <span class="cf">return</span> <span class="dv">90</span> <span class="op">*</span> <span class="va">self</span>.power()</span>
+<span id="cb11-4"><a></a></span>
+<span id="cb11-5"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb11-6"><a></a>        <span class="cf">return</span> <span class="ss">f"lamp </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>lumens()<span class="sc">}</span><span class="ss"> lm"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> desk <span class="op">=</span> Lamp(<span class="st">"desk"</span>, <span class="dv">9</span>)</span>
+<span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> desk.switch_on()</span>
+<span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> desk.lumens()</span>
+<span id="cb12-4"><a aria-hidden="true" tabindex="-1"></a><span class="dv">810</span></span>
+<span id="cb12-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(desk)</span>
+<span id="cb12-6"><a aria-hidden="true" tabindex="-1"></a>lamp desk: <span class="dv">810</span> lm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:44%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:1">
+<p><code>Lamp(Device)</code>: the parent class goes in the parentheses</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:1-2" data-show="2:1-2">
+<p><span class="tag">inherits</span> <code>Lamp</code> has no <code>__init__</code>, so the <code>Device</code> constructor runs. <code>switch_on</code> and <code>power</code> also come from <code>Device</code>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:2-3;2:3-4" data-show="2:3-4">
+<p><span class="tag t-add">adds</span> <code>lumens</code> is a new method. Only lamps have it.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:5-6;2:5-6" data-show="2:5-6">
+<p><span class="tag t-replace">replaces</span> every <code>Lamp</code> uses this <code>__str__</code>, not the <code>Device</code> version</p>
+</div>
+</div>
+</div></div>
 </section>
-<section id="which-method-to-use" class="slide level2">
-<h2>Which Method to Use?</h2>
-<ul>
-<li>A subclass can have methods with the <strong>same name</strong> as the superclass.</li>
-<li>For an instance of a class, Python looks for the method name in the <strong>current class definition</strong> first.</li>
-<li>If not found, it looks for the method name <strong>up the hierarchy</strong> (in parent, then grandparent, and so on).</li>
-<li>Python uses the <strong>first</strong> method up the hierarchy that it finds with that method name.</li>
-</ul>
+<section id="python-looks-in-the-class-of-the-object-first" class="slide level2">
+<h2>Python Looks in the Class of the Object First</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<svg viewbox="0 0 760 590" width="100%" role="img" aria-label="The class Lamp is drawn below its parent Device. The object desk is a Lamp. For each call, the search starts in Lamp and goes up to Device only when Lamp does not have the method.">
+  <defs>
+    <marker id="up2" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1c5b84"></path>
+    </marker>
+  </defs>
+  <g font-family="Menlo, monospace">
+    <rect x="20" y="10" width="720" height="150" rx="10" fill="#eaf1f8" stroke="#2f6ea3" stroke-width="3"></rect>
+    <text x="40" y="55" font-size="32" font-weight="700" fill="#1c5b84">Device</text>
+    <g font-size="23" fill="#1f2d3a" text-anchor="middle">
+      <rect x="35" y="88" width="160" height="50" rx="9" fill="#ffffff" stroke="#9db7cc" stroke-width="2"></rect><text x="115" y="121">__init__</text>
+      <rect x="210" y="88" width="170" height="50" rx="9" fill="#ffffff" stroke="#9db7cc" stroke-width="2"></rect><text x="295" y="121">switch_on</text>
+      <rect x="395" y="88" width="150" height="50" rx="9" fill="#ffffff" stroke="#9db7cc" stroke-width="2"></rect><text x="470" y="121">power</text>
+      <rect x="560" y="88" width="160" height="50" rx="9" fill="#ffffff" stroke="#9db7cc" stroke-width="2"></rect><text x="640" y="121">__str__</text>
+    </g>
+    <rect x="20" y="240" width="720" height="150" rx="10" fill="#eaf1f8" stroke="#2f6ea3" stroke-width="3"></rect>
+    <text x="40" y="285" font-size="32" font-weight="700" fill="#1c5b84">Lamp</text>
+    <g font-size="23" fill="#1f2d3a" text-anchor="middle">
+      <rect x="35" y="318" width="160" height="50" rx="9" fill="#ffffff" stroke="#9db7cc" stroke-width="2"></rect><text x="115" y="351">lumens</text>
+      <rect x="210" y="318" width="170" height="50" rx="9" fill="#ffffff" stroke="#9db7cc" stroke-width="2"></rect><text x="295" y="351">__str__</text>
+    </g>
+    <line x1="640" y1="238" x2="640" y2="166" stroke="#1c5b84" stroke-width="4" marker-end="url(#up2)"></line>
+    <text x="656" y="212" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#526878">parent</text>
+    <rect x="20" y="490" width="300" height="80" rx="40" fill="#1c5b84"></rect>
+    <text x="170" y="540" font-size="28" font-weight="700" fill="#ffffff" text-anchor="middle">desk = Lamp(…)</text>
+    <line x1="170" y1="488" x2="170" y2="396" stroke="#1c5b84" stroke-width="4" marker-end="url(#up2)"></line>
+    <text x="186" y="452" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#526878">the search starts here</text>
+  </g>
+  <g class="fragment fade-in-then-out" data-fragment-index="1" font-family="Menlo, monospace" text-anchor="middle">
+    <rect x="35" y="318" width="160" height="50" rx="9" fill="#2e7d32"></rect><text x="115" y="351" font-size="23" font-weight="700" fill="#ffffff">lumens ✓</text>
+    <text x="545" y="540" font-size="30" font-weight="700" fill="#1f2d3a">desk.lumens()</text>
+  </g>
+  <g class="fragment fade-in-then-out" data-fragment-index="2" font-family="Menlo, monospace" text-anchor="middle">
+    <text x="560" y="351" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#b02a1f">✗ not in Lamp: go up</text>
+    <rect x="210" y="88" width="170" height="50" rx="9" fill="#2e7d32"></rect><text x="295" y="121" font-size="23" font-weight="700" fill="#ffffff">switch_on ✓</text>
+    <text x="545" y="540" font-size="30" font-weight="700" fill="#1f2d3a">desk.switch_on()</text>
+  </g>
+  <g class="fragment" data-fragment-index="3" font-family="Menlo, monospace" text-anchor="middle">
+    <rect x="210" y="318" width="170" height="50" rx="9" fill="#2e7d32"></rect><text x="295" y="351" font-size="23" font-weight="700" fill="#ffffff">__str__ ✓</text>
+    <rect x="560" y="88" width="160" height="50" rx="9" fill="#d7dee4" stroke="#9db7cc" stroke-width="2"></rect><text x="640" y="121" font-size="23" fill="#7b8a96" text-decoration="line-through">__str__</text>
+    <text x="545" y="540" font-size="30" font-weight="700" fill="#1f2d3a">print(desk)</text>
+  </g>
+</svg>
+</div><div class="column" style="width:48%;">
+<div class="steps">
+<div class="step fragment fade-up" data-fragment-index="1">
+<p><code>desk.lumens()</code>: Python finds <code>lumens</code> in <code>Lamp</code>. The search stops.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="2">
+<p><code>desk.switch_on()</code>: it is not in <code>Lamp</code>, so Python looks in the parent and finds it in <code>Device</code></p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="3">
+<p><code>print(desk)</code>: <code>__str__</code> is in both classes. Python runs the <strong>first</strong> one it finds, in <code>Lamp</code>.</p>
+</div>
+</div>
+<div class="fragment fade-up takeaway" data-fragment-index="4">
+<p>The search goes <strong>up</strong> only. A <code>Device</code> object never gets the methods of <code>Lamp</code>.</p>
+</div>
+</div></div>
 </section>
-<section id="the-person-subclass" class="slide level2">
-<h2>The <code>Person</code> Subclass</h2>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="kw">class</span> Person(Animal):                        <span class="co"># parent class is Animal</span></span>
-<span id="cb17-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, age):</span>
-<span id="cb17-3"><a></a>        Animal.<span class="fu">__init__</span>(<span class="va">self</span>, age)           <span class="co"># call Animal constructor</span></span>
-<span id="cb17-4"><a></a>        <span class="va">self</span>.set_name(name)                  <span class="co"># call Animal's method</span></span>
-<span id="cb17-5"><a></a>        <span class="va">self</span>.friends <span class="op">=</span> []                    <span class="co"># add a new data attribute</span></span>
-<span id="cb17-6"><a></a>    <span class="kw">def</span> get_friends(<span class="va">self</span>):                   <span class="co"># new methods</span></span>
-<span id="cb17-7"><a></a>        <span class="cf">return</span> <span class="va">self</span>.friends</span>
-<span id="cb17-8"><a></a>    <span class="kw">def</span> add_friend(<span class="va">self</span>, fname):</span>
-<span id="cb17-9"><a></a>        <span class="cf">if</span> fname <span class="kw">not</span> <span class="kw">in</span> <span class="va">self</span>.friends:</span>
-<span id="cb17-10"><a></a>            <span class="va">self</span>.friends.append(fname)</span>
-<span id="cb17-11"><a></a>    <span class="kw">def</span> speak(<span class="va">self</span>):</span>
-<span id="cb17-12"><a></a>        <span class="bu">print</span>(<span class="st">"hello"</span>)</span>
-<span id="cb17-13"><a></a>    <span class="kw">def</span> age_diff(<span class="va">self</span>, other):</span>
-<span id="cb17-14"><a></a>        diff <span class="op">=</span> <span class="va">self</span>.age <span class="op">-</span> other.age</span>
-<span id="cb17-15"><a></a>        <span class="bu">print</span>(<span class="bu">abs</span>(diff), <span class="st">"year difference"</span>)</span>
-<span id="cb17-16"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):                       <span class="co"># override Animal's __str__</span></span>
-<span id="cb17-17"><a></a>        <span class="cf">return</span> <span class="st">"person:"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.name) <span class="op">+</span> <span class="st">":"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="initializing-the-parent-super" class="slide level2">
-<h2>Initializing the Parent: <code>super()</code></h2>
-<ul>
-<li>When a subclass overrides <code>__init__</code>, the parent’s <code>__init__</code> is <strong>not</strong> called automatically.</li>
-<li>You must call it explicitly to ensure the object is properly set up.</li>
-</ul>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="kw">class</span> Child(Parent):</span>
-<span id="cb18-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, toy):</span>
-<span id="cb18-3"><a></a>        <span class="co"># Option 1 (old style - hardcoded parent name)</span></span>
-<span id="cb18-4"><a></a>        <span class="co"># Parent.__init__(self, name)</span></span>
-<span id="cb18-5"><a></a>        <span class="co"># Option 2 (modern style - recommended)</span></span>
-<span id="cb18-6"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(name)</span>
-<span id="cb18-7"><a></a>        <span class="va">self</span>.toy <span class="op">=</span> toy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="the-student-subclass" class="slide level2">
-<h2>The <code>Student</code> Subclass</h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="im">import</span> random</span>
-<span id="cb19-2"><a></a></span>
-<span id="cb19-3"><a></a><span class="kw">class</span> Student(Person):</span>
-<span id="cb19-4"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, age, major<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb19-5"><a></a>        <span class="co"># Person.__init__(self, name, age)   # the OLD way</span></span>
-<span id="cb19-6"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(name, age)          <span class="co"># the new way</span></span>
-<span id="cb19-7"><a></a>        <span class="va">self</span>.major <span class="op">=</span> major</span>
-<span id="cb19-8"><a></a>    <span class="kw">def</span> change_major(<span class="va">self</span>, major):</span>
-<span id="cb19-9"><a></a>        <span class="va">self</span>.major <span class="op">=</span> major</span>
-<span id="cb19-10"><a></a>    <span class="kw">def</span> speak(<span class="va">self</span>):</span>
-<span id="cb19-11"><a></a>        r <span class="op">=</span> random.random()</span>
-<span id="cb19-12"><a></a>        <span class="cf">if</span> r <span class="op">&lt;</span> <span class="fl">0.25</span>:</span>
-<span id="cb19-13"><a></a>            <span class="bu">print</span>(<span class="st">"i have homework"</span>)</span>
-<span id="cb19-14"><a></a>        <span class="cf">elif</span> <span class="fl">0.25</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="fl">0.5</span>:</span>
-<span id="cb19-15"><a></a>            <span class="bu">print</span>(<span class="st">"i need sleep"</span>)</span>
-<span id="cb19-16"><a></a>        <span class="cf">elif</span> <span class="fl">0.5</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="fl">0.75</span>:</span>
-<span id="cb19-17"><a></a>            <span class="bu">print</span>(<span class="st">"i should eat"</span>)</span>
-<span id="cb19-18"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb19-19"><a></a>            <span class="bu">print</span>(<span class="st">"i am watching tv"</span>)</span>
-<span id="cb19-20"><a></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
-<span id="cb19-21"><a></a>        <span class="cf">return</span> <span class="st">"student:"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.name) <span class="op">+</span> <span class="st">":"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.age) <span class="op">+</span> <span class="st">":"</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.major)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="polymorphism" class="slide level2">
-<h2>Polymorphism</h2>
-<ul>
-<li>The ability to treat different object types as the same parent type.</li>
-<li><strong>Key point:</strong> you don’t need to check the type — Python automatically calls the correct method.</li>
-<li><strong>Real-world use:</strong> writing functions that work on <em>any</em> object that has the required methods.</li>
-</ul>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a>animals <span class="op">=</span> [Cat(<span class="dv">3</span>), Dog(<span class="dv">5</span>), Rabbit(<span class="dv">2</span>)]</span>
-<span id="cb20-2"><a></a><span class="cf">for</span> animal <span class="kw">in</span> animals:</span>
-<span id="cb20-3"><a></a>    animal.speak()   <span class="co"># each calls its own version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section></section>
-<section>
-<section id="part-3-class-variables-and-special-methods" class="title-slide slide level1 section-divider center">
-<h1>Part 3: Class Variables and Special Methods</h1>
-
-</section>
-<section id="class-variables-and-the-rabbit-subclass" class="slide level2">
-<h2>Class Variables and the <code>Rabbit</code> Subclass</h2>
-<ul>
-<li><strong>Class variables</strong> and their values are shared between <strong>all instances</strong> of a class.</li>
-</ul>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="kw">class</span> Rabbit(Animal):</span>
-<span id="cb21-2"><a></a>    tag <span class="op">=</span> <span class="dv">1</span>                       <span class="co"># class variable</span></span>
-<span id="cb21-3"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, age, parent1<span class="op">=</span><span class="va">None</span>, parent2<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb21-4"><a></a>        Animal.<span class="fu">__init__</span>(<span class="va">self</span>, age)</span>
-<span id="cb21-5"><a></a>        <span class="va">self</span>.parent1 <span class="op">=</span> parent1</span>
-<span id="cb21-6"><a></a>        <span class="va">self</span>.parent2 <span class="op">=</span> parent2</span>
-<span id="cb21-7"><a></a>        <span class="va">self</span>.rid <span class="op">=</span> Rabbit.tag     <span class="co"># instance variable</span></span>
-<span id="cb21-8"><a></a>        Rabbit.tag <span class="op">+=</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>tag</code> is used to give a unique id to each new <code>Rabbit</code> instance.</li>
-</ul>
-</section>
-<section id="rabbit-getter-methods" class="slide level2">
-<h2><code>Rabbit</code> Getter Methods</h2>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="kw">class</span> Rabbit(Animal):</span>
-<span id="cb22-2"><a></a>    tag <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb22-3"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, age, parent1<span class="op">=</span><span class="va">None</span>, parent2<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb22-4"><a></a>        Animal.<span class="fu">__init__</span>(<span class="va">self</span>, age)</span>
-<span id="cb22-5"><a></a>        <span class="va">self</span>.parent1 <span class="op">=</span> parent1</span>
-<span id="cb22-6"><a></a>        <span class="va">self</span>.parent2 <span class="op">=</span> parent2</span>
-<span id="cb22-7"><a></a>        <span class="va">self</span>.rid <span class="op">=</span> Rabbit.tag</span>
-<span id="cb22-8"><a></a>        Rabbit.tag <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb22-9"><a></a>    <span class="kw">def</span> get_rid(<span class="va">self</span>):</span>
-<span id="cb22-10"><a></a>        <span class="cf">return</span> <span class="bu">str</span>(<span class="va">self</span>.rid).zfill(<span class="dv">3</span>)</span>
-<span id="cb22-11"><a></a>    <span class="kw">def</span> get_parent1(<span class="va">self</span>):</span>
-<span id="cb22-12"><a></a>        <span class="cf">return</span> <span class="va">self</span>.parent1</span>
-<span id="cb22-13"><a></a>    <span class="kw">def</span> get_parent2(<span class="va">self</span>):</span>
-<span id="cb22-14"><a></a>        <span class="cf">return</span> <span class="va">self</span>.parent2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>zfill</code> is a string method that pads the beginning with zeros — for example, <code>001</code> not <code>1</code>.</li>
-<li>These getter methods are specific to the <code>Rabbit</code> class; <code>get_name</code> and <code>get_age</code> are inherited from <code>Animal</code>.</li>
-</ul>
-</section>
-<section id="working-with-your-own-types" class="slide level2">
-<h2>Working with Your Own Types</h2>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a>    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other):</span>
-<span id="cb23-2"><a></a>        <span class="co"># returning object of same type as this class</span></span>
-<span id="cb23-3"><a></a>        <span class="cf">return</span> Rabbit(<span class="dv">0</span>, <span class="va">self</span>, other)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Recall <code>Rabbit</code>’s <code>__init__(self, age, parent1=None, parent2=None)</code>.</li>
-<li>This defines the <code>+</code> operator between two <code>Rabbit</code> instances:
-<ul>
-<li>defines what <code>r4 = r1 + r2</code> does, where <code>r1</code> and <code>r2</code> are <code>Rabbit</code> instances</li>
-<li><code>r4</code> is a new <code>Rabbit</code> instance with age 0</li>
-<li><code>r4</code> has <code>self</code> as one parent and <code>other</code> as the other parent</li>
-<li>in <code>__init__</code>, <code>parent1</code> and <code>parent2</code> are of type <code>Rabbit</code></li>
-</ul></li>
-</ul>
-</section>
-<section id="special-method-to-compare-two-rabbits" class="slide level2">
-<h2>Special Method to Compare Two <code>Rabbit</code>s</h2>
-<ul>
-<li>Decide that two rabbits are equal if they have the same two parents:</li>
-</ul>
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a>    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</span>
-<span id="cb24-2"><a></a>        parents_same <span class="op">=</span> <span class="va">self</span>.parent1.rid <span class="op">==</span> other.parent1.rid <span class="op">\</span></span>
-<span id="cb24-3"><a></a>                       <span class="kw">and</span> <span class="va">self</span>.parent2.rid <span class="op">==</span> other.parent2.rid</span>
-<span id="cb24-4"><a></a>        parents_opposite <span class="op">=</span> <span class="va">self</span>.parent2.rid <span class="op">==</span> other.parent1.rid <span class="op">\</span></span>
-<span id="cb24-5"><a></a>                           <span class="kw">and</span> <span class="va">self</span>.parent1.rid <span class="op">==</span> other.parent2.rid</span>
-<span id="cb24-6"><a></a>        <span class="cf">return</span> parents_same <span class="kw">or</span> parents_opposite</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Compare <strong>ids</strong> of parents, since ids are unique (thanks to the class variable).</li>
-<li>Note that you can’t compare the parent objects directly:
-<ul>
-<li>e.g.&nbsp;with <code>self.parent1 == other.parent1</code></li>
-<li>this calls the <code>__eq__</code> method over and over until it is called on <code>None</code>, and gives an <code>AttributeError</code> when it tries to do <code>None.parent1</code></li>
-</ul></li>
-</ul>
-</section></section>
-<section>
-<section id="part-4-design-tools" class="title-slide slide level1 section-divider center">
-<h1>Part 4: Design Tools</h1>
-
-</section>
-<section id="composition-vs-inheritance" class="slide level2">
-<h2>Composition vs Inheritance</h2>
-<p>When to use each:</p>
+<section id="which-method-runs" class="slide level2 checkpoint">
+<h2>Which Method Runs?</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>router <span class="op">=</span> Device(<span class="st">"router"</span>, <span class="dv">12</span>)</span>
+<span id="cb13-2"><a></a>desk <span class="op">=</span> Lamp(<span class="st">"desk"</span>, <span class="dv">9</span>)</span>
+<span id="cb13-3"><a></a>desk.switch_on()</span>
+<span id="cb13-4"><a></a></span>
+<span id="cb13-5"><a></a><span class="bu">print</span>(desk.power())       <span class="co"># line A</span></span>
+<span id="cb13-6"><a></a><span class="bu">print</span>(desk)               <span class="co"># line B</span></span>
+<span id="cb13-7"><a></a><span class="bu">print</span>(router.lumens())    <span class="co"># line C</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For each line, write the class that holds the method, and the output.</p>
+<div class="fragment fade-up" data-focus="5-7">
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Relationship</th>
-<th>Use</th>
-<th>Example</th>
+<th>line</th>
+<th>class</th>
+<th>output</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>IS-A</td>
-<td>Inheritance</td>
-<td>Cat <strong>is an</strong> Animal</td>
+<td>A</td>
+<td><code>Device</code></td>
+<td><code>9</code></td>
 </tr>
 <tr class="even">
-<td>HAS-A</td>
-<td>Composition</td>
-<td>Car <strong>has an</strong> Engine</td>
+<td>B</td>
+<td><code>Lamp</code></td>
+<td><code>lamp desk: 810 lm</code></td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>none</td>
+<td><code>AttributeError: 'Device' object has no attribute 'lumens'</code></td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a><span class="kw">class</span> Engine:</span>
-<span id="cb25-2"><a></a>    <span class="kw">def</span> start(<span class="va">self</span>):</span>
-<span id="cb25-3"><a></a>        <span class="bu">print</span>(<span class="st">"Vroom"</span>)</span>
-<span id="cb25-4"><a></a></span>
-<span id="cb25-5"><a></a><span class="kw">class</span> Car:</span>
-<span id="cb25-6"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
-<span id="cb25-7"><a></a>        <span class="va">self</span>.engine <span class="op">=</span> Engine()   <span class="co"># Car owns an Engine</span></span>
-<span id="cb25-8"><a></a>    <span class="kw">def</span> drive(<span class="va">self</span>):</span>
-<span id="cb25-9"><a></a>        <span class="va">self</span>.engine.start()</span>
-<span id="cb25-10"><a></a>        <span class="bu">print</span>(<span class="st">"Moving"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><strong>Rule:</strong> favor composition over inheritance (more flexible, less brittle).</li>
-</ul>
+</div>
 </section>
-<section id="property-decorators" class="slide level2">
-<h2>Property Decorators</h2>
-<p>The <code>property</code> decorator is built into Python and allows you to use class methods as data attributes.</p>
+<section id="super-calls-a-method-of-the-parent-class" class="slide level2 dense-code">
+<h2><code>super()</code> Calls a Method of the Parent Class</h2>
 <div class="columns">
-<div class="column" style="width:55%;">
-<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a><span class="kw">class</span> Individual:</span>
-<span id="cb26-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name):</span>
-<span id="cb26-3"><a></a>        <span class="va">self</span>._name <span class="op">=</span> name</span>
-<span id="cb26-4"><a></a></span>
-<span id="cb26-5"><a></a>    <span class="at">@property</span>                <span class="co"># getter</span></span>
-<span id="cb26-6"><a></a>    <span class="kw">def</span> name(<span class="va">self</span>):</span>
-<span id="cb26-7"><a></a>        <span class="cf">return</span> <span class="va">self</span>._name</span>
-<span id="cb26-8"><a></a></span>
-<span id="cb26-9"><a></a>    <span class="at">@name.setter</span>             <span class="co"># setter</span></span>
-<span id="cb26-10"><a></a>    <span class="kw">def</span> name(<span class="va">self</span>, value):</span>
-<span id="cb26-11"><a></a>        <span class="cf">if</span> <span class="kw">not</span> value:</span>
-<span id="cb26-12"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Name cannot be empty"</span>)</span>
-<span id="cb26-13"><a></a>        <span class="va">self</span>._name <span class="op">=</span> value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:45%;">
-<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a><span class="co"># Usage</span></span>
-<span id="cb27-2"><a></a>p <span class="op">=</span> Individual(<span class="st">"Alice"</span>)</span>
-<span id="cb27-3"><a></a><span class="bu">print</span>(p.name)    <span class="co"># accesses the getter</span></span>
-<span id="cb27-4"><a></a>p.name <span class="op">=</span> <span class="st">"Bob"</span>   <span class="co"># accesses the setter</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>_name</code>: the leading <code>_</code> signals the user that this is a <strong>private</strong> attribute and should not be modified directly.</li>
-</ul>
+<div class="column" style="width:54%;">
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="kw">class</span> DimmableLamp(Lamp):</span>
+<span id="cb14-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, watts, level<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb14-3"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(name, watts)</span>
+<span id="cb14-4"><a></a>        <span class="va">self</span>.level <span class="op">=</span> level</span>
+<span id="cb14-5"><a></a></span>
+<span id="cb14-6"><a></a>    <span class="kw">def</span> power(<span class="va">self</span>):</span>
+<span id="cb14-7"><a></a>        <span class="cf">return</span> <span class="bu">super</span>().power() <span class="op">*</span> <span class="va">self</span>.level <span class="op">/</span> <span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> hall <span class="op">=</span> DimmableLamp(<span class="st">"hall"</span>, <span class="dv">20</span>, <span class="dv">50</span>)</span>
+<span id="cb15-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> hall.switch_on()</span>
+<span id="cb15-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> hall.power()</span>
+<span id="cb15-4"><a aria-hidden="true" tabindex="-1"></a><span class="fl">10.0</span></span>
+<span id="cb15-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(hall)</span>
+<span id="cb15-6"><a aria-hidden="true" tabindex="-1"></a>lamp hall: <span class="fl">900.0</span> lm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:46%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:2">
+<p><code>level=100</code> is a default value: the call can leave it out</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:3">
+<p><code>super().__init__(name, watts)</code> runs the parent constructor. It creates <code>name</code>, <code>watts</code>, and <code>is_on</code>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:4">
+<p>then the subclass adds its own attribute: <code>level</code>, in percent</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:6-7;2:1-4" data-show="2:1-4">
+<p><span class="tag t-replace">replaces</span> <code>power</code>. <code>super().power()</code> gets the parent’s result first.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:5-6" data-show="2:5-6">
+<p><code>print(hall)</code> runs <code>Lamp.__str__</code> → <code>self.lumens()</code> → <code>self.power()</code>. Python finds the <code>DimmableLamp</code> version of <code>power</code>.</p>
+</div>
+</div>
 </div></div>
 </section>
-<section id="property-decorators-computed-attributes" class="slide level2">
-<h2>Property Decorators: Computed Attributes</h2>
-<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a><span class="kw">class</span> Rectangle:</span>
-<span id="cb28-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, width, height):</span>
-<span id="cb28-3"><a></a>        <span class="va">self</span>.width <span class="op">=</span> width</span>
-<span id="cb28-4"><a></a>        <span class="va">self</span>.height <span class="op">=</span> height</span>
-<span id="cb28-5"><a></a></span>
-<span id="cb28-6"><a></a>    <span class="at">@property</span></span>
-<span id="cb28-7"><a></a>    <span class="kw">def</span> area(<span class="va">self</span>):</span>
-<span id="cb28-8"><a></a>        <span class="co"># Calculated on the fly! No self._area variable needed.</span></span>
-<span id="cb28-9"><a></a>        <span class="cf">return</span> <span class="va">self</span>.width <span class="op">*</span> <span class="va">self</span>.height</span>
-<span id="cb28-10"><a></a></span>
-<span id="cb28-11"><a></a><span class="co"># Usage</span></span>
-<span id="cb28-12"><a></a>r <span class="op">=</span> Rectangle(<span class="dv">5</span>, <span class="dv">10</span>)</span>
-<span id="cb28-13"><a></a><span class="bu">print</span>(r.area)    <span class="co"># 50</span></span>
-<span id="cb28-14"><a></a><span class="co"># r.area = 60    # AttributeError: can't set attribute</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="what-goes-wrong-without-super.__init__" class="slide level2 checkpoint">
+<h2>What Goes Wrong Without <code>super().__init__()</code>?</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="kw">class</span> DimmableLamp(Lamp):</span>
+<span id="cb16-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, watts, level<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb16-3"><a></a>        <span class="va">self</span>.level <span class="op">=</span> level</span>
+<span id="cb16-4"><a></a></span>
+<span id="cb16-5"><a></a>hall <span class="op">=</span> DimmableLamp(<span class="st">"hall"</span>, <span class="dv">20</span>, <span class="dv">50</span>)</span>
+<span id="cb16-6"><a></a><span class="bu">print</span>(hall.level)      <span class="co"># line A</span></span>
+<span id="cb16-7"><a></a><span class="bu">print</span>(hall.name)       <span class="co"># line B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Which line fails? Explain in one sentence.</p>
+<div class="fragment fade-up" data-focus="2-3,7">
+<p>Line A prints <code>50</code>. Line B fails: <code>AttributeError: 'DimmableLamp' object has no attribute 'name'</code>. A subclass <code>__init__</code> <strong>replaces</strong> the parent <code>__init__</code>. Python does not run the parent constructor for you, so <code>name</code>, <code>watts</code>, and <code>is_on</code> were never created.</p>
+</div>
 </section>
-<section id="object-oriented-programming" class="slide level2">
-<h2>Object-Oriented Programming</h2>
+<section id="one-loop-works-for-every-type-of-device" class="slide level2">
+<h2>One Loop Works for Every Type of <code>Device</code></h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>devices <span class="op">=</span> [</span>
+<span id="cb17-2"><a></a>    Device(<span class="st">"router"</span>, <span class="dv">12</span>),</span>
+<span id="cb17-3"><a></a>    Lamp(<span class="st">"desk"</span>, <span class="dv">9</span>),</span>
+<span id="cb17-4"><a></a>    DimmableLamp(<span class="st">"hall"</span>, <span class="dv">20</span>, <span class="dv">50</span>),</span>
+<span id="cb17-5"><a></a>]</span>
+<span id="cb17-6"><a></a></span>
+<span id="cb17-7"><a></a>total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb17-8"><a></a><span class="cf">for</span> device <span class="kw">in</span> devices:</span>
+<span id="cb17-9"><a></a>    device.switch_on()</span>
+<span id="cb17-10"><a></a>    <span class="bu">print</span>(device)</span>
+<span id="cb17-11"><a></a>    total <span class="op">+=</span> device.power()</span>
+<span id="cb17-12"><a></a><span class="bu">print</span>(total, <span class="st">"W"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:44%;">
+<p>Output:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a aria-hidden="true" tabindex="-1"></a>router: 12 W</span>
+<span id="cb18-2"><a aria-hidden="true" tabindex="-1"></a>lamp desk: 810 lm</span>
+<span id="cb18-3"><a aria-hidden="true" tabindex="-1"></a>lamp hall: 900.0 lm</span>
+<span id="cb18-4"><a aria-hidden="true" tabindex="-1"></a>31.0 W</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-focus="1:2,10-11;2:1" data-show="2:1">
+<p>a <code>Device</code>: Python runs <code>Device.__str__</code> and <code>Device.power</code></p>
+</div>
+<div class="step fragment fade-up" data-focus="1:3,10-11;2:2" data-show="2:2">
+<p>a <code>Lamp</code>: Python runs <code>Lamp.__str__</code> and <code>Device.power</code></p>
+</div>
+<div class="step fragment fade-up" data-focus="1:4,10-11;2:3" data-show="2:3">
+<p>a <code>DimmableLamp</code>: Python runs <code>Lamp.__str__</code> and <code>DimmableLamp.power</code></p>
+</div>
+<div class="step fragment fade-up" data-focus="1:12;2:4" data-show="2:4">
+<p>12 + 9 + 10.0 = 31.0 watts</p>
+</div>
+<div class="step fragment fade-up">
+<p>The loop does not check the type. Each object runs its own version of the method. This is called <strong>polymorphism</strong>.</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p><code>isinstance(desk, Device)</code> is <code>True</code>: a <code>Lamp</code> is also a <code>Device</code>. <code>isinstance(router, Lamp)</code> is <code>False</code>.</p>
+</div>
+</section></section>
+<section>
+<section id="part-3-class-variables-and-composition" class="title-slide slide level1 section-divider center">
+<h1>Part 3: Class Variables, <code>==</code>, and Composition</h1>
+</section>
+<section id="a-class-variable-is-shared-by-all-instances" class="slide level2 dense-code">
+<h2>A Class Variable Is Shared by All Instances</h2>
+<div class="columns">
+<div class="column" style="width:54%;">
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="kw">class</span> Board:</span>
+<span id="cb19-2"><a></a>    next_serial <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb19-3"><a></a></span>
+<span id="cb19-4"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, model):</span>
+<span id="cb19-5"><a></a>        <span class="va">self</span>.model <span class="op">=</span> model</span>
+<span id="cb19-6"><a></a>        <span class="va">self</span>.serial <span class="op">=</span> Board.next_serial</span>
+<span id="cb19-7"><a></a>        Board.next_serial <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb19-8"><a></a></span>
+<span id="cb19-9"><a></a>    <span class="kw">def</span> tag(<span class="va">self</span>):</span>
+<span id="cb19-10"><a></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>serial<span class="sc">:03d}</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> Board(<span class="st">"UNO"</span>)</span>
+<span id="cb20-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> Board(<span class="st">"UNO"</span>)</span>
+<span id="cb20-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a.tag(), b.tag()</span>
+<span id="cb20-4"><a aria-hidden="true" tabindex="-1"></a>(<span class="st">'UNO-001'</span>, <span class="st">'UNO-002'</span>)</span>
+<span id="cb20-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> Board.next_serial</span>
+<span id="cb20-6"><a aria-hidden="true" tabindex="-1"></a><span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:46%;">
+<div class="mem" aria-label="Memory picture. The class Board holds next_serial. Each object holds its own model and serial.">
+  <div class="mem-state fragment fade-out" data-fragment-index="2">
+    <div class="mem-class"><span>class Board</span><span>next_serial = <b>1</b></span></div>
+    <div class="mem-objs"><span class="mem-none">no objects yet</span></div>
+  </div>
+  <div class="mem-state fragment fade-in-then-out" data-fragment-index="2">
+    <div class="mem-class"><span>class Board</span><span>next_serial = <b>2</b></span></div>
+    <div class="mem-objs"><div class="mem-obj"><b>a</b><br>model = "UNO"<br>serial = 1</div><div class="mem-obj" style="visibility:hidden"></div></div>
+  </div>
+  <div class="mem-state fragment" data-fragment-index="3">
+    <div class="mem-class"><span>class Board</span><span>next_serial = <b>3</b></span></div>
+    <div class="mem-objs"><div class="mem-obj"><b>a</b><br>model = "UNO"<br>serial = 1</div><div class="mem-obj"><b>b</b><br>model = "UNO"<br>serial = 2</div></div>
+  </div>
+</div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-fragment-index="1" data-focus="1:2">
+<p><span class="tag">class variable</span> <code>next_serial</code> is written under <code>class</code>, outside every method. There is <strong>one copy</strong> for the whole class.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="2" data-focus="1:6-7;2:1" data-show="2:1">
+<p><code>a</code> copies the number 1 into its own <code>serial</code>. Then the shared copy becomes 2.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="3" data-focus="1:6-7;2:2" data-show="2:2">
+<p><code>b</code> gets the number 2. Then the shared copy becomes 3.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="4" data-focus="2:3-6" data-show="2:3-6">
+<p>read and change a class variable through the class name: <code>Board.next_serial</code></p>
+</div>
+</div>
+</div></div>
+</section>
+<section id="eq__-defines-what-means-for-your-class" class="slide level2 dense-code">
+<h2><code>__eq__</code> Defines What <code>==</code> Means for Your Class</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb21-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb21-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">==</span> b</span>
+<span id="cb21-4"><a aria-hidden="true" tabindex="-1"></a><span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:3-4" data-show="1:4">
+<p>without <code>__eq__</code>, <code>==</code> asks “are these the <strong>same object</strong>?”. <code>a</code> and <code>b</code> are two objects.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:6-7" data-show="2:6-7">
+<p><code>__eq__</code> compares the data: the same <code>x</code> and the same <code>y</code></p>
+</div>
+<div class="step fragment fade-up">
+<p>with this method, <code>a == b</code> is <code>True</code></p>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="kw">class</span> Coordinate:</span>
+<span id="cb22-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):</span>
+<span id="cb22-3"><a></a>        <span class="va">self</span>.x <span class="op">=</span> x</span>
+<span id="cb22-4"><a></a>        <span class="va">self</span>.y <span class="op">=</span> y</span>
+<span id="cb22-5"><a></a></span>
+<span id="cb22-6"><a></a>    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</span>
+<span id="cb22-7"><a></a>        <span class="cf">return</span> <span class="va">self</span>.x <span class="op">==</span> other.x <span class="kw">and</span> <span class="va">self</span>.y <span class="op">==</span> other.y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+</section>
+<section id="composition-an-object-holds-other-objects" class="slide level2 dense-code">
+<h2>Composition: an Object Holds Other Objects</h2>
+<div class="columns">
+<div class="column" style="width:54%;">
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="kw">class</span> Circuit:</span>
+<span id="cb23-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, volts, max_amps):</span>
+<span id="cb23-3"><a></a>        <span class="va">self</span>.volts <span class="op">=</span> volts</span>
+<span id="cb23-4"><a></a>        <span class="va">self</span>.max_amps <span class="op">=</span> max_amps</span>
+<span id="cb23-5"><a></a>        <span class="va">self</span>.devices <span class="op">=</span> []</span>
+<span id="cb23-6"><a></a></span>
+<span id="cb23-7"><a></a>    <span class="kw">def</span> add(<span class="va">self</span>, device):</span>
+<span id="cb23-8"><a></a>        <span class="va">self</span>.devices.append(device)</span>
+<span id="cb23-9"><a></a></span>
+<span id="cb23-10"><a></a>    <span class="kw">def</span> total_power(<span class="va">self</span>):</span>
+<span id="cb23-11"><a></a>        total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb23-12"><a></a>        <span class="cf">for</span> device <span class="kw">in</span> <span class="va">self</span>.devices:</span>
+<span id="cb23-13"><a></a>            total <span class="op">+=</span> device.power()</span>
+<span id="cb23-14"><a></a>        <span class="cf">return</span> total</span>
+<span id="cb23-15"><a></a></span>
+<span id="cb23-16"><a></a>    <span class="kw">def</span> is_overloaded(<span class="va">self</span>):</span>
+<span id="cb23-17"><a></a>        amps <span class="op">=</span> <span class="va">self</span>.total_power() <span class="op">/</span> <span class="va">self</span>.volts</span>
+<span id="cb23-18"><a></a>        <span class="cf">return</span> amps <span class="op">&gt;</span> <span class="va">self</span>.max_amps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:46%;">
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen <span class="op">=</span> Circuit(<span class="dv">230</span>, <span class="dv">10</span>)</span>
+<span id="cb24-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kettle <span class="op">=</span> Device(<span class="st">"kettle"</span>, <span class="dv">2000</span>)</span>
+<span id="cb24-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> oven <span class="op">=</span> Device(<span class="st">"oven"</span>, <span class="dv">1500</span>)</span>
+<span id="cb24-4"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.add(kettle)</span>
+<span id="cb24-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.add(oven)</span>
+<span id="cb24-6"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kettle.switch_on()</span>
+<span id="cb24-7"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.is_overloaded()</span>
+<span id="cb24-8"><a aria-hidden="true" tabindex="-1"></a><span class="va">False</span></span>
+<span id="cb24-9"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> oven.switch_on()</span>
+<span id="cb24-10"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.is_overloaded()</span>
+<span id="cb24-11"><a aria-hidden="true" tabindex="-1"></a><span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-focus="1:5,7-8;2:4-5">
+<p>a <code>Circuit</code> <strong>has</strong> devices: the list is an attribute. A circuit is not a device.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:10-14">
+<p><code>total_power</code> asks every device for its power. It works for every type of <code>Device</code>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:16-18;2:6-8" data-show="2:6-8">
+<p>kettle on: 2000 W / 230 V = 8.7 A. This is below 10 A.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:9-11" data-show="2:9-11">
+<p>kettle and oven on: 3500 W / 230 V = 15.2 A. The circuit is overloaded.</p>
+</div>
+</div>
+</div></div>
+</section>
+<section id="inheritance-or-composition" class="slide level2 checkpoint">
+<h2>Inheritance or Composition?</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>test sentence</th>
+<th>use</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“A <strong>is a</strong> B”</td>
+<td>inheritance</td>
+<td>a <code>Lamp</code> is a <code>Device</code></td>
+</tr>
+<tr class="even">
+<td>“A <strong>has a</strong> B”</td>
+<td>composition</td>
+<td>a <code>Circuit</code> has <code>Device</code> objects</td>
+</tr>
+</tbody>
+</table>
+<p>Write <strong>I</strong> (inheritance) or <strong>C</strong> (composition) for each pair.</p>
+<ol type="1">
+<li><code>Student</code> and <code>Person</code></li>
+<li><code>Car</code> and <code>Engine</code></li>
+<li><code>RobotArm</code> and <code>Joint</code></li>
+<li><code>TemperatureSensor</code> and <code>Sensor</code></li>
+</ol>
+<div class="fragment fade-up">
+<p>1 <strong>I</strong>, 2 <strong>C</strong>, 3 <strong>C</strong>, 4 <strong>I</strong>. A student is a person, and a temperature sensor is a sensor. A car has an engine, and a robot arm has joints. If “A is a B” sounds wrong, use composition.</p>
+</div>
+</section>
+<section id="exit-ticket" class="slide level2 checkpoint dense-code">
+<h2>Exit Ticket</h2>
+<div class="columns">
+<div class="column" style="width:46%;">
+<p>Write the class <code>Fan</code>.</p>
 <ul>
-<li>Create your own collections of data.</li>
-<li>Organize information.</li>
-<li>Division of work.</li>
-<li>Access information in a consistent manner.</li>
-<li>Add layers of complexity.</li>
-<li>Like functions, classes are a mechanism for <strong>decomposition</strong> and <strong>abstraction</strong> in programming.</li>
+<li>a <code>Fan</code> is a <code>Device</code> with one more attribute, <code>speed</code> (1, 2, or 3; the default is 1)</li>
+<li><code>power()</code> returns the <code>Device</code> power multiplied by <code>speed / 3</code></li>
 </ul>
+<p>Then answer Yes or No, with one sentence: does <code>print(fan)</code> use the <code>power</code> method of <code>Fan</code>?</p>
+</div><div class="column" style="width:54%;">
+<div class="fragment fade-up">
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a><span class="kw">class</span> Fan(Device):</span>
+<span id="cb25-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, watts, speed<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb25-3"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(name, watts)</span>
+<span id="cb25-4"><a></a>        <span class="va">self</span>.speed <span class="op">=</span> speed</span>
+<span id="cb25-5"><a></a></span>
+<span id="cb25-6"><a></a>    <span class="kw">def</span> power(<span class="va">self</span>):</span>
+<span id="cb25-7"><a></a>        <span class="cf">return</span> <span class="bu">super</span>().power() <span class="op">*</span> <span class="va">self</span>.speed <span class="op">/</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Yes. <code>Device.__str__</code> calls <code>self.power()</code>, and Python starts the search in the class of the object, <code>Fan</code>.</p>
+</div>
+</div></div>
 </section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
+<div class="card-grid">
+<div class="card fragment fade-up">
+<p><strong>Protect the data</strong></p>
 <ul>
-<li>Getters and setters keep the internal representation private — information hiding prevents bugs.</li>
-<li>A subclass inherits all data and behavior from its parent, and can add or override attributes.</li>
-<li>When a subclass defines <code>__init__</code>, call the parent’s with <code>super().__init__(...)</code>.</li>
-<li>Method lookup goes up the hierarchy: current class first, then parent, grandparent, and so on.</li>
-<li>Class variables (like <code>Rabbit.tag</code>) are shared by all instances.</li>
-<li>Prefer composition (HAS-A) over inheritance (IS-A) when there is no true subtype relationship.</li>
+<li>a setter checks every new value</li>
+<li><code>@property</code> keeps the <code>object.attribute</code> syntax</li>
+<li>a property without a setter is read-only</li>
 </ul>
+</div>
+<div class="card fragment fade-up">
+<p><strong>Inheritance</strong></p>
+<ul>
+<li>a subclass inherits everything; it can add or replace methods</li>
+<li>a subclass <code>__init__</code> must call <code>super().__init__(...)</code></li>
+<li>Python looks in the class of the object first, then in the parents</li>
+</ul>
+</div>
+<div class="card fragment fade-up">
+<p><strong>Share and combine</strong></p>
+<ul>
+<li>a class variable has one copy, shared by all instances</li>
+<li>“is a” means inheritance</li>
+<li>“has a” means composition</li>
+</ul>
+</div>
+</div>
+<div class="fragment fade-up takeaway">
+<p>Your term project must use classes and inheritance.</p>
+</div>
 
 
 </section></section>
@@ -966,6 +1183,69 @@ Basri Erdogan
           RevealZoom
         ]
       });
+    </script>
+    <!-- Lecture steps (2026-11-10): fragments that reveal and spotlight code lines.
+         On any fragment:  data-show="2-4"   lines stay invisible until this fragment is shown
+                           data-focus="2-4"  lines are spotlighted while this fragment is the current one
+         Address another code block of the slide with "block:lines", join targets with ";"  e.g. "1:6-8;2:2-3".
+         Slides marked auto-animate get a data-id per code line, so equal lines move and new lines fade in. -->
+    <script>
+    (function () {
+      function lineSpans(code) {
+        return Array.from(code.children).filter(function (e) { return e.tagName === 'SPAN'; });
+      }
+      function parse(spec) {
+        return spec.split(';').map(function (part) {
+          var block = 1, body = part.trim();
+          var m = body.match(/^(\d+):(.*)$/);
+          if (m) { block = +m[1]; body = m[2]; }
+          var set = [];
+          body.split(',').forEach(function (r) {
+            var ab = r.split('-').map(Number);
+            for (var i = ab[0]; i <= (ab[1] || ab[0]); i++) set.push(i);
+          });
+          return { block: block, lines: set };
+        });
+      }
+      function update(slide) {
+        if (!slide || slide.classList.contains('stack')) return;
+        var codes = Array.from(slide.querySelectorAll('pre > code'));
+        var all = codes.map(lineSpans);
+        codes.forEach(function (c, i) {
+          c.classList.remove('has-focus');
+          all[i].forEach(function (l) { l.classList.remove('step-hidden', 'step-focus'); });
+        });
+        function apply(el, attr, cls, mark) {
+          parse(el.getAttribute(attr)).forEach(function (t) {
+            var ls = all[t.block - 1];
+            if (!ls) return;
+            t.lines.forEach(function (n) { if (ls[n - 1]) ls[n - 1].classList.add(cls); });
+            if (mark) codes[t.block - 1].classList.add('has-focus');
+          });
+        }
+        slide.querySelectorAll('[data-show]').forEach(function (f) {
+          if (!f.classList.contains('visible')) apply(f, 'data-show', 'step-hidden', false);
+        });
+        slide.querySelectorAll('.current-fragment[data-focus]').forEach(function (f) {
+          apply(f, 'data-focus', 'step-focus', true);
+        });
+      }
+      function boot() {
+        document.querySelectorAll('.reveal .slides section[data-auto-animate] pre > code').forEach(function (code) {
+          lineSpans(code).forEach(function (l) {
+            var text = l.textContent.trim();
+            if (text) l.setAttribute('data-id', 'code-line:' + text);
+          });
+        });
+        Reveal.getSlides().forEach(update);
+        ['slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(function (ev) {
+          Reveal.on(ev, function () { update(Reveal.getCurrentSlide()); });
+        });
+      }
+      window.addEventListener('load', function () {
+        if (Reveal.isReady()) boot(); else Reveal.on('ready', boot);
+      });
+    })();
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
