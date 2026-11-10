@@ -352,6 +352,9 @@ Basri Erdogan
 <span id="cb6-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> r1.ohms <span class="op">=</span> <span class="op">-</span><span class="dv">50</span></span>
 <span id="cb6-6"><a aria-hidden="true" tabindex="-1"></a><span class="pp">ValueError</span>: ohms must be positive</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="steps">
+<div class="step fragment fade-up" data-focus="1:6">
+<p>a <strong>property</strong> is used like an attribute (<code>r1.ohms</code>), but reading or writing it runs a method</p>
+</div>
 <div class="step fragment fade-up" data-focus="1:6-8;2:2-3" data-show="2:2-3">
 <p><span class="tag"><code>@property</code></span> this method runs when code <strong>reads</strong> <code>r1.ohms</code></p>
 </div>
