@@ -258,8 +258,14 @@ Basri Erdogan
 <span id="cb2-5"><a></a><span class="bu">print</span>(r1)</span>
 <span id="cb2-6"><a></a><span class="bu">print</span>(r2.current(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Write the two printed lines.</p>
-<div class="fragment fade-up" data-focus="2:3">
-<p><code>R1: 100 ohm</code> and <code>0.1</code>. Each object has its own <code>ohms</code>. Line 3 changed only <code>r2</code>.</p>
+<div class="answer fragment fade-up" data-focus="2:5-6">
+<div class="ans-rows">
+<p><span class="ans-key">line 5</span> <span class="ans-val"><code>R1: 100 ohm</code></span></p>
+<p><span class="ans-key">line 6</span> <span class="ans-val"><code>0.1</code></span></p>
+</div>
+<div class="ans-why fragment fade-up" data-focus="2:3">
+<p><strong>Why:</strong> each object has its own <code>ohms</code>. Line 3 changed only <code>r2</code>.</p>
+</div>
 </div>
 </div></div>
 </section>
@@ -405,6 +411,8 @@ Basri Erdogan
 <section id="which-lines-raise-an-error" class="slide level2 checkpoint">
 <h2>Which Lines Raise an Error?</h2>
 <p><code>Resistor</code> has the <code>ohms</code> property with a setter and the <code>conductance</code> property without a setter.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>r <span class="op">=</span> Resistor(<span class="st">"R1"</span>, <span class="dv">100</span>)</span>
 <span id="cb9-2"><a></a>r.ohms <span class="op">=</span> <span class="dv">220</span>           <span class="co"># line A</span></span>
 <span id="cb9-3"><a></a>r.conductance <span class="op">=</span> <span class="dv">1</span>      <span class="co"># line B</span></span>
@@ -414,9 +422,19 @@ Basri Erdogan
 <li>Write the letters of the lines that raise an error.</li>
 <li>Delete those lines. What does line D print?</li>
 </ol>
-<div class="fragment fade-up" data-focus="3-4">
-<p>Lines <strong>B</strong> and <strong>C</strong>. B: <code>AttributeError</code>, because <code>conductance</code> has no setter. C: <code>ValueError</code>, because the setter rejects <code>0</code>. Line D prints <code>220</code>.</p>
+</div><div class="column" style="width:50%;">
+<div class="answer fragment fade-up" data-focus="2-5">
+<div class="ans-rows">
+<p><span class="ans-key">line A</span> <span class="ans-val">no error</span></p>
+<p><span class="ans-key">line B</span> <span class="ans-val"><code>AttributeError</code></span></p>
+<p><span class="ans-key">line C</span> <span class="ans-val"><code>ValueError</code></span></p>
+<p><span class="ans-key">line D</span> <span class="ans-val">prints <code>220</code> (after deleting B and C)</span></p>
 </div>
+<div class="ans-why fragment fade-up" data-focus="3-4">
+<p><strong>Why:</strong> B: <code>conductance</code> has no setter. C: the setter rejects <code>0</code>. D: the last accepted value is <code>220</code>, from line A.</p>
+</div>
+</div>
+</div></div>
 </section></section>
 <section>
 <section id="part-2-inheritance" class="title-slide slide level1 section-divider center">
@@ -625,38 +643,15 @@ Basri Erdogan
 <span id="cb13-6"><a></a><span class="bu">print</span>(desk)               <span class="co"># line B</span></span>
 <span id="cb13-7"><a></a><span class="bu">print</span>(router.lumens())    <span class="co"># line C</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For each line, write the class that holds the method, and the output.</p>
-<div class="fragment fade-up" data-focus="5-7">
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>line</th>
-<th>class</th>
-<th>output</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>A</td>
-<td><code>Device</code></td>
-<td><code>9</code></td>
-</tr>
-<tr class="even">
-<td>B</td>
-<td><code>Lamp</code></td>
-<td><code>lamp desk: 810 lm</code></td>
-</tr>
-<tr class="odd">
-<td>C</td>
-<td>none</td>
-<td><code>AttributeError: 'Device' object has no attribute 'lumens'</code></td>
-</tr>
-</tbody>
-</table>
+<div class="answer fragment fade-up" data-focus="5-7">
+<div class="ans-rows">
+<p><span class="ans-key">line A</span> <span class="ans-val"><code>Device</code> · prints <code>9</code></span></p>
+<p><span class="ans-key">line B</span> <span class="ans-val"><code>Lamp</code> · prints <code>lamp desk: 810 lm</code></span></p>
+<p><span class="ans-key">line C</span> <span class="ans-val">none · <code>AttributeError: 'Device' object has no attribute 'lumens'</code></span></p>
+</div>
+<div class="ans-why fragment fade-up" data-focus="7">
+<p><strong>Why:</strong> <code>lumens</code> is only in <code>Lamp</code>. The search starts in <code>Device</code>, the class of <code>router</code>, and goes <strong>up</strong> only.</p>
+</div>
 </div>
 </section>
 <section id="super-calls-a-method-of-the-parent-class" class="slide level2 dense-code">
@@ -709,8 +704,14 @@ Basri Erdogan
 <span id="cb16-6"><a></a><span class="bu">print</span>(hall.level)      <span class="co"># line A</span></span>
 <span id="cb16-7"><a></a><span class="bu">print</span>(hall.name)       <span class="co"># line B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Which line fails? Explain in one sentence.</p>
-<div class="fragment fade-up" data-focus="2-3,7">
-<p>Line A prints <code>50</code>. Line B fails: <code>AttributeError: 'DimmableLamp' object has no attribute 'name'</code>. A subclass <code>__init__</code> <strong>replaces</strong> the parent <code>__init__</code>. Python does not run the parent constructor for you, so <code>name</code>, <code>watts</code>, and <code>is_on</code> were never created.</p>
+<div class="answer fragment fade-up" data-focus="6-7">
+<div class="ans-rows">
+<p><span class="ans-key">line A</span> <span class="ans-val">prints <code>50</code></span></p>
+<p><span class="ans-key">line B</span> <span class="ans-val"><code>AttributeError: 'DimmableLamp' object has no attribute 'name'</code></span></p>
+</div>
+<div class="ans-why fragment fade-up" data-focus="2-3">
+<p><strong>Why:</strong> a subclass <code>__init__</code> <strong>replaces</strong> the parent <code>__init__</code>. Without <code>super().__init__()</code>, <code>name</code>, <code>watts</code>, and <code>is_on</code> are never created.</p>
+</div>
 </div>
 </section>
 <section id="one-loop-works-for-every-type-of-device" class="slide level2">
@@ -924,15 +925,27 @@ Basri Erdogan
 </tbody>
 </table>
 <p>Write <strong>I</strong> (inheritance) or <strong>C</strong> (composition) for each pair.</p>
+<div class="columns">
+<div class="column" style="width:45%;">
 <ol type="1">
 <li><code>Student</code> and <code>Person</code></li>
 <li><code>Car</code> and <code>Engine</code></li>
 <li><code>RobotArm</code> and <code>Joint</code></li>
 <li><code>TemperatureSensor</code> and <code>Sensor</code></li>
 </ol>
-<div class="fragment fade-up">
-<p>1 <strong>I</strong>, 2 <strong>C</strong>, 3 <strong>C</strong>, 4 <strong>I</strong>. A student is a person, and a temperature sensor is a sensor. A car has an engine, and a robot arm has joints. If “A is a B” sounds wrong, use composition.</p>
+</div><div class="column" style="width:55%;">
+<div class="answer fragment fade-up">
+<div class="ans-rows">
+<p><span class="ans-key">1</span> <span class="ans-val"><strong>I</strong>: a student is a person</span></p>
+<p><span class="ans-key">2</span> <span class="ans-val"><strong>C</strong>: a car has an engine</span></p>
+<p><span class="ans-key">3</span> <span class="ans-val"><strong>C</strong>: a robot arm has joints</span></p>
+<p><span class="ans-key">4</span> <span class="ans-val"><strong>I</strong>: a temperature sensor is a sensor</span></p>
 </div>
+<div class="ans-why fragment fade-up">
+<p><strong>Rule:</strong> if “A is a B” sounds wrong, use composition.</p>
+</div>
+</div>
+</div></div>
 </section>
 <section id="exit-ticket" class="slide level2 checkpoint dense-code">
 <h2>Exit Ticket</h2>
@@ -945,7 +958,7 @@ Basri Erdogan
 </ul>
 <p>Then answer Yes or No, with one sentence: does <code>print(fan)</code> use the <code>power</code> method of <code>Fan</code>?</p>
 </div><div class="column" style="width:54%;">
-<div class="fragment fade-up">
+<div class="answer fragment fade-up">
 <div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a><span class="kw">class</span> Fan(Device):</span>
 <span id="cb25-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, watts, speed<span class="op">=</span><span class="dv">1</span>):</span>
 <span id="cb25-3"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(name, watts)</span>
@@ -953,7 +966,12 @@ Basri Erdogan
 <span id="cb25-5"><a></a></span>
 <span id="cb25-6"><a></a>    <span class="kw">def</span> power(<span class="va">self</span>):</span>
 <span id="cb25-7"><a></a>        <span class="cf">return</span> <span class="bu">super</span>().power() <span class="op">*</span> <span class="va">self</span>.speed <span class="op">/</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Yes. <code>Device.__str__</code> calls <code>self.power()</code>, and Python starts the search in the class of the object, <code>Fan</code>.</p>
+<div class="ans-rows">
+<p><span class="ans-key"><code>print(fan)</code> uses <code>Fan.power</code>?</span> <span class="ans-val"><strong>Yes</strong></span></p>
+</div>
+<div class="ans-why fragment fade-up">
+<p><strong>Why:</strong> <code>Device.__str__</code> calls <code>self.power()</code>, and Python starts the search in the class of the object, <code>Fan</code>.</p>
+</div>
 </div>
 </div></div>
 </section>
