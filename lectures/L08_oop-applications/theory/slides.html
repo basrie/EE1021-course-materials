@@ -743,6 +743,17 @@ Basri Erdogan
 <div class="step fragment fade-up" data-focus="1:12;2:4" data-show="2:4">
 <p>12 + 9 + 10.0 = 31.0 watts</p>
 </div>
+<div class="popup fragment">
+<p><span class="tag t-replace">without polymorphism</span> The loop must check the type of each object:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> device <span class="kw">in</span> devices:</span>
+<span id="cb19-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">type</span>(device) <span class="op">==</span> DimmableLamp:</span>
+<span id="cb19-3"><a aria-hidden="true" tabindex="-1"></a>        total <span class="op">+=</span> device.watts <span class="op">*</span> device.level <span class="op">/</span> <span class="dv">100</span></span>
+<span id="cb19-4"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">type</span>(device) <span class="op">==</span> Lamp:</span>
+<span id="cb19-5"><a aria-hidden="true" tabindex="-1"></a>        total <span class="op">+=</span> device.watts</span>
+<span id="cb19-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">type</span>(device) <span class="op">==</span> Device:</span>
+<span id="cb19-7"><a aria-hidden="true" tabindex="-1"></a>        total <span class="op">+=</span> device.watts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Every new class, for example <code>Heater</code>, needs a new branch in this loop.</p>
+</div>
 <div class="step fragment fade-up">
 <p>The loop does not check the type. Each object runs its own version of the method. This is called <strong>polymorphism</strong>.</p>
 </div>
@@ -760,22 +771,22 @@ Basri Erdogan
 <h2>A Class Variable Is Shared by All Instances</h2>
 <div class="columns">
 <div class="column" style="width:54%;">
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="kw">class</span> Board:</span>
-<span id="cb19-2"><a></a>    next_serial <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb19-3"><a></a></span>
-<span id="cb19-4"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, model):</span>
-<span id="cb19-5"><a></a>        <span class="va">self</span>.model <span class="op">=</span> model</span>
-<span id="cb19-6"><a></a>        <span class="va">self</span>.serial <span class="op">=</span> Board.next_serial</span>
-<span id="cb19-7"><a></a>        Board.next_serial <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb19-8"><a></a></span>
-<span id="cb19-9"><a></a>    <span class="kw">def</span> tag(<span class="va">self</span>):</span>
-<span id="cb19-10"><a></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>serial<span class="sc">:03d}</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> Board(<span class="st">"UNO"</span>)</span>
-<span id="cb20-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> Board(<span class="st">"UNO"</span>)</span>
-<span id="cb20-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a.tag(), b.tag()</span>
-<span id="cb20-4"><a aria-hidden="true" tabindex="-1"></a>(<span class="st">'UNO-001'</span>, <span class="st">'UNO-002'</span>)</span>
-<span id="cb20-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> Board.next_serial</span>
-<span id="cb20-6"><a aria-hidden="true" tabindex="-1"></a><span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="kw">class</span> Board:</span>
+<span id="cb20-2"><a></a>    next_serial <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb20-3"><a></a></span>
+<span id="cb20-4"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, model):</span>
+<span id="cb20-5"><a></a>        <span class="va">self</span>.model <span class="op">=</span> model</span>
+<span id="cb20-6"><a></a>        <span class="va">self</span>.serial <span class="op">=</span> Board.next_serial</span>
+<span id="cb20-7"><a></a>        Board.next_serial <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb20-8"><a></a></span>
+<span id="cb20-9"><a></a>    <span class="kw">def</span> tag(<span class="va">self</span>):</span>
+<span id="cb20-10"><a></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>serial<span class="sc">:03d}</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> Board(<span class="st">"UNO"</span>)</span>
+<span id="cb21-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> Board(<span class="st">"UNO"</span>)</span>
+<span id="cb21-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a.tag(), b.tag()</span>
+<span id="cb21-4"><a aria-hidden="true" tabindex="-1"></a>(<span class="st">'UNO-001'</span>, <span class="st">'UNO-002'</span>)</span>
+<span id="cb21-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> Board.next_serial</span>
+<span id="cb21-6"><a aria-hidden="true" tabindex="-1"></a><span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:46%;">
 <div class="mem" aria-label="Memory picture. The class Board holds next_serial. Each object holds its own model and serial.">
   <div class="mem-state fragment fade-out" data-fragment-index="2">
@@ -817,10 +828,10 @@ Basri Erdogan
 <h2><code>__eq__</code> Defines What <code>==</code> Means for Your Class</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
-<span id="cb21-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
-<span id="cb21-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">==</span> b</span>
-<span id="cb21-4"><a aria-hidden="true" tabindex="-1"></a><span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb22-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> Coordinate(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb22-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">==</span> b</span>
+<span id="cb22-4"><a aria-hidden="true" tabindex="-1"></a><span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="steps">
 <div class="step fragment fade-up" data-focus="1:3-4" data-show="1:4">
 <p>without <code>__eq__</code>, <code>==</code> asks “are these the <strong>same object</strong>?”. <code>a</code> and <code>b</code> are two objects.</p>
@@ -833,52 +844,52 @@ Basri Erdogan
 </div>
 </div>
 </div><div class="column" style="width:60%;">
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="kw">class</span> Coordinate:</span>
-<span id="cb22-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):</span>
-<span id="cb22-3"><a></a>        <span class="va">self</span>.x <span class="op">=</span> x</span>
-<span id="cb22-4"><a></a>        <span class="va">self</span>.y <span class="op">=</span> y</span>
-<span id="cb22-5"><a></a></span>
-<span id="cb22-6"><a></a>    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</span>
-<span id="cb22-7"><a></a>        <span class="cf">return</span> <span class="va">self</span>.x <span class="op">==</span> other.x <span class="kw">and</span> <span class="va">self</span>.y <span class="op">==</span> other.y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="kw">class</span> Coordinate:</span>
+<span id="cb23-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x, y):</span>
+<span id="cb23-3"><a></a>        <span class="va">self</span>.x <span class="op">=</span> x</span>
+<span id="cb23-4"><a></a>        <span class="va">self</span>.y <span class="op">=</span> y</span>
+<span id="cb23-5"><a></a></span>
+<span id="cb23-6"><a></a>    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</span>
+<span id="cb23-7"><a></a>        <span class="cf">return</span> <span class="va">self</span>.x <span class="op">==</span> other.x <span class="kw">and</span> <span class="va">self</span>.y <span class="op">==</span> other.y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="composition-an-object-holds-other-objects" class="slide level2 dense-code">
 <h2>Composition: an Object Holds Other Objects</h2>
 <div class="columns">
 <div class="column" style="width:54%;">
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="kw">class</span> Circuit:</span>
-<span id="cb23-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, volts, max_amps):</span>
-<span id="cb23-3"><a></a>        <span class="va">self</span>.volts <span class="op">=</span> volts</span>
-<span id="cb23-4"><a></a>        <span class="va">self</span>.max_amps <span class="op">=</span> max_amps</span>
-<span id="cb23-5"><a></a>        <span class="va">self</span>.devices <span class="op">=</span> []</span>
-<span id="cb23-6"><a></a></span>
-<span id="cb23-7"><a></a>    <span class="kw">def</span> add(<span class="va">self</span>, device):</span>
-<span id="cb23-8"><a></a>        <span class="va">self</span>.devices.append(device)</span>
-<span id="cb23-9"><a></a></span>
-<span id="cb23-10"><a></a>    <span class="kw">def</span> total_power(<span class="va">self</span>):</span>
-<span id="cb23-11"><a></a>        total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb23-12"><a></a>        <span class="cf">for</span> device <span class="kw">in</span> <span class="va">self</span>.devices:</span>
-<span id="cb23-13"><a></a>            total <span class="op">+=</span> device.power()</span>
-<span id="cb23-14"><a></a>        <span class="cf">return</span> total</span>
-<span id="cb23-15"><a></a></span>
-<span id="cb23-16"><a></a>    <span class="kw">def</span> is_overloaded(<span class="va">self</span>):</span>
-<span id="cb23-17"><a></a>        amps <span class="op">=</span> <span class="va">self</span>.total_power() <span class="op">/</span> <span class="va">self</span>.volts</span>
-<span id="cb23-18"><a></a>        <span class="cf">return</span> amps <span class="op">&gt;</span> <span class="va">self</span>.max_amps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="kw">class</span> Room:</span>
+<span id="cb24-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, volts, max_amps):</span>
+<span id="cb24-3"><a></a>        <span class="va">self</span>.volts <span class="op">=</span> volts</span>
+<span id="cb24-4"><a></a>        <span class="va">self</span>.max_amps <span class="op">=</span> max_amps</span>
+<span id="cb24-5"><a></a>        <span class="va">self</span>.devices <span class="op">=</span> []</span>
+<span id="cb24-6"><a></a></span>
+<span id="cb24-7"><a></a>    <span class="kw">def</span> add(<span class="va">self</span>, device):</span>
+<span id="cb24-8"><a></a>        <span class="va">self</span>.devices.append(device)</span>
+<span id="cb24-9"><a></a></span>
+<span id="cb24-10"><a></a>    <span class="kw">def</span> total_power(<span class="va">self</span>):</span>
+<span id="cb24-11"><a></a>        total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb24-12"><a></a>        <span class="cf">for</span> device <span class="kw">in</span> <span class="va">self</span>.devices:</span>
+<span id="cb24-13"><a></a>            total <span class="op">+=</span> device.power()</span>
+<span id="cb24-14"><a></a>        <span class="cf">return</span> total</span>
+<span id="cb24-15"><a></a></span>
+<span id="cb24-16"><a></a>    <span class="kw">def</span> is_overloaded(<span class="va">self</span>):</span>
+<span id="cb24-17"><a></a>        amps <span class="op">=</span> <span class="va">self</span>.total_power() <span class="op">/</span> <span class="va">self</span>.volts</span>
+<span id="cb24-18"><a></a>        <span class="cf">return</span> amps <span class="op">&gt;</span> <span class="va">self</span>.max_amps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:46%;">
-<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen <span class="op">=</span> Circuit(<span class="dv">230</span>, <span class="dv">10</span>)</span>
-<span id="cb24-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kettle <span class="op">=</span> Device(<span class="st">"kettle"</span>, <span class="dv">2000</span>)</span>
-<span id="cb24-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> oven <span class="op">=</span> Device(<span class="st">"oven"</span>, <span class="dv">1500</span>)</span>
-<span id="cb24-4"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.add(kettle)</span>
-<span id="cb24-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.add(oven)</span>
-<span id="cb24-6"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kettle.switch_on()</span>
-<span id="cb24-7"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.is_overloaded()</span>
-<span id="cb24-8"><a aria-hidden="true" tabindex="-1"></a><span class="va">False</span></span>
-<span id="cb24-9"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> oven.switch_on()</span>
-<span id="cb24-10"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.is_overloaded()</span>
-<span id="cb24-11"><a aria-hidden="true" tabindex="-1"></a><span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen <span class="op">=</span> Room(<span class="dv">230</span>, <span class="dv">10</span>)</span>
+<span id="cb25-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kettle <span class="op">=</span> Device(<span class="st">"kettle"</span>, <span class="dv">2000</span>)</span>
+<span id="cb25-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> oven <span class="op">=</span> Device(<span class="st">"oven"</span>, <span class="dv">1500</span>)</span>
+<span id="cb25-4"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.add(kettle)</span>
+<span id="cb25-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.add(oven)</span>
+<span id="cb25-6"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kettle.switch_on()</span>
+<span id="cb25-7"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.is_overloaded()</span>
+<span id="cb25-8"><a aria-hidden="true" tabindex="-1"></a><span class="va">False</span></span>
+<span id="cb25-9"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> oven.switch_on()</span>
+<span id="cb25-10"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> kitchen.is_overloaded()</span>
+<span id="cb25-11"><a aria-hidden="true" tabindex="-1"></a><span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="steps swap">
 <div class="step fragment fade-up" data-focus="1:5,7-8;2:4-5">
-<p>a <code>Circuit</code> <strong>has</strong> devices: the list is an attribute. A circuit is not a device.</p>
+<p>a <code>Room</code> <strong>has</strong> devices: the list is an attribute. A room is not a device.</p>
 </div>
 <div class="step fragment fade-up" data-focus="1:10-14">
 <p><code>total_power</code> asks every device for its power. It works for every type of <code>Device</code>.</p>
@@ -887,12 +898,15 @@ Basri Erdogan
 <p>kettle on: 2000 W / 230 V = 8.7 A. This is below 10 A.</p>
 </div>
 <div class="step fragment fade-up" data-focus="2:9-11" data-show="2:9-11">
-<p>kettle and oven on: 3500 W / 230 V = 15.2 A. The circuit is overloaded.</p>
+<p>kettle and oven on: 3500 W / 230 V = 15.2 A. The kitchen is overloaded.</p>
+</div>
+<div class="step fragment fade-up">
+<p>Large programs are built this way: small classes inside a bigger class. The main class of your project will hold other objects.</p>
 </div>
 </div>
 </div></div>
 <div class="fragment fade-up takeaway">
-<p><strong>Composition and inheritance together:</strong> <code>total_power</code> is the loop from Part 2 that works for every type of <code>Device</code>, now inside a class.</p>
+<p><strong>Why composition:</strong> each class does one job. A <code>Device</code> knows its own power. The <code>Room</code> adds the results and checks the limit.</p>
 </div>
 </section>
 <section id="inheritance-or-composition" class="slide level2 checkpoint">
@@ -914,7 +928,7 @@ Basri Erdogan
 <tr class="even">
 <td>“A <strong>has a</strong> B”</td>
 <td>composition</td>
-<td>a <code>Circuit</code> has <code>Device</code> objects</td>
+<td>a <code>Room</code> has <code>Device</code> objects</td>
 </tr>
 </tbody>
 </table>
@@ -953,13 +967,13 @@ Basri Erdogan
 <p>Then answer Yes or No, with one sentence: does <code>print(fan)</code> use the <code>power</code> method of <code>Fan</code>?</p>
 </div><div class="column" style="width:54%;">
 <div class="answer fragment fade-up">
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a><span class="kw">class</span> Fan(Device):</span>
-<span id="cb25-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, watts, speed<span class="op">=</span><span class="dv">1</span>):</span>
-<span id="cb25-3"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(name, watts)</span>
-<span id="cb25-4"><a></a>        <span class="va">self</span>.speed <span class="op">=</span> speed</span>
-<span id="cb25-5"><a></a></span>
-<span id="cb25-6"><a></a>    <span class="kw">def</span> power(<span class="va">self</span>):</span>
-<span id="cb25-7"><a></a>        <span class="cf">return</span> <span class="bu">super</span>().power() <span class="op">*</span> <span class="va">self</span>.speed <span class="op">/</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a><span class="kw">class</span> Fan(Device):</span>
+<span id="cb26-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, watts, speed<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb26-3"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(name, watts)</span>
+<span id="cb26-4"><a></a>        <span class="va">self</span>.speed <span class="op">=</span> speed</span>
+<span id="cb26-5"><a></a></span>
+<span id="cb26-6"><a></a>    <span class="kw">def</span> power(<span class="va">self</span>):</span>
+<span id="cb26-7"><a></a>        <span class="cf">return</span> <span class="bu">super</span>().power() <span class="op">*</span> <span class="va">self</span>.speed <span class="op">/</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="ans-rows">
 <p><span class="ans-key"><code>print(fan)</code> uses <code>Fan.power</code>?</span> <span class="ans-val"><strong>Yes</strong></span></p>
 </div>
