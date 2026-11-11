@@ -6,8 +6,8 @@
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.43">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.42">
 
   <meta name="author" content="Basri Erdogan">
   <title>EE1021 Programming for Engineers – OOP II: Inheritance and Applications</title>
@@ -277,19 +277,13 @@ Basri Erdogan
 <h2>Outside Code Can Skip the Check in <code>__init__</code></h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>r1 <span class="op">=</span> Resistor(<span class="st">"R1"</span>, <span class="dv">100</span>)</span>
 <span id="cb3-2"><a></a>r1.ohms <span class="op">=</span> <span class="op">-</span><span class="dv">50</span></span>
-<span id="cb3-3"><a></a><span class="bu">print</span>(r1.current(<span class="dv">5</span>))        <span class="co"># -0.1</span></span>
-<span id="cb3-4"><a></a></span>
-<span id="cb3-5"><a></a>r1.omhs <span class="op">=</span> <span class="dv">220</span></span>
-<span id="cb3-6"><a></a><span class="bu">print</span>(r1.ohms)              <span class="co"># -50</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a></a><span class="bu">print</span>(r1.current(<span class="dv">5</span>))        <span class="co"># -0.1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="steps row">
 <div class="step fragment fade-up" data-focus="1">
 <p><code>__init__</code> checks the value <strong>one time</strong>, when the object is created</p>
 </div>
 <div class="step fragment fade-up" data-show="2-3" data-focus="2-3">
 <p>after that, Python accepts any value: a wrong result, and no error</p>
-</div>
-<div class="step fragment fade-up" data-show="5-6" data-focus="5-6">
-<p>a spelling mistake creates a <strong>new</strong> attribute; <code>ohms</code> does not change</p>
 </div>
 </div>
 <div class="fragment fade-up takeaway">
