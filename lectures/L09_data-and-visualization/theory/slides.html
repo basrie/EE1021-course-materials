@@ -95,7 +95,7 @@
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-2f366650f320edcfcf53d73c80250a32.css">
-  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="../assets/styles.css?v=442100ef">
   <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -196,7 +196,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Plotting and Visualization</h1>
-  <p class="subtitle">EE1021 Programming for Engineers - Lecture 9</p>
+  <p class="subtitle">EE1021 Programming for Engineers · Lecture 9 · 2026–2027</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -207,856 +207,713 @@ Basri Erdogan
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- Inline tweaks for EE1021 dense programming tables/code within the robotics slide style -->
-<div class="hidden">
-<style>
-.reveal pre { max-width: 100%; overflow-x: auto; box-sizing: border-box; }
-.reveal pre code { white-space: pre; font-size: 0.92em; display: block; }
-.reveal .columns .column pre { margin-top: 0.25rem; }
-.reveal code { color: #111; }
-.sourceCode span.kw { color: #0000ff !important; font-weight: normal !important; }
-.sourceCode span.co { color: #007300 !important; font-style: normal !important; }
-.sourceCode span.st { color: #b200b2 !important; }
-.sourceCode span.dv { color: #ad0000 !important; }
-.reveal li code:not(.sourceCode):not([class*="language-"]) {
-  color: #1c5b84;
-  font-weight: 700;
-}
-.compact-table table { font-size: 0.58em; }
-.operator-table table { font-size: 0.66em; }
-.centered-figure { text-align: center; }
-.centered-figure img { max-height: 58vh; }
-</style>
-</div>
-</section>
 <section id="lecture-goals" class="slide level2">
 <h2>Lecture Goals</h2>
+<div class="card-grid">
+<div class="card">
+<p><strong>Part 1 · Arrays</strong></p>
 <ol type="1">
-<li>Understand the structure of a matplotlib graphic: <strong>figure, axes, and line objects</strong></li>
-<li>Create line plots and customize <strong>markers, colors, line widths, and line styles</strong></li>
-<li>Make plots readable with <strong>titles, axis labels, legends, grids, and axis limits</strong></li>
-<li>Choose the right axis scaling: <strong>linear, semilogx, semilogy, and loglog</strong></li>
-<li>Combine several plots in one figure with <strong>subplots</strong></li>
-<li>Plot complex-valued and periodic data using <strong>polar plots</strong></li>
+<li>Make an array with <code>np.array</code>, <code>np.arange</code>, and <code>np.linspace</code></li>
+<li>Calculate with a whole array in one line</li>
 </ol>
+</div>
+<div class="card">
+<p><strong>Part 2 · Line plots</strong></p>
+<ol start="3" type="1">
+<li>Draw a line plot with <code>plt.subplots()</code> and <code>ax.plot(x, y)</code></li>
+<li>Set the color, the line style, and the marker</li>
+<li>Add a title, axis labels with units, a legend, and a grid</li>
+</ol>
+</div>
+<div class="card">
+<p><strong>Part 3 · More views</strong></p>
+<ol start="6" type="1">
+<li>Choose a linear or a logarithmic axis</li>
+<li>Put several axes in one figure</li>
+<li>Save a figure to an image file</li>
+</ol>
+</div>
+</div>
 </section>
-<section>
-<section id="part-1-first-plots-with-matplotlib" class="title-slide slide level1 section-divider center">
-<h1>Part 1: First Plots with Matplotlib</h1>
-
-</section>
-<section id="last-time-today" class="slide level2">
-<h2>Last Time / Today</h2>
+<section id="predict-the-output-math-with-a-list" class="slide level2 checkpoint">
+<h2>Predict the Output: Math with a List</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Last time</strong></p>
-<ul>
-<li>NumPy arrays</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>Today: <code>matplotlib.pyplot</code></strong></p>
-<ul>
-<li>Drawing graphs in Python with Matplotlib’s PyPlot module</li>
-<li>Line graphs and their customization</li>
-<li>Subplotting</li>
-<li>Polar plots</li>
-</ul>
+<div class="column" style="width:46%;">
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>volts <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>]</span>
+<span id="cb1-2"><a></a></span>
+<span id="cb1-3"><a></a><span class="bu">print</span>(volts <span class="op">*</span> <span class="dv">2</span>)      <span class="co"># line A</span></span>
+<span id="cb1-4"><a></a><span class="bu">print</span>(volts <span class="op">/</span> <span class="dv">100</span>)    <span class="co"># line B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="1">
+<li>Write the output of line A.</li>
+<li>Does line B work? Write Yes or No.</li>
+</ol>
+</div><div class="column" style="width:54%;">
+<div class="answer fragment fade-up" data-focus="1:3-4">
+<div class="ans-rows">
+<p><span class="ans-key">line A</span> <span class="ans-val"><code>[0, 2, 4, 6, 0, 2, 4, 6]</code></span></p>
+<p><span class="ans-key">line B</span> <span class="ans-val"><strong>No</strong>: <code>TypeError</code></span></p>
+</div>
+<div class="ans-why fragment fade-up">
+<p><strong>Why:</strong> for a list, <code>*</code> means “repeat the list”. A list has no <code>/</code>. To divide every element, we need a loop:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>amps <span class="op">=</span> []</span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> volts:</span>
+<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>    amps.append(v <span class="op">/</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </div></div>
-</section>
-<section id="visualization" class="slide level2">
-<h2>Visualization</h2>
-<ul>
-<li>Visualization is a universal tool for investigating and communicating results of computational studies.</li>
-<li>Knowledge and insights can be most easily gained from computational results when they are visualized.</li>
-<li>There are a number of high-quality visualization libraries for Python.</li>
-<li>The most popular one is <strong>Matplotlib</strong>.
-<ul>
-<li>Website: <a href="http://www.matplotlib.org" class="uri">http://www.matplotlib.org</a></li>
-<li>Main focus is on generating static 2D and 3D graphs.</li>
-</ul></li>
-</ul>
-</section>
-<section id="anatomy-of-a-figure" class="slide level2">
-<h2>Anatomy of a Figure</h2>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide05_image1.png" style="width:62.0%"></p>
+<div class="fragment fade-up takeaway">
+<p>Today: a NumPy <strong>array</strong> does this in one line: <code>amps = volts / 100</code></p>
 </div>
 </section>
-<section id="figure-axes-and-line-objects" class="slide level2">
-<h2>Figure, Axes, and Line Objects</h2>
-<ul>
-<li>The <strong>Figure</strong> is the main instance of a graph window.</li>
-<li>A figure may involve more than one <strong>Axes</strong> area.
-<ul>
-<li>The axis provides the coordinate system.</li>
-</ul></li>
-<li>An axes area may involve more than one <strong>Line</strong> object.</li>
-</ul>
-</section>
-<section id="first-plot" class="slide level2">
-<h2>First Plot</h2>
-<p>To draw a first plot, we:</p>
-<ol type="1">
-<li>Generate an <code>x</code> array.</li>
-<li>Calculate the <code>y</code> array from <code>x</code>.</li>
-<li>Plot <code>x</code> versus <code>y</code>.</li>
-</ol>
-</section>
-<section id="first-plot-code" class="slide level2">
-<h2>First Plot: Code</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-3"><a></a></span>
-<span id="cb1-4"><a></a><span class="co"># generate x array</span></span>
-<span id="cb1-5"><a></a>x <span class="op">=</span> np.arange(<span class="op">-</span><span class="dv">5</span>, <span class="dv">4</span>)</span>
-<span id="cb1-6"><a></a></span>
-<span id="cb1-7"><a></a><span class="co"># calculate y from x</span></span>
-<span id="cb1-8"><a></a>y <span class="op">=</span> <span class="dv">5</span><span class="op">*</span>x <span class="op">+</span> <span class="dv">4</span></span>
-<span id="cb1-9"><a></a></span>
-<span id="cb1-10"><a></a><span class="co"># create figure and axes objects</span></span>
-<span id="cb1-11"><a></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb1-12"><a></a>lns, <span class="op">=</span> axs.plot(x, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="first-plot-result" class="slide level2">
-<h2>First Plot: Result</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb2-2"><a></a>lns <span class="op">=</span> axs.plot(x, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>fig, axs = plt.subplots(1, 1)</code>
-<ul>
-<li>Creates a figure (<code>fig</code>)</li>
-<li>Creates axes (<code>axs</code>)</li>
-</ul></li>
-<li><code>lns = axs.plot(x, y)</code>
-<ul>
-<li>Plots/creates a line object.</li>
-<li><code>lns</code> is a <strong>list</strong> of line objects; you can create more than one line object at a time.</li>
-<li>There is only one line object in this example, so to access the object you need to use <code>lns[0]</code>.</li>
-</ul></li>
-</ul>
-</section>
-<section id="plot-details" class="slide level2">
-<h2>Plot Details</h2>
-<ul>
-<li><code>x</code> and <code>y</code> are indeed discrete points (coordinates).</li>
-<li>By default, invisible markers are put at these coordinates.</li>
-<li>Matplotlib connects these markers with lines.</li>
-<li>The result is a continuous-looking plot.</li>
-<li>Markers can be set as visible characters with adjustable sizes.</li>
-<li>Line type, color, and size can also be adjusted.</li>
-</ul>
-</section></section>
 <section>
-<section id="part-2-customizing-line-plots" class="title-slide slide level1 section-divider center">
-<h1>Part 2: Customizing Line Plots</h1>
-
+<section id="part-1-numpy-arrays" class="title-slide slide level1 section-divider center">
+<h1>Part 1: NumPy Arrays</h1>
 </section>
-<section id="plotting-with-a-specific-marker" class="slide level2">
-<h2>Plotting with a Specific Marker</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>lns, <span class="op">=</span> axs.plot(x, y, marker<span class="op">=</span><span class="st">'o'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide12_image1.png" style="width:52.0%"></p>
+<section id="install-numpy-and-matplotlib-one-time" class="slide level2">
+<h2>Install NumPy and Matplotlib One Time</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>In the VS Code terminal:</p>
+<div class="terminal">
+<div class="sourceCode" id="cb3"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a>python -m pip install numpy matplotlib</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>At the top of the program:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:48%;">
+<div class="steps">
+<div class="step fragment fade-up">
+<p><span class="tag">package</span> code written by other people. NumPy and Matplotlib are <strong>not</strong> in the Python download.</p>
+</div>
+<div class="step fragment fade-up">
+<p><span class="tag">install</span> run this command <strong>one time</strong> on each computer. On macOS, write <code>python3</code>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:1-2">
+<p><span class="tag">import</span> write these two lines in <strong>every</strong> program that uses the packages</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:1-2">
+<p><code>as np</code> gives a short name: we write <code>np.array</code>, not <code>numpy.array</code></p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p><strong>NumPy</strong>: arrays and fast math. <strong>Matplotlib</strong>: plots. Lecture 11 covers NumPy in detail.</p>
 </div>
 </section>
-<section id="markers" class="slide level2">
-<h2>Markers</h2>
+<section id="a-numpy-array-calculates-with-every-element" class="slide level2">
+<h2>A NumPy Array Calculates with Every Element</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="compact-table">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Symbol</th>
-<th>Marker</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>"."</code></td>
-<td>point</td>
-</tr>
-<tr class="even">
-<td><code>","</code></td>
-<td>pixel</td>
-</tr>
-<tr class="odd">
-<td><code>"o"</code></td>
-<td>circle</td>
-</tr>
-<tr class="even">
-<td><code>"v"</code></td>
-<td>triangle_down</td>
-</tr>
-<tr class="odd">
-<td><code>"^"</code></td>
-<td>triangle_up</td>
-</tr>
-<tr class="even">
-<td><code>"&lt;"</code></td>
-<td>triangle_left</td>
-</tr>
-<tr class="odd">
-<td><code>"&gt;"</code></td>
-<td>triangle_right</td>
-</tr>
-<tr class="even">
-<td><code>"1"</code></td>
-<td>tri_down</td>
-</tr>
-<tr class="odd">
-<td><code>"2"</code></td>
-<td>tri_up</td>
-</tr>
-<tr class="even">
-<td><code>"3"</code></td>
-<td>tri_left</td>
-</tr>
-<tr class="odd">
-<td><code>"4"</code></td>
-<td>tri_right</td>
-</tr>
-<tr class="even">
-<td><code>"8"</code></td>
-<td>octagon</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>volts <span class="op">=</span> np.array([<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>])</span>
+<span id="cb5-2"><a></a>amps <span class="op">=</span> volts <span class="op">/</span> <span class="dv">100</span></span>
+<span id="cb5-3"><a></a>watts <span class="op">=</span> volts <span class="op">*</span> amps</span>
+<span id="cb5-4"><a></a></span>
+<span id="cb5-5"><a></a><span class="bu">print</span>(amps)</span>
+<span id="cb5-6"><a></a><span class="bu">print</span>(volts <span class="op">*</span> <span class="dv">2</span>)</span>
+<span id="cb5-7"><a></a><span class="bu">print</span>(watts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a>[0.   0.02 0.04 0.06]</span>
+<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a>[ 0  4  8 12]</span>
+<span id="cb6-3"><a aria-hidden="true" tabindex="-1"></a>[0.   0.04 0.16 0.36]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
-<div class="compact-table">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:1">
+<p><code>np.array(...)</code> makes an array from a list</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:2,5;2:1" data-show="2:1">
+<p><code>/ 100</code> divides <strong>every element</strong>. The result is a new array with the same length.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:6;2:2" data-show="2:2">
+<p><code>* 2</code> multiplies every element. It does not repeat the array.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:3,7;2:3" data-show="2:3">
+<p>array <code>*</code> array of the <strong>same length</strong>: first with first, second with second, … Here: power = voltage × current.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:1-3">
+<p>a printed array has <strong>no commas</strong>. A printed list has commas.</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>Math with an array is done <strong>element by element</strong>, without a loop.</p>
+</div>
+</section>
+<section id="arange-and-linspace-make-evenly-spaced-values" class="slide level2">
+<h2><code>arange</code> and <code>linspace</code> Make Evenly Spaced Values</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> np.arange(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">2</span>)</span>
+<span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>array([<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>])</span>
+<span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> np.arange(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.25</span>)</span>
+<span id="cb7-4"><a aria-hidden="true" tabindex="-1"></a>array([<span class="fl">0.</span>  , <span class="fl">0.25</span>, <span class="fl">0.5</span> , <span class="fl">0.75</span>])</span>
+<span id="cb7-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">5</span>)</span>
+<span id="cb7-6"><a aria-hidden="true" tabindex="-1"></a>array([<span class="fl">0.</span>  , <span class="fl">0.25</span>, <span class="fl">0.5</span> , <span class="fl">0.75</span>, <span class="fl">1.</span>  ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:48%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1-2">
+<p><span class="tag"><code>arange</code></span> <code>np.arange(start, stop, step)</code> works like <code>range</code>: the stop value is <strong>not</strong> in the array</p>
+</div>
+<div class="step fragment fade-up" data-focus="3-4" data-show="3-4">
+<p>the step can be a decimal number. <code>range</code> accepts only integers.</p>
+</div>
+<div class="step fragment fade-up" data-focus="5-6" data-show="5-6">
+<p><span class="tag t-add"><code>linspace</code></span> <code>np.linspace(start, stop, number)</code>: you give the <strong>number of points</strong>. The stop value <strong>is</strong> in the array.</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>You know the <strong>step</strong>: use <code>arange</code>. You know the <strong>number of points</strong>: use <code>linspace</code>.</p>
+</div>
+</section>
+<section id="numpy-math-functions-take-a-whole-array" class="slide level2">
+<h2>NumPy Math Functions Take a Whole Array</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> watts <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">9</span>])</span>
+<span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> np.sqrt(watts <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb8-3"><a aria-hidden="true" tabindex="-1"></a>array([<span class="fl">10.</span>, <span class="fl">20.</span>, <span class="fl">30.</span>])</span>
+<span id="cb8-4"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> np.pi</span>
+<span id="cb8-5"><a aria-hidden="true" tabindex="-1"></a><span class="fl">3.141592653589793</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Symbol</th>
-<th>Marker</th>
+<th>name</th>
+<th>meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>"s"</code></td>
-<td>square</td>
+<td><code>np.sqrt(x)</code></td>
+<td>square root of every element</td>
 </tr>
 <tr class="even">
-<td><code>"p"</code></td>
-<td>pentagon</td>
+<td><code>np.sin(x)</code>, <code>np.cos(x)</code></td>
+<td>sine, cosine; <code>x</code> is in radians</td>
 </tr>
 <tr class="odd">
-<td><code>"P"</code></td>
-<td>plus (filled)</td>
+<td><code>np.exp(x)</code></td>
+<td>e to the power of every element</td>
 </tr>
 <tr class="even">
-<td><code>"*"</code></td>
-<td>star</td>
-</tr>
-<tr class="odd">
-<td><code>"h"</code></td>
-<td>hexagon1</td>
-</tr>
-<tr class="even">
-<td><code>"H"</code></td>
-<td>hexagon2</td>
-</tr>
-<tr class="odd">
-<td><code>"+"</code></td>
-<td>plus</td>
-</tr>
-<tr class="even">
-<td><code>"x"</code></td>
-<td>x</td>
-</tr>
-<tr class="odd">
-<td><code>"X"</code></td>
-<td>x (filled)</td>
-</tr>
-<tr class="even">
-<td><code>"D"</code></td>
-<td>diamond</td>
-</tr>
-<tr class="odd">
-<td><code>"d"</code></td>
-<td>thin_diamond</td>
-</tr>
-<tr class="even">
-<td><code>"\|"</code></td>
-<td>vline</td>
-</tr>
-<tr class="odd">
-<td><code>"_"</code></td>
-<td>hline</td>
+<td><code>np.pi</code></td>
+<td>the number π</td>
 </tr>
 </tbody>
 </table>
+</div><div class="column" style="width:50%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1-3">
+<p>V = √(P · R) for three power values in one line. R is 100 ohm.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2">
+<p><code>math.sqrt</code> takes <strong>one number</strong>. With an array it raises a <code>TypeError</code>. With arrays, use the <code>np.</code> functions.</p>
+</div>
+<div class="step fragment fade-up" data-focus="4-5" data-show="4-5">
+<p>a sine wave with frequency <code>f</code>, at the times in the array <code>t</code>: <code>np.sin(2 * np.pi * f * t)</code></p>
+</div>
 </div>
 </div></div>
 </section>
-<section id="marker-size" class="slide level2">
-<h2>Marker Size</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>plt.plot(x, y, marker<span class="op">=</span><span class="st">'o'</span>, markersize<span class="op">=</span><span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide14_image1.png" style="width:52.0%"></p>
+<section id="write-the-four-arrays" class="slide level2 checkpoint">
+<h2>Write the Four Arrays</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>a <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">4</span>)          <span class="co"># line A</span></span>
+<span id="cb9-2"><a></a>b <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">3</span>)    <span class="co"># line B</span></span>
+<span id="cb9-3"><a></a>c <span class="op">=</span> a <span class="op">*</span> <span class="dv">10</span> <span class="op">+</span> <span class="dv">5</span>               <span class="co"># line C</span></span>
+<span id="cb9-4"><a></a>d <span class="op">=</span> a <span class="op">+</span> a                    <span class="co"># line D</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Write the values in each array.</p>
+</div><div class="column" style="width:50%;">
+<div class="answer fragment fade-up" data-focus="1-4">
+<div class="ans-rows">
+<p><span class="ans-key"><code>a</code></span> <span class="ans-val"><code>[1 2 3]</code></span></p>
+<p><span class="ans-key"><code>b</code></span> <span class="ans-val"><code>[ 0.  5. 10.]</code></span></p>
+<p><span class="ans-key"><code>c</code></span> <span class="ans-val"><code>[15 25 35]</code></span></p>
+<p><span class="ans-key"><code>d</code></span> <span class="ans-val"><code>[2 4 6]</code></span></p>
 </div>
-</section>
-<section id="line-color" class="slide level2">
-<h2>Line Color</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>lns, <span class="op">=</span> axs.plot(x, y, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'r'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide15_image1.png" style="width:52.0%"></p>
+<div class="ans-why fragment fade-up" data-focus="1-2,4">
+<p><strong>Why:</strong> line A: the stop value 4 is not in the array. Line B: 3 points, and the stop value 10 is in the array. Line D: <code>+</code> adds element by element. With two <strong>lists</strong>, <code>+</code> joins the lists.</p>
 </div>
-</section>
-<section id="colors" class="slide level2">
-<h2>Colors</h2>
-<p>Fast color names:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Code</th>
-<th>Color</th>
-<th>Code</th>
-<th>Color</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>'b'</code></td>
-<td>blue</td>
-<td><code>'m'</code></td>
-<td>magenta</td>
-</tr>
-<tr class="even">
-<td><code>'g'</code></td>
-<td>green</td>
-<td><code>'y'</code></td>
-<td>yellow</td>
-</tr>
-<tr class="odd">
-<td><code>'r'</code></td>
-<td>red</td>
-<td><code>'k'</code></td>
-<td>black</td>
-</tr>
-<tr class="even">
-<td><code>'c'</code></td>
-<td>cyan</td>
-<td><code>'w'</code></td>
-<td>white</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="line-width-lw" class="slide level2">
-<h2>Line Width (<code>lw</code>)</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>lns, <span class="op">=</span> axs.plot(x, y, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'r'</span>, lw<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide17_image1.png" style="width:52.0%"></p>
 </div>
-</section>
-<section id="line-style-ls" class="slide level2">
-<h2>Line Style (<code>ls</code>)</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>lns <span class="op">=</span> axs.plot(x, y, marker<span class="op">=</span><span class="st">'*'</span>, color<span class="op">=</span><span class="st">'r'</span>, lw<span class="op">=</span><span class="dv">1</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide18_image1.png" style="width:52.0%"></p>
-</div>
-</section>
-<section id="line-styles" class="slide level2">
-<h2>Line Styles</h2>
-<p>Set with the <code>linestyle</code> (or <code>ls</code>) keyword:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Value</th>
-<th>Style</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>'-'</code></td>
-<td>solid</td>
-</tr>
-<tr class="even">
-<td><code>'--'</code></td>
-<td>dashed</td>
-</tr>
-<tr class="odd">
-<td><code>':'</code></td>
-<td>dotted</td>
-</tr>
-<tr class="even">
-<td><code>'-.'</code></td>
-<td>dash-dotted</td>
-</tr>
-</tbody>
-</table>
+</div></div>
 </section></section>
 <section>
-<section id="part-3-multiple-lines-legends-and-labels" class="title-slide slide level1 section-divider center">
-<h1>Part 3: Multiple Lines, Legends, and Labels</h1>
-
+<section id="part-2-line-plots-with-matplotlib" class="title-slide slide level1 section-divider center">
+<h1>Part 2: Line Plots with Matplotlib</h1>
 </section>
-<section id="adding-a-second-plot-code" class="slide level2">
-<h2>Adding a Second Plot: Code</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb8-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb8-3"><a></a></span>
-<span id="cb8-4"><a></a><span class="co"># generate x array</span></span>
-<span id="cb8-5"><a></a>x <span class="op">=</span> np.arange(<span class="op">-</span><span class="dv">5</span>, <span class="dv">4</span>, <span class="fl">.1</span>)</span>
-<span id="cb8-6"><a></a></span>
-<span id="cb8-7"><a></a><span class="co"># calculate y and d</span></span>
-<span id="cb8-8"><a></a>y <span class="op">=</span> <span class="dv">5</span><span class="op">*</span>x <span class="op">+</span> <span class="dv">4</span></span>
-<span id="cb8-9"><a></a>d <span class="op">=</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x <span class="op">-</span> <span class="dv">3</span></span>
-<span id="cb8-10"><a></a></span>
-<span id="cb8-11"><a></a><span class="co"># create figure and axes objects</span></span>
-<span id="cb8-12"><a></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb8-13"><a></a>lns <span class="op">=</span> axs.plot(x, y, x, d)  <span class="co"># lns is a list of two line objects</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="adding-a-second-plot-result" class="slide level2">
-<h2>Adding a Second Plot: Result</h2>
-<ul>
-<li>Colors are automatically assigned (if not specified).</li>
-</ul>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide22_image1.png" style="width:52.0%"></p>
+<section id="a-plot-has-three-objects-figure-axes-line" class="slide level2">
+<h2>A Plot Has Three Objects: Figure, Axes, Line</h2>
+<div class="columns">
+<div class="column" style="width:46%;">
+<p><img data-src="../assets/l09_anatomy.png" class="fig" alt="A plot with two lines. The whole picture has the label Figure. The drawing area with the x axis and the y axis has the label Axes. One of the two lines has the label Line."></p>
+</div><div class="column" style="width:54%;">
+<div class="steps">
+<div class="step fragment fade-up">
+<p><span class="tag">Figure</span> the whole picture: one window, or one image file</p>
+</div>
+<div class="step fragment fade-up">
+<p><span class="tag t-add">Axes</span> one drawing area with an x axis and a y axis. A figure can hold several axes.</p>
+</div>
+<div class="step fragment fade-up">
+<p><span class="tag t-replace">Line</span> the data, drawn in an axes. An axes can hold several lines.</p>
+</div>
+<div class="step fragment fade-up">
+<p>They are <strong>objects</strong> (Lecture 7): <code>ax.plot(...)</code> and <code>fig.savefig(...)</code> are method calls</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p><strong>Axes</strong> is one drawing area. <strong>Axis</strong> is one direction: the x axis, the y axis.</p>
 </div>
 </section>
-<section id="legend" class="slide level2">
-<h2>Legend</h2>
-<ul>
-<li>Every plot in an axes pair should have a name.</li>
-<li>This name is shown in the legend area.</li>
-<li><code>legend</code> is a function of the axes object.</li>
-</ul>
-</section>
-<section id="legend-code" class="slide level2">
-<h2>Legend: Code</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb9-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb9-3"><a></a></span>
-<span id="cb9-4"><a></a><span class="co"># generate x array</span></span>
-<span id="cb9-5"><a></a>x <span class="op">=</span> np.arange(<span class="op">-</span><span class="dv">5</span>, <span class="dv">4</span>, <span class="fl">.1</span>)</span>
-<span id="cb9-6"><a></a></span>
-<span id="cb9-7"><a></a><span class="co"># calculate y and d</span></span>
-<span id="cb9-8"><a></a>y <span class="op">=</span> <span class="dv">5</span><span class="op">*</span>x <span class="op">+</span> <span class="dv">4</span></span>
-<span id="cb9-9"><a></a>d <span class="op">=</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x <span class="op">-</span> <span class="dv">3</span></span>
-<span id="cb9-10"><a></a></span>
-<span id="cb9-11"><a></a><span class="co"># create figure and axes objects</span></span>
-<span id="cb9-12"><a></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb9-13"><a></a>line1, <span class="op">=</span> ax.plot(x, y)</span>
-<span id="cb9-14"><a></a>line2, <span class="op">=</span> ax.plot(x, d)</span>
-<span id="cb9-15"><a></a></span>
-<span id="cb9-16"><a></a><span class="co"># create legend</span></span>
-<span id="cb9-17"><a></a>ax.legend([line1, line2], [<span class="st">'y curve'</span>, <span class="st">'d curve'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="legend-result" class="slide level2">
-<h2>Legend: Result</h2>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide24_image1.png" style="width:52.0%"></p>
+<section id="the-first-plot-subplots-plot-show" class="slide level2">
+<h2>The First Plot: <code>subplots</code>, <code>plot</code>, <code>show</code></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-3"><a></a></span>
+<span id="cb10-4"><a></a>volts <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">11</span>)</span>
+<span id="cb10-5"><a></a>amps <span class="op">=</span> volts <span class="op">/</span> <span class="dv">100</span></span>
+<span id="cb10-6"><a></a></span>
+<span id="cb10-7"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb10-8"><a></a>ax.plot(volts, amps)</span>
+<span id="cb10-9"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-fragment-index="1" data-focus="4-5">
+<p>the data: 0, 1, …, 10 V, and the current through a 100 ohm resistor. Two arrays with the <strong>same length</strong>.</p>
 </div>
+<div class="step fragment fade-up" data-fragment-index="2" data-focus="7">
+<p><code>plt.subplots()</code> creates a figure with one axes. It returns two objects. We name them <code>fig</code> and <code>ax</code>.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="3" data-focus="8">
+<p><code>ax.plot(x, y)</code>: the x values first, then the y values. It adds one line to the axes.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="4" data-focus="9">
+<p><code>plt.show()</code> opens the window with the figure. The program waits at this line until you close the window.</p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><img data-src="../assets/l09_first_plot.png" class="fig fragment" data-fragment-index="4" alt="A straight line from 0 volts, 0 amperes to 10 volts, 0.1 amperes. The axes have numbers but no labels."></p>
+<div class="fragment fade-up takeaway" data-fragment-index="5">
+<p>Without <code>plt.show()</code>, no window opens.</p>
+</div>
+</div></div>
 </section>
-<section id="axes-labels" class="slide level2">
-<h2>Axes Labels</h2>
-<ul>
-<li>In a reliable plot, every axis should have a name and a unit.</li>
-<li>In cartesian coordinates, axes are perpendicular.</li>
-</ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>ax.set_xlabel(<span class="st">'This is X axis'</span>)</span>
-<span id="cb10-2"><a></a>ax.set_ylabel(<span class="st">'This is Y axis'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="axes-labels-code" class="slide level2">
-<h2>Axes Labels: Code</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb11-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<section id="matplotlib-joins-the-points-with-straight-lines" class="slide level2">
+<h2>Matplotlib Joins the Points with Straight Lines</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.04</span>, <span class="dv">9</span>)</span>
+<span id="cb11-2"><a></a>volts <span class="op">=</span> <span class="dv">5</span> <span class="op">*</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="dv">50</span> <span class="op">*</span> t)</span>
 <span id="cb11-3"><a></a></span>
-<span id="cb11-4"><a></a><span class="co"># generate x array</span></span>
-<span id="cb11-5"><a></a>x <span class="op">=</span> np.arange(<span class="op">-</span><span class="dv">5</span>, <span class="dv">4</span>, <span class="fl">.1</span>)</span>
-<span id="cb11-6"><a></a></span>
-<span id="cb11-7"><a></a><span class="co"># calculate y and d</span></span>
-<span id="cb11-8"><a></a>y <span class="op">=</span> <span class="dv">5</span><span class="op">*</span>x <span class="op">+</span> <span class="dv">4</span></span>
-<span id="cb11-9"><a></a>d <span class="op">=</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x <span class="op">-</span> <span class="dv">3</span></span>
-<span id="cb11-10"><a></a></span>
-<span id="cb11-11"><a></a><span class="co"># create figure and axes objects</span></span>
-<span id="cb11-12"><a></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb11-13"><a></a>line1, <span class="op">=</span> ax.plot(x, y)</span>
-<span id="cb11-14"><a></a>line2, <span class="op">=</span> ax.plot(x, d)</span>
-<span id="cb11-15"><a></a></span>
-<span id="cb11-16"><a></a><span class="co"># create legend</span></span>
-<span id="cb11-17"><a></a>ax.legend([line1, line2], [<span class="st">'y curve'</span>, <span class="st">'d curve'</span>])</span>
-<span id="cb11-18"><a></a></span>
-<span id="cb11-19"><a></a><span class="co"># put axis labels</span></span>
-<span id="cb11-20"><a></a>ax.set_xlabel(<span class="st">'This is X axis'</span>)</span>
-<span id="cb11-21"><a></a>ax.set_ylabel(<span class="st">'This is Y axis'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="axes-labels-result" class="slide level2">
-<h2>Axes Labels: Result</h2>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide27_image1.png" style="width:52.0%"></p>
+<span id="cb11-4"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb11-5"><a></a>ax.plot(t, volts, marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb11-6"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-fragment-index="1" data-focus="1-2">
+<p>a sine wave: amplitude 5 V, frequency 50 Hz. <code>t</code> goes from 0 to 0.04 s: two periods.</p>
 </div>
-</section>
-<section id="grids" class="slide level2">
-<h2>Grids</h2>
-<ul>
-<li>For an easier visual follow of plot values on a graph, grids are also desired.</li>
-<li>To put a grid, call the <code>grid()</code> function with a <code>True</code> bool:</li>
-</ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Without any input, it will <strong>toggle</strong> grid lines (turn them on if presently off and vice versa).</li>
-</ul>
-</section>
-<section id="grids-result" class="slide level2">
-<h2>Grids: Result</h2>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide30_image1.png" style="width:52.0%"></p>
+<div class="step fragment fade-up" data-fragment-index="2" data-focus="5">
+<p><code>marker="o"</code> draws a circle at each point. Matplotlib joins the points with straight lines.</p>
 </div>
-</section>
-<section id="axis-limits" class="slide level2">
-<h2>Axis Limits</h2>
-<ul>
-<li>Axis limits are automatically set,</li>
-<li>but can be manually assigned:</li>
-</ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>ax.set_xlim(left, right)</span>
-<span id="cb13-2"><a></a>ax.set_ylim(bottom, top)</span>
-<span id="cb13-3"><a></a>ax.axis([xmin, xmax, ymin, ymax])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="example-trigonometric-plots" class="slide level2">
-<h2>Example: Trigonometric Plots</h2>
-<p>Sample the sine function with <code>np.linspace</code>, once coarsely and once densely:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb14-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb14-3"><a></a></span>
-<span id="cb14-4"><a></a>x10 <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">10</span>)</span>
-<span id="cb14-5"><a></a>y_10pts <span class="op">=</span> np.sin(x10)</span>
-<span id="cb14-6"><a></a></span>
-<span id="cb14-7"><a></a>x50 <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">50</span>)</span>
-<span id="cb14-8"><a></a>y_50pts <span class="op">=</span> np.sin(x50)</span>
-<span id="cb14-9"><a></a></span>
-<span id="cb14-10"><a></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb14-11"><a></a>line1, <span class="op">=</span> ax.plot(x10, y_10pts, marker<span class="op">=</span><span class="st">'.'</span>, markersize<span class="op">=</span><span class="dv">8</span>, ls<span class="op">=</span><span class="st">'-'</span>)</span>
-<span id="cb14-12"><a></a>ax.set_title(<span class="st">'sine wave (10 pts)'</span>)</span>
-<span id="cb14-13"><a></a>ax.set_xlabel(<span class="st">'Phase (radians)'</span>)</span>
-<span id="cb14-14"><a></a>ax.grid(<span class="va">True</span>)</span>
-<span id="cb14-15"><a></a></span>
-<span id="cb14-16"><a></a>fig2, ax2 <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb14-17"><a></a>line2, <span class="op">=</span> ax2.plot(x50, y_50pts, marker<span class="op">=</span><span class="st">'.'</span>, markersize<span class="op">=</span><span class="dv">8</span>, ls<span class="op">=</span><span class="st">'-'</span>)</span>
-<span id="cb14-18"><a></a>ax2.set_title(<span class="st">'sine wave (50 pts)'</span>)</span>
-<span id="cb14-19"><a></a>ax2.set_xlabel(<span class="st">'Phase (radians)'</span>)</span>
-<span id="cb14-20"><a></a>ax2.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Related functions: <code>np.sin(x)</code>, <code>np.cos(x)</code>, <code>np.tan(x)</code></p>
-</section>
-<section id="continuous-vs-discrete-plot" class="slide level2">
-<h2>Continuous vs Discrete Plot</h2>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide33_image1.png" style="width:48.0%"></p>
+<div class="step fragment fade-up" data-fragment-index="3" data-focus="1">
+<p>9 points are too few: the sine wave looks like a triangle wave</p>
 </div>
-<p>10 points: the sine wave looks angular - the sampling is too coarse.</p>
-</section>
-<section id="continuous-vs-discrete-plot-2" class="slide level2">
-<h2>Continuous vs Discrete Plot (2)</h2>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide34_image1.png" style="width:48.0%"></p>
+<div class="step fragment fade-up" data-fragment-index="4" data-focus="1,5">
+<p>change <code>9</code> to <code>200</code> and delete the marker: the curve looks smooth</p>
 </div>
-<p>50 points: the same curve now looks smooth and continuous.</p>
+</div>
+<div class="fragment fade-up takeaway" data-fragment-index="5">
+<p>For a smooth curve, use 100 points or more.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><img data-src="../assets/l09_points_9.png" class="fig fragment" data-fragment-index="2" alt="The sine wave drawn with 9 points. A circle marks each point. Straight lines join the points, so the curve looks like a triangle wave."></p>
+<p><img data-src="../assets/l09_points_200.png" class="fig fragment" data-fragment-index="4" alt="The same sine wave drawn with 200 points and no markers. The curve looks smooth."></p>
+</div></div>
+</section>
+<section id="color-line-style-marker-keyword-arguments" class="slide level2">
+<h2>Color, Line Style, Marker: Keyword Arguments</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>ax.plot(volts, amps, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, linewidth<span class="op">=</span><span class="dv">3</span>, marker<span class="op">=</span><span class="st">"o"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><img data-src="../assets/l09_styles.png" class="fig" alt="Four lines with different looks. The legend shows the keyword arguments of each line: a red dashed thick line with circles, a green dotted line, a black line with squares, and an orange dash-dot line with triangles."></p>
+</div><div class="column" style="width:48%;">
+<div class="steps">
+<div class="step fragment fade-up">
+<p><span class="tag">color</span> a name: <code>"red"</code>, <code>"green"</code>, <code>"black"</code>, <code>"orange"</code>, <code>"blue"</code></p>
+</div>
+<div class="step fragment fade-up">
+<p><span class="tag">linestyle</span> <code>"-"</code> solid, <code>"--"</code> dashed, <code>":"</code> dotted, <code>"-."</code> dash-dot</p>
+</div>
+<div class="step fragment fade-up">
+<p><span class="tag">marker</span> <code>"o"</code> circle, <code>"s"</code> square, <code>"^"</code> triangle, <code>"x"</code> cross</p>
+</div>
+<div class="step fragment fade-up">
+<p><span class="tag">linewidth</span> a number. The default value is 1.5.</p>
+</div>
+<div class="step fragment fade-up">
+<p>short forms: <code>ls="--"</code>, <code>lw=3</code>, <code>color="r"</code></p>
+</div>
+</div>
+</div></div>
+</section>
+<section id="each-plot-call-adds-a-line-legend-names-them" class="slide level2">
+<h2>Each <code>plot</code> Call Adds a Line; <code>legend</code> Names Them</h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>volts <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">11</span>)</span>
+<span id="cb13-2"><a></a>amps_100 <span class="op">=</span> volts <span class="op">/</span> <span class="dv">100</span></span>
+<span id="cb13-3"><a></a>amps_220 <span class="op">=</span> volts <span class="op">/</span> <span class="dv">220</span></span>
+<span id="cb13-4"><a></a></span>
+<span id="cb13-5"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb13-6"><a></a>ax.plot(volts, amps_100, label<span class="op">=</span><span class="st">"100 ohm"</span>)</span>
+<span id="cb13-7"><a></a>ax.plot(volts, amps_220, label<span class="op">=</span><span class="st">"220 ohm"</span>)</span>
+<span id="cb13-8"><a></a>ax.legend()</span>
+<span id="cb13-9"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-fragment-index="1" data-focus="6-7">
+<p>two <code>plot</code> calls on the same <code>ax</code>: two lines in one axes. Matplotlib chooses the colors: blue first, then orange.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="2" data-focus="6-7">
+<p><code>label="..."</code> gives each line a name. The name is not in the figure yet.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="3" data-focus="8" data-show="8">
+<p><code>ax.legend()</code> draws the box with the names. Without this call, the figure has no box.</p>
+</div>
+</div>
+</div><div class="column" style="width:44%;">
+<div class="figstack">
+<p><img data-src="../assets/l09_complete_0.png" class="fig" alt="Two straight lines in one axes, one blue and one orange. There is no legend."></p>
+<p><img data-src="../assets/l09_complete_1.png" class="fig fragment" data-fragment-index="3" alt="The same two lines with a legend box: the blue line is 100 ohm and the orange line is 220 ohm."></p>
+</div>
+</div></div>
+</section>
+<section id="a-complete-plot-title-axis-labels-units-grid" class="slide level2 dense-code">
+<h2>A Complete Plot: Title, Axis Labels, Units, Grid</h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb14-2"><a></a>ax.plot(volts, amps_100, label<span class="op">=</span><span class="st">"100 ohm"</span>)</span>
+<span id="cb14-3"><a></a>ax.plot(volts, amps_220, label<span class="op">=</span><span class="st">"220 ohm"</span>)</span>
+<span id="cb14-4"><a></a>ax.legend()</span>
+<span id="cb14-5"><a></a>ax.set_title(<span class="st">"Current through two resistors"</span>)</span>
+<span id="cb14-6"><a></a>ax.set_xlabel(<span class="st">"voltage (V)"</span>)</span>
+<span id="cb14-7"><a></a>ax.set_ylabel(<span class="st">"current (A)"</span>)</span>
+<span id="cb14-8"><a></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb14-9"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-fragment-index="1" data-focus="5" data-show="5">
+<p><code>set_title</code>: one line of text above the axes. It says what the plot shows.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="2" data-focus="6-7" data-show="6-7">
+<p><code>set_xlabel</code>, <code>set_ylabel</code>: the <strong>quantity</strong> and the <strong>unit</strong> of each axis</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="3" data-focus="8" data-show="8">
+<p><code>grid(True)</code>: lines at the tick values. Now a value is easy to read: 4 V gives 0.04 A in the 100 ohm resistor.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="4">
+<p>Matplotlib chooses the axis limits from the data. To set them: <code>ax.set_xlim(0, 10)</code>, <code>ax.set_ylim(0, 0.12)</code>.</p>
+</div>
+</div>
+</div><div class="column" style="width:44%;">
+<div class="figstack">
+<p><img data-src="../assets/l09_complete_1.png" class="fig" alt="Two lines with a legend. There is no title and the axes have no labels."></p>
+<p><img data-src="../assets/l09_complete_2.png" class="fig fragment" data-fragment-index="1" alt="The same plot with the title Current through two resistors."></p>
+<p><img data-src="../assets/l09_complete_3.png" class="fig fragment" data-fragment-index="2" alt="The same plot with the x axis label voltage (V) and the y axis label current (A)."></p>
+<p><img data-src="../assets/l09_complete_4.png" class="fig fragment" data-fragment-index="3" alt="The same plot with grid lines."></p>
+</div>
+<div class="fragment fade-up takeaway" data-fragment-index="5">
+<p>Every axis needs a <strong>name</strong> and a <strong>unit</strong>.</p>
+</div>
+</div></div>
+</section>
+<section id="read-the-code-what-does-the-figure-show" class="slide level2 checkpoint dense-code">
+<h2>Read the Code: What Does the Figure Show?</h2>
+<div class="columns">
+<div class="column" style="width:54%;">
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>x <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb15-2"><a></a></span>
+<span id="cb15-3"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb15-4"><a></a>ax.plot(x, x <span class="op">**</span> <span class="dv">2</span>, marker<span class="op">=</span><span class="st">"s"</span>, label<span class="op">=</span><span class="st">"square"</span>)</span>
+<span id="cb15-5"><a></a>ax.plot(x, <span class="dv">2</span> <span class="op">*</span> x, linestyle<span class="op">=</span><span class="st">":"</span>)</span>
+<span id="cb15-6"><a></a>ax.set_xlabel(<span class="st">"x"</span>)</span>
+<span id="cb15-7"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="1">
+<li>How many lines?</li>
+<li>How many square markers?</li>
+<li>Is there a legend? Write Yes or No.</li>
+<li>What is the largest y value?</li>
+</ol>
+</div><div class="column" style="width:46%;">
+<div class="answer fragment fade-up" data-focus="4-5">
+<div class="ans-rows two">
+<p><span class="ans-key">1</span> <span class="ans-val"><strong>2</strong></span> <span class="ans-key">2</span> <span class="ans-val"><strong>5</strong></span></p>
+<p><span class="ans-key">3</span> <span class="ans-val"><strong>No</strong></span> <span class="ans-key">4</span> <span class="ans-val"><strong>16</strong></span></p>
+</div>
+<div class="ans-why fragment fade-up" data-focus="1,4">
+<p><strong>Why:</strong> 2: <code>x</code> has 5 values: 0, 1, 2, 3, 4. 3: line 4 has a <code>label</code>, but the code never calls <code>ax.legend()</code>. 4: 4 ** 2 = 16.</p>
+</div>
+</div>
+<p><img data-src="../assets/l09_checkpoint_lines.png" class="fig fragment checkfig" alt="The figure of the program: a solid line with five square markers that rises to 16, and a dotted straight line that rises to 8. The x axis has the label x. There is no legend."></p>
+</div></div>
 </section></section>
 <section>
-<section id="part-4-logarithmic-plots-and-subplots" class="title-slide slide level1 section-divider center">
-<h1>Part 4: Logarithmic Plots and Subplots</h1>
-
+<section id="part-3-log-axes-subplots-files" class="title-slide slide level1 section-divider center">
+<h1>Part 3: Log Axes, Subplots, Files</h1>
 </section>
-<section id="logarithmic-plots" class="slide level2">
-<h2>Logarithmic Plots</h2>
-<p>Any of the axes can be adjusted to logarithmic scale:</p>
+<section id="a-linear-axis-hides-data-with-a-large-range" class="slide level2">
+<h2>A Linear Axis Hides Data with a Large Range</h2>
+<div class="columns">
+<div class="column" style="width:54%;">
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>f <span class="op">=</span> np.linspace(<span class="dv">10</span>, <span class="dv">100000</span>, <span class="dv">10000</span>)</span>
+<span id="cb16-2"><a></a>gain <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> np.sqrt(<span class="dv">1</span> <span class="op">+</span> (f <span class="op">/</span> <span class="dv">1000</span>) <span class="op">**</span> <span class="dv">2</span>)</span>
+<span id="cb16-3"><a></a></span>
+<span id="cb16-4"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb16-5"><a></a>ax.plot(f, gain)</span>
+<span id="cb16-6"><a></a>ax.set_xlabel(<span class="st">"frequency (Hz)"</span>)</span>
+<span id="cb16-7"><a></a>ax.set_ylabel(<span class="st">"gain"</span>)</span>
+<span id="cb16-8"><a></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb16-9"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-fragment-index="1" data-focus="1">
+<p>frequencies from 10 Hz to 100 000 Hz, in steps of 10 Hz</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="2" data-focus="2">
+<p>a <strong>low-pass filter</strong>: <code>gain</code> is the output voltage divided by the input voltage. Low frequencies pass (gain near 1). High frequencies become small.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="3" data-focus="5">
+<p>most of the change is in the first 5% of the x axis. The values from 10 Hz to 1000 Hz are in a thin strip at the left.</p>
+</div>
+</div>
+</div><div class="column" style="width:46%;">
+<p><img data-src="../assets/l09_filter_linear.png" class="fig fragment" data-fragment-index="3" alt="Gain against frequency on a linear x axis from 0 to 100 000 hertz. The curve falls from 1 to almost 0 at the left edge and is nearly flat for the rest of the axis."></p>
+</div></div>
+<div class="fragment fade-up takeaway" data-fragment-index="4">
+<p>The data is correct, but this plot does not show what the filter does below 1000 Hz.</p>
+</div>
+</section>
+<section id="semilogx-gives-every-power-of-10-the-same-width" class="slide level2">
+<h2><code>semilogx</code> Gives Every Power of 10 the Same Width</h2>
+<div class="columns">
+<div class="column" style="width:54%;">
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>f <span class="op">=</span> np.linspace(<span class="dv">10</span>, <span class="dv">100000</span>, <span class="dv">10000</span>)</span>
+<span id="cb17-2"><a></a>gain <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> np.sqrt(<span class="dv">1</span> <span class="op">+</span> (f <span class="op">/</span> <span class="dv">1000</span>) <span class="op">**</span> <span class="dv">2</span>)</span>
+<span id="cb17-3"><a></a></span>
+<span id="cb17-4"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb17-5"><a></a>ax.semilogx(f, gain)</span>
+<span id="cb17-6"><a></a>ax.set_xlabel(<span class="st">"frequency (Hz)"</span>)</span>
+<span id="cb17-7"><a></a>ax.set_ylabel(<span class="st">"gain"</span>)</span>
+<span id="cb17-8"><a></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb17-9"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-focus="5">
+<p>one changed line: <code>plot</code> becomes <code>semilogx</code>. The x axis is now <strong>logarithmic</strong>.</p>
+</div>
+<div class="step fragment fade-up">
+<p>the step from 10 to 100 has the same width as the step from 100 to 1000</p>
+</div>
+<div class="step fragment fade-up">
+<p>now we see the filter: gain near 1 up to about 200 Hz, 0.71 at 1000 Hz, then it falls</p>
+</div>
+</div>
+</div><div class="column" style="width:46%;">
+<p><img data-src="../assets/l09_filter_semilogx.png" class="fig" alt="The same gain data on a logarithmic x axis from 10 to 100 000 hertz. The curve is flat near 1 up to about 200 hertz, passes 0.71 at 1000 hertz, and falls to almost 0 at 100 000 hertz."></p>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>Use a logarithmic axis when the values cover several powers of 10. It cannot show 0 or negative values.</p>
+</div>
+</section>
+<section id="four-plot-functions-linear-or-logarithmic-axes" class="slide level2">
+<h2>Four Plot Functions: Linear or Logarithmic Axes</h2>
+<div class="columns">
+<div class="column" style="width:47%;">
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Function</th>
-<th>X axis</th>
-<th>Y axis</th>
+<th>call</th>
+<th>x axis</th>
+<th>y axis</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>plot()</code></td>
+<td><code>ax.plot(x, y)</code></td>
 <td>linear</td>
 <td>linear</td>
 </tr>
 <tr class="even">
-<td><code>loglog()</code></td>
-<td>log</td>
-<td>log</td>
+<td><code>ax.semilogx(x, y)</code></td>
+<td><strong>log</strong></td>
+<td>linear</td>
 </tr>
 <tr class="odd">
-<td><code>semilogx()</code></td>
-<td>log</td>
+<td><code>ax.semilogy(x, y)</code></td>
 <td>linear</td>
+<td><strong>log</strong></td>
 </tr>
 <tr class="even">
-<td><code>semilogy()</code></td>
-<td>linear</td>
-<td>log</td>
+<td><code>ax.loglog(x, y)</code></td>
+<td><strong>log</strong></td>
+<td><strong>log</strong></td>
 </tr>
 </tbody>
 </table>
+<div class="steps">
+<div class="step fragment fade-up">
+<p>the four axes show the <strong>same</strong> arrays <code>f</code> and <code>gain</code></p>
+</div>
+<div class="step fragment fade-up">
+<p><code>loglog</code>: above 1000 Hz the curve is a straight line. When the frequency is 10 times larger, the gain is 10 times smaller.</p>
+</div>
+</div>
+</div><div class="column" style="width:53%;">
+<p><img data-src="../assets/l09_four_scales.png" class="fig" alt="Four axes in a two by two grid with the same gain data: plot with two linear axes, semilogx with a logarithmic x axis, semilogy with a logarithmic y axis, and loglog with two logarithmic axes."></p>
+</div></div>
 </section>
-<section id="example-filter-output" class="slide level2">
-<h2>Example: Filter Output</h2>
-<ul>
-<li>In signal processing, a <strong>filter</strong> is a device or process that removes some unwanted components or features from a signal.</li>
-<li>Below you can see different frequency responses of different filters.</li>
-</ul>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide37_image1.gif" style="width:60.0%"></p>
+<section id="subplots2-1-makes-two-axes-in-one-figure" class="slide level2 dense-code">
+<h2><code>subplots(2, 1)</code> Makes Two Axes in One Figure</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.04</span>, <span class="dv">200</span>)</span>
+<span id="cb18-2"><a></a>volts <span class="op">=</span> <span class="dv">5</span> <span class="op">*</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="dv">50</span> <span class="op">*</span> t)</span>
+<span id="cb18-3"><a></a>milliamps <span class="op">=</span> volts <span class="op">/</span> <span class="dv">100</span> <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb18-4"><a></a></span>
+<span id="cb18-5"><a></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb18-6"><a></a>axs[<span class="dv">0</span>].plot(t, volts)</span>
+<span id="cb18-7"><a></a>axs[<span class="dv">0</span>].set_ylabel(<span class="st">"voltage (V)"</span>)</span>
+<span id="cb18-8"><a></a>axs[<span class="dv">1</span>].plot(t, milliamps, color<span class="op">=</span><span class="st">"red"</span>)</span>
+<span id="cb18-9"><a></a>axs[<span class="dv">1</span>].set_ylabel(<span class="st">"current (mA)"</span>)</span>
+<span id="cb18-10"><a></a>axs[<span class="dv">1</span>].set_xlabel(<span class="st">"time (s)"</span>)</span>
+<span id="cb18-11"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-focus="5">
+<p><code>plt.subplots(2, 1)</code>: 2 rows, 1 column. The second result is an <strong>array</strong> of two axes. We name it <code>axs</code>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="6-7">
+<p><code>axs[0]</code> is the top axes</p>
+</div>
+<div class="step fragment fade-up" data-focus="8-10">
+<p><code>axs[1]</code> is the bottom axes. Each axes has its own line, its own labels, and its own scale.</p>
+</div>
+<div class="step fragment fade-up" data-focus="7,9">
+<p>the voltage is in V and the current is in mA: two units, so two axes</p>
+</div>
+</div>
+</div><div class="column" style="width:48%;">
+<p><img data-src="../assets/l09_subplots_2x1.png" class="fig" alt="One figure with two axes. The top axes shows the voltage sine wave between minus 5 and 5 volts. The bottom axes shows the current in red between minus 50 and 50 milliamperes. The x axis is time in seconds."></p>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>With <code>plt.subplots(2, 2)</code>, use two indexes: <code>axs[row, column]</code>. <code>axs[0, 1]</code> is the top right axes.</p>
 </div>
 </section>
-<section id="plot-linear-x-and-y-scales" class="slide level2">
-<h2><code>plot</code>: Linear X and Y Scales</h2>
+<section id="fig.savefig-writes-the-figure-to-an-image-file" class="slide level2">
+<h2><code>fig.savefig</code> Writes the Figure to an Image File</h2>
 <div class="columns">
 <div class="column" style="width:52%;">
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb15-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb15-3"><a></a></span>
-<span id="cb15-4"><a></a>w <span class="op">=</span> np.linspace(<span class="dv">10</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>)</span>
-<span id="cb15-5"><a></a>s1 <span class="op">=</span> <span class="fl">1e12</span><span class="op">*</span>w<span class="op">/</span>(np.sqrt((<span class="fl">1e8</span><span class="op">-</span>w<span class="op">**</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">4</span> <span class="op">+</span> (<span class="fl">1e8</span><span class="op">*</span>w)<span class="op">**</span><span class="dv">2</span>))</span>
-<span id="cb15-6"><a></a>s2 <span class="op">=</span> <span class="fl">1e12</span><span class="op">*</span>w<span class="op">/</span>(np.sqrt((<span class="fl">1e6</span><span class="op">-</span>w<span class="op">**</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">4</span> <span class="op">+</span> (<span class="fl">1e6</span><span class="op">*</span>w)<span class="op">**</span><span class="dv">2</span>))</span>
-<span id="cb15-7"><a></a></span>
-<span id="cb15-8"><a></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb15-9"><a></a>ax.plot(w, s1)</span>
-<span id="cb15-10"><a></a>ax.plot(w, s2)</span>
-<span id="cb15-11"><a></a>ax.legend([<span class="st">'filter1'</span>, <span class="st">'filter2'</span>])</span>
-<span id="cb15-12"><a></a>ax.set_title(<span class="st">'Frequency Response (plot)'</span>)</span>
-<span id="cb15-13"><a></a>ax.set_xlabel(<span class="st">'frequency (linear scale)'</span>)</span>
-<span id="cb15-14"><a></a>ax.set_ylabel(<span class="st">'output (linear scale)'</span>)</span>
-<span id="cb15-15"><a></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb19-2"><a></a>ax.plot(volts, amps)</span>
+<span id="cb19-3"><a></a>ax.set_xlabel(<span class="st">"voltage (V)"</span>)</span>
+<span id="cb19-4"><a></a>ax.set_ylabel(<span class="st">"current (A)"</span>)</span>
+<span id="cb19-5"><a></a>fig.savefig(<span class="st">"iv_line.png"</span>, dpi<span class="op">=</span><span class="dv">200</span>)</span>
+<span id="cb19-6"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:48%;">
-<p><img data-src="../assets/pfe_1021_th_week7_slide38_image1.png" style="width:100.0%"></p>
-<p>Signals’ evolution in x and y scales is not clear.</p>
+<div class="steps">
+<div class="step fragment fade-up" data-focus="5">
+<p><code>savefig</code> is a method of the <strong>figure</strong>, not of the axes</p>
+</div>
+<div class="step fragment fade-up" data-focus="5">
+<p>the end of the file name chooses the format: <code>.png</code> for documents and slides, <code>.pdf</code> for printing</p>
+</div>
+<div class="step fragment fade-up" data-focus="5">
+<p><code>dpi=200</code> gives more pixels: the text stays sharp when the image is large</p>
+</div>
+<div class="step fragment fade-up" data-focus="5-6">
+<p>write <code>savefig</code> before <code>plt.show()</code>. The file is written to the folder where the program runs.</p>
+</div>
+</div>
 </div></div>
-</section>
-<section id="semilogx-logarithmic-x-linear-y" class="slide level2">
-<h2><code>semilogx</code>: Logarithmic X, Linear Y</h2>
-<div class="columns">
-<div class="column" style="width:52%;">
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb16-2"><a></a>ax.semilogx(w, s1)</span>
-<span id="cb16-3"><a></a>ax.semilogx(w, s2)</span>
-<span id="cb16-4"><a></a>ax.legend([<span class="st">'filter1'</span>, <span class="st">'filter2'</span>])</span>
-<span id="cb16-5"><a></a>ax.set_title(<span class="st">'Frequency Response (semilogx)'</span>)</span>
-<span id="cb16-6"><a></a>ax.set_xlabel(<span class="st">'frequency (log scale)'</span>)</span>
-<span id="cb16-7"><a></a>ax.set_ylabel(<span class="st">'output (linear scale)'</span>)</span>
-<span id="cb16-8"><a></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Better in terms of x-axis position of the signals.</p>
-</div><div class="column" style="width:48%;">
-<p><img data-src="../assets/pfe_1021_th_week7_slide39_image1.png" style="width:100.0%"></p>
-</div></div>
-</section>
-<section id="semilogy-linear-x-logarithmic-y" class="slide level2">
-<h2><code>semilogy</code>: Linear X, Logarithmic Y</h2>
-<div class="columns">
-<div class="column" style="width:52%;">
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb17-2"><a></a>ax.semilogy(w, s1)</span>
-<span id="cb17-3"><a></a>ax.semilogy(w, s2)</span>
-<span id="cb17-4"><a></a>ax.legend([<span class="st">'filter1'</span>, <span class="st">'filter2'</span>])</span>
-<span id="cb17-5"><a></a>ax.set_title(<span class="st">'Frequency Response (semilogy)'</span>)</span>
-<span id="cb17-6"><a></a>ax.set_xlabel(<span class="st">'frequency (linear scale)'</span>)</span>
-<span id="cb17-7"><a></a>ax.set_ylabel(<span class="st">'output (log scale)'</span>)</span>
-<span id="cb17-8"><a></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:48%;">
-<p><img data-src="../assets/pfe_1021_th_week7_slide40_image1.png" style="width:100.0%"></p>
-</div></div>
-</section>
-<section id="loglog-both-axes-in-log-scale" class="slide level2">
-<h2><code>loglog</code>: Both Axes in Log Scale</h2>
-<div class="columns">
-<div class="column" style="width:52%;">
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb18-2"><a></a>ax.loglog(w, s1)</span>
-<span id="cb18-3"><a></a>ax.loglog(w, s2)</span>
-<span id="cb18-4"><a></a>ax.legend([<span class="st">'filter1'</span>, <span class="st">'filter2'</span>])</span>
-<span id="cb18-5"><a></a>ax.set_title(<span class="st">'Frequency Response (loglog)'</span>)</span>
-<span id="cb18-6"><a></a>ax.set_xlabel(<span class="st">'frequency (log scale)'</span>)</span>
-<span id="cb18-7"><a></a>ax.set_ylabel(<span class="st">'output (log scale)'</span>)</span>
-<span id="cb18-8"><a></a>ax.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>A better view, as both x and y axis data have large ranges.</p>
-</div><div class="column" style="width:48%;">
-<p><img data-src="../assets/pfe_1021_th_week7_slide41_image1.png" style="width:100.0%"></p>
-</div></div>
-</section>
-<section id="subplots" class="slide level2">
-<h2>Subplots</h2>
-<div class="columns">
-<div class="column" style="width:52%;">
-<p>Call the subplot function with more than one axes:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>)   <span class="co"># 1 row, 1 column</span></span>
-<span id="cb19-2"><a></a></span>
-<span id="cb19-3"><a></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>)  <span class="co"># 2 rows, 1 column</span></span>
-<span id="cb19-4"><a></a>axs[<span class="dv">0</span>].plot(x, y)</span>
-<span id="cb19-5"><a></a>axs[<span class="dv">1</span>].plot(x, d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:48%;">
-<p><img data-src="../assets/pfe_1021_th_week7_slide42_image1.png" style="width:90.0%"></p>
-</div></div>
-</section>
-<section id="subplots-2-x-2-grid" class="slide level2">
-<h2>Subplots: 2 x 2 Grid</h2>
-<p>With <code>fig, ax = plt.subplots(2, 2)</code>, the axes are indexed as <code>ax[0,0]</code>, <code>ax[0,1]</code>, <code>ax[1,0]</code>, <code>ax[1,1]</code>:</p>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide43_image1.png" style="width:56.0%"></p>
+<div class="fragment fade-up takeaway">
+<p>In a report, use a saved figure. Do not use a screenshot of the window.</p>
 </div>
 </section>
-<section id="subplots-2-x-2-grid---code" class="slide level2">
-<h2>Subplots: 2 x 2 Grid - Code</h2>
-<p>All four filter-response views in one figure:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb20-2"><a></a></span>
-<span id="cb20-3"><a></a>ax[<span class="dv">0</span>,<span class="dv">0</span>].plot(w, s1)</span>
-<span id="cb20-4"><a></a>ax[<span class="dv">0</span>,<span class="dv">0</span>].plot(w, s2)</span>
-<span id="cb20-5"><a></a>ax[<span class="dv">0</span>,<span class="dv">0</span>].legend([<span class="st">'filter1'</span>, <span class="st">'filter2'</span>])</span>
-<span id="cb20-6"><a></a>ax[<span class="dv">0</span>,<span class="dv">0</span>].set_title(<span class="st">'Frequency Response (plot)'</span>)</span>
-<span id="cb20-7"><a></a>ax[<span class="dv">0</span>,<span class="dv">0</span>].set_xlabel(<span class="st">'frequency (linear scale)'</span>)</span>
-<span id="cb20-8"><a></a>ax[<span class="dv">0</span>,<span class="dv">0</span>].set_ylabel(<span class="st">'output (linear scale)'</span>)</span>
-<span id="cb20-9"><a></a>ax[<span class="dv">0</span>,<span class="dv">0</span>].grid(<span class="va">True</span>)</span>
-<span id="cb20-10"><a></a></span>
-<span id="cb20-11"><a></a>ax[<span class="dv">0</span>,<span class="dv">1</span>].loglog(w, s1)</span>
-<span id="cb20-12"><a></a>ax[<span class="dv">0</span>,<span class="dv">1</span>].loglog(w, s2)</span>
-<span id="cb20-13"><a></a>ax[<span class="dv">0</span>,<span class="dv">1</span>].legend([<span class="st">'filter1'</span>, <span class="st">'filter2'</span>])</span>
-<span id="cb20-14"><a></a>ax[<span class="dv">0</span>,<span class="dv">1</span>].set_title(<span class="st">'Frequency Response (loglog)'</span>)</span>
-<span id="cb20-15"><a></a>ax[<span class="dv">0</span>,<span class="dv">1</span>].set_xlabel(<span class="st">'frequency (log scale)'</span>)</span>
-<span id="cb20-16"><a></a>ax[<span class="dv">0</span>,<span class="dv">1</span>].set_ylabel(<span class="st">'output (log scale)'</span>)</span>
-<span id="cb20-17"><a></a>ax[<span class="dv">0</span>,<span class="dv">1</span>].grid(<span class="va">True</span>)</span>
-<span id="cb20-18"><a></a></span>
-<span id="cb20-19"><a></a>ax[<span class="dv">1</span>,<span class="dv">0</span>].semilogx(w, s1)</span>
-<span id="cb20-20"><a></a>ax[<span class="dv">1</span>,<span class="dv">0</span>].semilogx(w, s2)</span>
-<span id="cb20-21"><a></a>ax[<span class="dv">1</span>,<span class="dv">0</span>].legend([<span class="st">'filter1'</span>, <span class="st">'filter2'</span>])</span>
-<span id="cb20-22"><a></a>ax[<span class="dv">1</span>,<span class="dv">0</span>].set_title(<span class="st">'Frequency Response (semilogx)'</span>)</span>
-<span id="cb20-23"><a></a>ax[<span class="dv">1</span>,<span class="dv">0</span>].set_xlabel(<span class="st">'frequency (log scale)'</span>)</span>
-<span id="cb20-24"><a></a>ax[<span class="dv">1</span>,<span class="dv">0</span>].set_ylabel(<span class="st">'output (linear scale)'</span>)</span>
-<span id="cb20-25"><a></a>ax[<span class="dv">1</span>,<span class="dv">0</span>].grid(<span class="va">True</span>)</span>
-<span id="cb20-26"><a></a></span>
-<span id="cb20-27"><a></a>ax[<span class="dv">1</span>,<span class="dv">1</span>].semilogy(w, s1)</span>
-<span id="cb20-28"><a></a>ax[<span class="dv">1</span>,<span class="dv">1</span>].semilogy(w, s2)</span>
-<span id="cb20-29"><a></a>ax[<span class="dv">1</span>,<span class="dv">1</span>].legend([<span class="st">'filter1'</span>, <span class="st">'filter2'</span>])</span>
-<span id="cb20-30"><a></a>ax[<span class="dv">1</span>,<span class="dv">1</span>].set_title(<span class="st">'Frequency Response (semilogy)'</span>)</span>
-<span id="cb20-31"><a></a>ax[<span class="dv">1</span>,<span class="dv">1</span>].set_xlabel(<span class="st">'frequency (linear scale)'</span>)</span>
-<span id="cb20-32"><a></a>ax[<span class="dv">1</span>,<span class="dv">1</span>].set_ylabel(<span class="st">'output (log scale)'</span>)</span>
-<span id="cb20-33"><a></a>ax[<span class="dv">1</span>,<span class="dv">1</span>].grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="other-2d-graph-types" class="slide level2">
-<h2>Other 2D Graph Types</h2>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide45_image1.png" style="width:78.0%"></p>
+<section id="other-plot-types-use-the-same-steps" class="slide level2">
+<h2>Other Plot Types Use the Same Steps</h2>
+<p><img data-src="../assets/l09_other_types.png" class="fig widefig" alt="Three axes side by side. Left: a scatter plot of measured current against voltage, points with no line. Middle: a bar chart of the power of three devices: router 12 watts, desk 9 watts, hall 10 watts. Right: a histogram of the measured resistance of 200 resistors, with the highest bar near 100 ohm."></p>
+<div class="steps row">
+<div class="step fragment fade-up">
+<p><span class="tag"><code>scatter</code></span> points with no line. Use it for measured values.</p>
 </div>
-</section></section>
-<section>
-<section id="part-5-complex-numbers-and-polar-plots" class="title-slide slide level1 section-divider center">
-<h1>Part 5: Complex Numbers and Polar Plots</h1>
-
-</section>
-<section id="complex-numbers" class="slide level2">
-<h2>Complex Numbers</h2>
-<ul>
-<li>For real numbers <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, any complex number <span class="math inline">\(a + bj\)</span> is located on the Euclidean plane <span class="math inline">\(\mathbb{R}^2\)</span> with coordinate pair <span class="math inline">\((a, b)\)</span>.</li>
-<li>This plane is called the <strong>Complex Plane</strong>.
-<ul>
-<li>X-axis = Real component</li>
-<li>Y-axis = Imaginary component</li>
-</ul></li>
-</ul>
-</section>
-<section id="norm-and-phase" class="slide level2">
-<h2>Norm and Phase</h2>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week7_slide48_image1.png" style="width:48.0%"></p>
+<div class="step fragment fade-up">
+<p><span class="tag"><code>bar</code></span> one bar for each name. Use it to compare a few values.</p>
 </div>
-<ul>
-<li>The distance from the origin (on the complex plane) is the <strong>NORM</strong>.</li>
-<li>The rotation angle from the real axis is the <strong>PHASE</strong>.</li>
-</ul>
+<div class="step fragment fade-up">
+<p><span class="tag"><code>hist</code></span> how many values are in each range. Here: 200 resistors.</p>
+</div>
+</div>
+<div class="fragment fade-up takeaway">
+<p>The steps do not change: <code>plt.subplots()</code>, one call for the data, labels, <code>plt.show()</code>. The data can be lists or arrays.</p>
+</div>
 </section>
-<section id="polar-representation" class="slide level2">
-<h2>Polar Representation</h2>
-<ul>
-<li>Any complex number on the complex plane has:
-<ul>
-<li>A distance from origin (called <strong>NORM</strong>)</li>
-<li>A rotation angle from the real axis (called <strong>PHASE</strong>)</li>
-</ul></li>
-<li>These two parameters are very important in complex numbers.</li>
-<li>Any complex number can be represented by its norm and phase.</li>
-<li>This representation can be mapped to the same point using <strong>polar coordinates</strong>: in polar coordinates, norm and phase constitute the coordinate pair.</li>
-</ul>
-</section>
-<section id="complex-numbers-and-python" class="slide level2">
-<h2>Complex Numbers and Python</h2>
+<section id="exit-ticket" class="slide level2 checkpoint very-dense-code">
+<h2>Exit Ticket</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">3</span> <span class="op">+</span> <span class="ot">4j</span></span>
-<span id="cb21-2"><a></a><span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> <span class="dv">5</span> <span class="op">+</span> <span class="ot">12j</span></span>
-<span id="cb21-3"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">abs</span>(a)</span>
-<span id="cb21-4"><a></a><span class="fl">5.0</span></span>
-<span id="cb21-5"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">abs</span>(b)</span>
-<span id="cb21-6"><a></a><span class="fl">13.0</span></span>
-<span id="cb21-7"><a></a><span class="op">&gt;&gt;&gt;</span> a<span class="op">*</span>b</span>
-<span id="cb21-8"><a></a>(<span class="op">-</span><span class="dv">33</span><span class="op">+</span><span class="ot">56j</span>)</span>
-<span id="cb21-9"><a></a><span class="op">&gt;&gt;&gt;</span> a<span class="op">/</span>b</span>
-<span id="cb21-10"><a></a>(<span class="fl">0.37278106508875736</span><span class="op">-</span><span class="ot">0.09467455621301774j</span>)</span>
-<span id="cb21-11"><a></a><span class="op">&gt;&gt;&gt;</span> a<span class="op">+</span>b</span>
-<span id="cb21-12"><a></a>(<span class="dv">8</span><span class="op">+</span><span class="ot">16j</span>)</span>
-<span id="cb21-13"><a></a><span class="op">&gt;&gt;&gt;</span> a<span class="op">-</span>b</span>
-<span id="cb21-14"><a></a>(<span class="op">-</span><span class="dv">2</span><span class="op">-</span><span class="ot">8j</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb22-2"><a></a><span class="op">&gt;&gt;&gt;</span> np.angle(a)</span>
-<span id="cb22-3"><a></a><span class="fl">0.9272952180016122</span></span>
-<span id="cb22-4"><a></a><span class="op">&gt;&gt;&gt;</span> np.rad2deg(np.angle(a))</span>
-<span id="cb22-5"><a></a><span class="fl">53.13010235415598</span></span>
-<span id="cb22-6"><a></a><span class="op">&gt;&gt;&gt;</span> a.real</span>
-<span id="cb22-7"><a></a><span class="fl">3.0</span></span>
-<span id="cb22-8"><a></a><span class="op">&gt;&gt;&gt;</span> a.imag</span>
-<span id="cb22-9"><a></a><span class="fl">4.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>abs()</code> gives the norm, <code>np.angle()</code> gives the phase.</li>
-</ul>
-</div></div>
-</section>
-<section id="polar-plot" class="slide level2">
-<h2>Polar Plot</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb23-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb23-3"><a></a></span>
-<span id="cb23-4"><a></a>r <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">2</span>, <span class="fl">0.01</span>)</span>
-<span id="cb23-5"><a></a>theta <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> r</span>
-<span id="cb23-6"><a></a></span>
-<span id="cb23-7"><a></a>fig, ax <span class="op">=</span> plt.subplots(subplot_kw<span class="op">=</span>{<span class="st">'projection'</span>: <span class="st">'polar'</span>})</span>
-<span id="cb23-8"><a></a>ax.plot(theta, r)</span>
-<span id="cb23-9"><a></a>ax.set_rmax(<span class="dv">2</span>)</span>
-<span id="cb23-10"><a></a>ax.set_rticks([<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>])  <span class="co"># fewer radial ticks</span></span>
-<span id="cb23-11"><a></a>ax.set_rlabel_position(<span class="op">-</span><span class="fl">22.5</span>)    <span class="co"># move radial labels</span></span>
-<span id="cb23-12"><a></a>ax.grid(<span class="va">True</span>)</span>
-<span id="cb23-13"><a></a></span>
-<span id="cb23-14"><a></a>ax.set_title(<span class="st">"A line plot on a polar axis"</span>, va<span class="op">=</span><span class="st">'bottom'</span>)</span>
-<span id="cb23-15"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:45%;">
-<p><img data-src="../assets/pfe_1021_th_week7_slide52_image2.png" style="width:90.0%"></p>
+<div class="column" style="width:44%;">
+<p>Write the program that draws this figure.</p>
+<p><img data-src="../assets/l09_exit_ticket.png" class="fig ticketfig" alt="A green curve that rises from 0 watts at 0 volts to 1 watt at 10 volts. Title: Power in a 100 ohm resistor. X axis: voltage (V). Y axis: power (W). The plot has a grid."></p>
+<p>Data: <code>volts</code> has 50 values from 0 to 10. <code>watts = volts ** 2 / 100</code></p>
+</div><div class="column" style="width:56%;">
+<div class="answer fragment fade-up">
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb20-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb20-3"><a></a></span>
+<span id="cb20-4"><a></a>volts <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>)</span>
+<span id="cb20-5"><a></a>watts <span class="op">=</span> volts <span class="op">**</span> <span class="dv">2</span> <span class="op">/</span> <span class="dv">100</span></span>
+<span id="cb20-6"><a></a></span>
+<span id="cb20-7"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb20-8"><a></a>ax.plot(volts, watts, color<span class="op">=</span><span class="st">"green"</span>)</span>
+<span id="cb20-9"><a></a>ax.set_title(<span class="st">"Power in a 100 ohm resistor"</span>)</span>
+<span id="cb20-10"><a></a>ax.set_xlabel(<span class="st">"voltage (V)"</span>)</span>
+<span id="cb20-11"><a></a>ax.set_ylabel(<span class="st">"power (W)"</span>)</span>
+<span id="cb20-12"><a></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb20-13"><a></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="ans-why fragment fade-up" data-focus="4">
+<p><strong>Why <code>linspace</code>:</strong> the task gives the number of points, not the step.</p>
+</div>
+</div>
 </div></div>
 </section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
+<div class="card-grid">
+<div class="card fragment fade-up">
+<p><strong>Arrays</strong></p>
 <ul>
-<li>A matplotlib graphic is built from <strong>figure</strong>, <strong>axes</strong>, and <strong>line</strong> objects: <code>fig, ax = plt.subplots()</code> then <code>ax.plot(x, y)</code>.</li>
-<li>Markers, colors, line widths, and line styles are set with keyword arguments of <code>plot()</code>.</li>
-<li>Readable plots need titles, axis labels, legends, grids, and sensible axis limits.</li>
-<li><code>semilogx</code>, <code>semilogy</code>, and <code>loglog</code> reveal behavior that linear scales hide.</li>
-<li><code>plt.subplots(rows, cols)</code> places several axes in one figure.</li>
-<li>Complex numbers have a norm and a phase and map naturally onto <strong>polar plots</strong>.</li>
+<li><code>np.array</code>, <code>np.arange</code>, <code>np.linspace</code> make arrays</li>
+<li>math with an array is done element by element</li>
+<li>with arrays, use <code>np.sin</code> and <code>np.sqrt</code>, not the <code>math</code> functions</li>
 </ul>
-</section>
-<section id="reference" class="slide level2">
-<h2>Reference</h2>
+</div>
+<div class="card fragment fade-up">
+<p><strong>Line plots</strong></p>
 <ul>
-<li><a href="https://matplotlib.org/" class="uri">https://matplotlib.org/</a></li>
+<li><code>fig, ax = plt.subplots()</code>, <code>ax.plot(x, y)</code>, <code>plt.show()</code></li>
+<li><code>color</code>, <code>linestyle</code>, <code>marker</code> change the look of a line</li>
+<li>a complete plot has a title, axis labels with units, a legend, and a grid</li>
 </ul>
+</div>
+<div class="card fragment fade-up">
+<p><strong>More views</strong></p>
+<ul>
+<li><code>semilogx</code>, <code>semilogy</code>, <code>loglog</code>: for values that cover several powers of 10</li>
+<li><code>plt.subplots(rows, columns)</code>: several axes in one figure</li>
+<li><code>fig.savefig("name.png")</code>: an image file for a report</li>
+</ul>
+</div>
+</div>
+<div class="fragment fade-up takeaway">
+<p>In the project, NumPy and Matplotlib are optional. Classes, inheritance, and file input/output come first.</p>
+</div>
 
 
 </section></section>
@@ -1276,6 +1133,69 @@ Basri Erdogan
           RevealZoom
         ]
       });
+    </script>
+    <!-- Lecture steps (2026-11-10): fragments that reveal and spotlight code lines.
+         On any fragment:  data-show="2-4"   lines stay invisible until this fragment is shown
+                           data-focus="2-4"  lines are spotlighted while this fragment is the current one
+         Address another code block of the slide with "block:lines", join targets with ";"  e.g. "1:6-8;2:2-3".
+         Slides marked auto-animate get a data-id per code line, so equal lines move and new lines fade in. -->
+    <script>
+    (function () {
+      function lineSpans(code) {
+        return Array.from(code.children).filter(function (e) { return e.tagName === 'SPAN'; });
+      }
+      function parse(spec) {
+        return spec.split(';').map(function (part) {
+          var block = 1, body = part.trim();
+          var m = body.match(/^(\d+):(.*)$/);
+          if (m) { block = +m[1]; body = m[2]; }
+          var set = [];
+          body.split(',').forEach(function (r) {
+            var ab = r.split('-').map(Number);
+            for (var i = ab[0]; i <= (ab[1] || ab[0]); i++) set.push(i);
+          });
+          return { block: block, lines: set };
+        });
+      }
+      function update(slide) {
+        if (!slide || slide.classList.contains('stack')) return;
+        var codes = Array.from(slide.querySelectorAll('pre > code'));
+        var all = codes.map(lineSpans);
+        codes.forEach(function (c, i) {
+          c.classList.remove('has-focus');
+          all[i].forEach(function (l) { l.classList.remove('step-hidden', 'step-focus'); });
+        });
+        function apply(el, attr, cls, mark) {
+          parse(el.getAttribute(attr)).forEach(function (t) {
+            var ls = all[t.block - 1];
+            if (!ls) return;
+            t.lines.forEach(function (n) { if (ls[n - 1]) ls[n - 1].classList.add(cls); });
+            if (mark) codes[t.block - 1].classList.add('has-focus');
+          });
+        }
+        slide.querySelectorAll('[data-show]').forEach(function (f) {
+          if (!f.classList.contains('visible')) apply(f, 'data-show', 'step-hidden', false);
+        });
+        slide.querySelectorAll('.current-fragment[data-focus]').forEach(function (f) {
+          apply(f, 'data-focus', 'step-focus', true);
+        });
+      }
+      function boot() {
+        document.querySelectorAll('.reveal .slides section[data-auto-animate] pre > code').forEach(function (code) {
+          lineSpans(code).forEach(function (l) {
+            var text = l.textContent.trim();
+            if (text) l.setAttribute('data-id', 'code-line:' + text);
+          });
+        });
+        Reveal.getSlides().forEach(update);
+        ['slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(function (ev) {
+          Reveal.on(ev, function () { update(Reveal.getCurrentSlide()); });
+        });
+      }
+      window.addEventListener('load', function () {
+        if (Reveal.isReady()) boot(); else Reveal.on('ready', boot);
+      });
+    })();
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
