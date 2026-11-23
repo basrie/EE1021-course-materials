@@ -95,7 +95,7 @@
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-2f366650f320edcfcf53d73c80250a32.css">
-  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="../assets/styles.css?v=8c697ca9">
   <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -196,7 +196,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">File Input/Output</h1>
-  <p class="subtitle">EE1021 Programming for Engineers - Lecture 10</p>
+  <p class="subtitle">EE1021 Programming for Engineers · Lecture 10 · 2026–2027</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -207,489 +207,966 @@ Basri Erdogan
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- Inline tweaks for EE1021 dense programming tables/code within the robotics slide style -->
-<div class="hidden">
-<style>
-.reveal pre { max-width: 100%; overflow-x: auto; box-sizing: border-box; }
-.reveal pre code { white-space: pre; font-size: 0.92em; display: block; }
-.reveal .columns .column pre { margin-top: 0.25rem; }
-.reveal code { color: #111; }
-.sourceCode span.kw { color: #0000ff !important; font-weight: normal !important; }
-.sourceCode span.co { color: #007300 !important; font-style: normal !important; }
-.sourceCode span.st { color: #b200b2 !important; }
-.sourceCode span.dv { color: #ad0000 !important; }
-.reveal li code:not(.sourceCode):not([class*="language-"]) {
-  color: #1c5b84;
-  font-weight: 700;
-}
-.compact-table table { font-size: 0.58em; }
-.operator-table table { font-size: 0.66em; }
-.centered-figure { text-align: center; }
-.centered-figure img { max-height: 58vh; }
-</style>
-</div>
-</section>
 <section id="lecture-goals" class="slide level2">
 <h2>Lecture Goals</h2>
+<div class="card-grid">
+<div class="card">
+<p><strong>Part 1 · Read a text file</strong></p>
 <ol type="1">
-<li>Explain how files are organized: <strong>paths, extensions, text vs binary content</strong></li>
-<li>Open and close files with <code>open(filename, mode)</code> and the modes <code>'r'</code>, <code>'w'</code>, <code>'a'</code>, <code>'r+'</code>, <code>'b'</code></li>
-<li>Read files with <code>read()</code>, <code>readline()</code>, <code>readlines()</code>, and line-by-line iteration</li>
-<li>Write to files with <code>write()</code> and automate closing with the <strong><code>with</code> statement</strong></li>
-<li>Parse text using <code>split()</code>, <code>strip()</code>, and <code>rstrip()</code>, and process <strong>CSV files</strong> with the <code>csv</code> module</li>
-<li>Handle missing files with <code>try</code>/<code>except</code> and work with <strong>binary files</strong> and portable paths</li>
+<li>Open a file with a <strong>relative path</strong></li>
+<li>Read the whole text, or one line at a time</li>
+<li>Get the values of a line with <code>strip</code> and <code>split</code></li>
 </ol>
-</section>
-<section>
-<section id="part-1-working-with-files" class="title-slide slide level1 section-divider center">
-<h1>Part 1: Working with Files</h1>
-
-</section>
-<section id="last-week-today" class="slide level2">
-<h2>Last Week / Today</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Last week</strong></p>
-<ul>
-<li>Object-oriented programming</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>Today</strong></p>
-<ul>
-<li>File input/output</li>
-</ul>
-</div></div>
-</section>
-<section id="files-and-folders" class="slide level2">
-<h2>Files and Folders</h2>
-<ul>
-<li>A computer <strong>file</strong> is a resource for storing information; a “digital” document.</li>
-<li>Files are organized in <strong>folders</strong> (= directories).</li>
-<li>Every file has an address (<strong>path</strong>) in the computer’s file system.
-<ul>
-<li>Example: <code>C:\Desktop\ta5_code\test_file.txt</code></li>
-</ul></li>
-<li>The file’s <strong>extension</strong> represents its content type (<code>txt</code>, <code>exe</code>, <code>mp3</code>, <code>avi</code>, <code>jpg</code>).</li>
-<li><strong>Text files</strong> are composed of a sequence of characters.</li>
-<li><strong>Binary files</strong> store a sequence of bytes representing any type of information (not necessarily encoding for characters).</li>
-</ul>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week11_slide05_image1.png" style="width:40.0%"></p>
+</div>
+<div class="card">
+<p><strong>Part 2 · Write a text file</strong></p>
+<ol start="4" type="1">
+<li>Write strings with mode <code>"w"</code> and mode <code>"a"</code></li>
+<li>Close the file automatically with <code>with</code></li>
+</ol>
+</div>
+<div class="card">
+<p><strong>Part 3 · Data files in a program</strong></p>
+<ol start="6" type="1">
+<li>Read a <strong>CSV</strong> file</li>
+<li>Continue when a file is missing</li>
+<li>Save a list of objects and load it again</li>
+</ol>
+</div>
 </div>
 </section>
-<section id="text-files" class="slide level2">
-<h2>Text Files</h2>
-<ul>
-<li>Text files are composed of <strong>lines</strong> of text.</li>
-<li>Every line is composed of a sequence of characters.</li>
-<li>The last character on every line is the special ‘new line’ character (<code>'\n'</code>), usually hidden by most text editors.</li>
-</ul>
-<div class="centered-figure">
-<p><img data-src="../assets/pfe_1021_th_week11_slide06_image1.gif" style="width:55.0%"></p>
+<section id="predict-the-output-one-program-three-runs" class="slide level2 checkpoint">
+<h2>Predict the Output: One Program, Three Runs</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>readings <span class="op">=</span> []</span>
+<span id="cb1-2"><a></a></span>
+<span id="cb1-3"><a></a>volts <span class="op">=</span> <span class="bu">float</span>(<span class="bu">input</span>(<span class="st">"volts: "</span>))</span>
+<span id="cb1-4"><a></a>readings.append(volts)</span>
+<span id="cb1-5"><a></a><span class="bu">print</span>(<span class="st">"readings:"</span>, <span class="bu">len</span>(readings))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You run this program three times. Each time, you type one number.</p>
+<ol type="1">
+<li>What does the third run print?</li>
+<li>Where are the numbers of the first two runs?</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<div class="answer fragment fade-up" data-focus="5">
+<div class="ans-rows">
+<p><span class="ans-key">third run</span> <span class="ans-val"><code>readings: 1</code></span></p>
+<p><span class="ans-key">first two runs</span> <span class="ans-val"><strong>lost</strong></span></p>
+</div>
+<div class="ans-why fragment fade-up" data-focus="1">
+<p><strong>Why:</strong> every run starts at line 1 with an empty list. A variable is in the memory of the computer. When the program ends, the memory is free again.</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>Today: a <strong>file</strong> keeps the data after the program ends.</p>
 </div>
 </section>
-<section id="opening-a-connection-to-a-file" class="slide level2">
-<h2>Opening a Connection to a File</h2>
-<ul>
-<li><code>open()</code> returns a <strong>file object</strong>.</li>
-<li>Most commonly used with two arguments: <code>open(filename, mode)</code>
-<ul>
-<li><code>filename</code>: an address of a file.</li>
-<li><code>mode</code>:
-<ul>
-<li><code>'w'</code> - write - overwrites (“deletes”) prior data</li>
-<li><code>'r'</code> - read</li>
-<li><code>'a'</code> - append - adds at end of prior data</li>
-<li><code>'r+'</code> - opens the file to read and write</li>
-<li><code>'b'</code> appended to the mode opens the file in binary mode</li>
-</ul></li>
-</ul></li>
-</ul>
+<section>
+<section id="part-1-read-a-text-file" class="title-slide slide level1 section-divider center">
+<h1>Part 1: Read a Text File</h1>
 </section>
-<section id="reading-a-whole-file" class="slide level2">
-<h2>Reading a Whole File</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="op">&gt;&gt;&gt;</span> f <span class="op">=</span> <span class="bu">open</span>(<span class="st">'test_file.txt'</span>, <span class="st">'r'</span>)  <span class="co"># returns a file object</span></span>
-<span id="cb1-2"><a></a><span class="op">&gt;&gt;&gt;</span> s <span class="op">=</span> f.read()  <span class="co"># reads the entire file, returns its contents as a string</span></span>
-<span id="cb1-3"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(s)</span>
-<span id="cb1-4"><a></a>This <span class="kw">is</span> a <span class="bu">file</span></span>
-<span id="cb1-5"><a></a><span class="op">&gt;&gt;&gt;</span> f.close()     <span class="co"># releases the file lock, frees resources</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In case the file is located in a different directory, use the full path:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="op">&gt;&gt;&gt;</span> f <span class="op">=</span> <span class="bu">open</span>(<span class="st">'C:/Users/Desktop/ta5_code/test_file.txt'</span>, <span class="st">'r'</span>)</span>
-<span id="cb2-2"><a></a><span class="op">&gt;&gt;&gt;</span> f</span>
-<span id="cb2-3"><a></a><span class="op">&lt;</span><span class="bu">open</span> <span class="bu">file</span> <span class="st">'C:/Users/Desktop/ta5_code/test_file.txt'</span>, mode <span class="st">'r'</span> at <span class="bn">0x00000000026F95D0</span><span class="op">&gt;</span></span>
-<span id="cb2-4"><a></a><span class="op">&gt;&gt;&gt;</span> f.read()</span>
-<span id="cb2-5"><a></a><span class="co">'This is a file'</span></span>
-<span id="cb2-6"><a></a><span class="op">&gt;&gt;&gt;</span> f.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="in-a-text-file-n-ends-each-line" class="slide level2">
+<h2>In a Text File, <code>\n</code> Ends Each Line</h2>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div class="cap">
+<p>The file in an editor:</p>
+</div>
+<div class="file" data-name="devices.txt">
+<div class="sourceCode" id="cb2"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>router 12</span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>desk 9</span>
+<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>hall 10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cap">
+<p>The same file as Python reads it, one string:</p>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python repl code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="co">'router 12</span><span class="ch">\n</span><span class="co">desk 9</span><span class="ch">\n</span><span class="co">hall 10</span><span class="ch">\n</span><span class="co">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:54%;">
+<div class="steps">
+<div class="step fragment fade-up">
+<p><span class="tag">file</span> data on the disk with a name. It stays there when the program ends.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:1-3">
+<p><span class="tag t-add">text file</span> a file that stores <strong>characters</strong>. Every editor can open it: <code>.txt</code>, <code>.csv</code>, <code>.py</code>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:1">
+<p><span class="tag t-replace"><code>\n</code></span> the <strong>newline</strong> character. It is one character at the end of each line. An editor does not show it: it starts a new line.</p>
+</div>
+<div class="step fragment fade-up">
+<p>a <code>.jpg</code>, <code>.pdf</code>, or <code>.xlsx</code> file is not a text file. Today: text files only.</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>This file has 3 lines and 25 characters: 22 that you see, and 3 newline characters.</p>
+</div>
 </section>
-<section id="reading-line-by-line" class="slide level2">
-<h2>Reading Line by Line</h2>
+<section id="a-path-is-the-address-of-a-file" class="slide level2">
+<h2>A Path Is the Address of a File</h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<div class="tree">
+<div class="sourceCode" id="cb4"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a>EE1021_Project/</span>
+<span id="cb4-2"><a aria-hidden="true" tabindex="-1"></a>├── main.py</span>
+<span id="cb4-3"><a aria-hidden="true" tabindex="-1"></a>├── devices.txt</span>
+<span id="cb4-4"><a aria-hidden="true" tabindex="-1"></a>└── data/</span>
+<span id="cb4-5"><a aria-hidden="true" tabindex="-1"></a>    └── log.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cap">
+<p>In <code>main.py</code>:</p>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="bu">open</span>(<span class="st">"devices.txt"</span>)</span>
+<span id="cb5-2"><a></a><span class="bu">open</span>(<span class="st">"data/log.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:58%;">
+<div class="steps">
+<div class="step fragment fade-up">
+<p><span class="tag">path</span> the address of a file: the folder names, then the file name</p>
+</div>
+<div class="step fragment fade-up">
+<p><span class="tag t-replace">absolute</span> starts at the drive: <code>C:/Users/ayse/EE1021_Project/devices.txt</code>. It works on one computer only.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:1-2">
+<p><span class="tag t-add">relative</span> starts at the <strong>working folder</strong>: <code>devices.txt</code>, <code>data/log.csv</code></p>
+</div>
+<div class="step fragment fade-up" data-focus="1:1">
+<p>the working folder is the folder that is open in VS Code. The terminal shows its path before the <code>&gt;</code> sign.</p>
+</div>
+<div class="step fragment fade-up">
+<p>to print the working folder: <code>import os</code>, then <code>print(os.getcwd())</code></p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>In the project, use <strong>relative</strong> paths. The program must run on another computer.</p>
+</div>
+</section>
+<section id="open-read-close-read-the-whole-file" class="slide level2 dense-code">
+<h2><code>open</code>, <code>read</code>, <code>close</code>: Read the Whole File</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>The <code>for</code> loop is used to read line after line from a file object:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="op">&gt;&gt;&gt;</span> f <span class="op">=</span> <span class="bu">open</span>(<span class="st">'test_file_2.txt'</span>, <span class="st">'r'</span>)</span>
-<span id="cb3-2"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> line <span class="kw">in</span> f:</span>
-<span id="cb3-3"><a></a>...     <span class="bu">print</span>(line)</span>
-<span id="cb3-4"><a></a>this <span class="kw">is</span> line <span class="dv">1</span></span>
-<span id="cb3-5"><a></a></span>
-<span id="cb3-6"><a></a>this <span class="kw">is</span> line <span class="dv">2</span></span>
-<span id="cb3-7"><a></a></span>
-<span id="cb3-8"><a></a>the end</span>
-<span id="cb3-9"><a></a><span class="op">&gt;&gt;&gt;</span> f.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python repl code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">"devices.txt"</span>)</span>
+<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> text <span class="op">=</span> <span class="bu">file</span>.read()</span>
+<span id="cb6-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">file</span>.close()</span>
+<span id="cb6-4"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> text</span>
+<span id="cb6-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">'router 12</span><span class="ch">\n</span><span class="co">desk 9</span><span class="ch">\n</span><span class="co">hall 10</span><span class="ch">\n</span><span class="co">'</span></span>
+<span id="cb6-6"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">len</span>(text)</span>
+<span id="cb6-7"><a aria-hidden="true" tabindex="-1"></a><span class="dv">25</span></span>
+<span id="cb6-8"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(text)</span>
+<span id="cb6-9"><a aria-hidden="true" tabindex="-1"></a>router <span class="dv">12</span></span>
+<span id="cb6-10"><a aria-hidden="true" tabindex="-1"></a>desk <span class="dv">9</span></span>
+<span id="cb6-11"><a aria-hidden="true" tabindex="-1"></a>hall <span class="dv">10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
-<p>Storing read lines as a list of strings:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>f <span class="op">=</span> <span class="bu">open</span>(<span class="st">'test_file_2.txt'</span>, <span class="st">'r'</span>)</span>
-<span id="cb4-2"><a></a>lines <span class="op">=</span> []</span>
-<span id="cb4-3"><a></a><span class="cf">for</span> line <span class="kw">in</span> f:</span>
-<span id="cb4-4"><a></a>    lines.append(line)</span>
-<span id="cb4-5"><a></a>f.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Or… use:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>lines <span class="op">=</span> f.readlines()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1">
+<p><code>open(path)</code> opens the file for reading. It returns a <strong>file object</strong>: an object with methods (Lecture 7).</p>
+</div>
+<div class="step fragment fade-up" data-focus="2">
+<p><code>file.read()</code> returns all the characters of the file as <strong>one string</strong></p>
+</div>
+<div class="step fragment fade-up" data-focus="3">
+<p><code>file.close()</code> ends the connection to the file. Call it when you finish.</p>
+</div>
+<div class="step fragment fade-up" data-focus="4-7" data-show="4-7">
+<p>the string is still there after <code>close()</code>. Each <code>\n</code> is one character.</p>
+</div>
+<div class="step fragment fade-up" data-focus="8-11" data-show="8-11">
+<p><code>print</code> shows the text as the editor shows it</p>
+</div>
+</div>
 </div></div>
+<div class="fragment fade-up takeaway">
+<p>Three steps for every file: <strong>open</strong>, <strong>read</strong> or <strong>write</strong>, <strong>close</strong>.</p>
+</div>
 </section>
-<section id="functions-for-reading-from-a-file" class="slide level2">
-<h2>Functions for Reading from a File</h2>
-<ul>
-<li><code>f.read()</code> - reads an entire file as a single string</li>
-<li><code>f.readline()</code> - reads the next line as a string</li>
-<li><code>f.readlines()</code> - reads all remaining lines as a list of strings</li>
-<li>Iterating a file:</li>
-</ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="cf">for</span> line <span class="kw">in</span> f:</span>
-<span id="cb6-2"><a></a>    ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="remarks" class="slide level2">
-<h2>Remarks</h2>
-<ul>
-<li>Reading advances the file position, so we cannot <code>read()</code> twice from the same file, or loop twice (with <code>for</code>) over the same file.</li>
-<li>Remember to close the file using <code>f.close()</code> to free up resources.</li>
-<li>In a string, <code>'\n'</code> represents the new line character:</li>
-</ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="op">&gt;&gt;&gt;</span> a_line <span class="op">=</span> <span class="st">'this is a line</span><span class="ch">\n</span><span class="st">'</span></span>
-<span id="cb7-2"><a></a><span class="op">&gt;&gt;&gt;</span> a_line</span>
-<span id="cb7-3"><a></a><span class="co">'this is a line</span><span class="ch">\n</span><span class="co">'</span></span>
-<span id="cb7-4"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(a_line <span class="op">+</span> <span class="st">'more text'</span>)</span>
-<span id="cb7-5"><a></a>this <span class="kw">is</span> a line</span>
-<span id="cb7-6"><a></a>more text</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="parsing-a-text-file---split" class="slide level2">
-<h2>Parsing a Text File - <code>split</code></h2>
-<ul>
-<li>Reading a text file means breaking every line into fields based on some predefined format.</li>
-<li>The <code>split</code> method splits a string into tokens using a delimiter, and returns a list of strings.</li>
-</ul>
+<section id="a-for-loop-reads-a-file-line-by-line" class="slide level2">
+<h2>A <code>for</code> Loop Reads a File Line by Line</h2>
 <div class="columns">
-<div class="column" style="width:60%;">
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>s <span class="op">=</span> <span class="st">"Ankara,Istanbul,Izmir,Bursa"</span></span>
-<span id="cb8-2"><a></a>cities <span class="op">=</span> s.split(<span class="st">','</span>)</span>
-<span id="cb8-3"><a></a><span class="cf">for</span> city <span class="kw">in</span> cities:</span>
-<span id="cb8-4"><a></a>    <span class="bu">print</span>(city)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:40%;">
-<pre><code>Ankara
-Istanbul
-Izmir
-Bursa</code></pre>
-</div></div>
-<ul>
-<li>If a delimiter is not specified, the string is split into words separated by a sequence of whitespaces.</li>
-</ul>
-</section>
-<section id="parsing-a-text-file---strip-rstrip" class="slide level2">
-<h2>Parsing a Text File - <code>strip</code> &amp; <code>rstrip</code></h2>
-<p>Use <code>strip</code> to remove unwanted characters from both sides of the string:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="st">'    spacious   '</span>.strip()</span>
-<span id="cb10-2"><a></a><span class="co">'spacious'</span></span>
-<span id="cb10-3"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="st">'www.example.com'</span>.strip(<span class="st">'cmowz.'</span>)</span>
-<span id="cb10-4"><a></a><span class="co">'example'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The string method <code>rstrip()</code> can be used to get rid of trailing newlines:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="op">&gt;&gt;&gt;</span> lines</span>
-<span id="cb11-2"><a></a>[<span class="st">'this is line 1</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">'this is line 2</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">'the end'</span>]</span>
-<span id="cb11-3"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(lines)):</span>
-<span id="cb11-4"><a></a>...     lines[i] <span class="op">=</span> lines[i].rstrip()</span>
-<span id="cb11-5"><a></a><span class="op">&gt;&gt;&gt;</span> lines</span>
-<span id="cb11-6"><a></a>[<span class="st">'this is line 1'</span>, <span class="st">'this is line 2'</span>, <span class="st">'the end'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section></section>
-<section>
-<section id="part-2-writing-to-files" class="title-slide slide level1 section-divider center">
-<h1>Part 2: Writing to Files</h1>
-
-</section>
-<section id="file-output-writing-to-a-file" class="slide level2">
-<h2>File Output: Writing to a File</h2>
-<p>Use <code>f.write(str)</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="co"># open a file (or create it if no such file exists)</span></span>
-<span id="cb12-2"><a></a>f <span class="op">=</span> <span class="bu">open</span>(<span class="st">'test_file_3.txt'</span>, <span class="st">'w'</span>)</span>
-<span id="cb12-3"><a></a>f.write(<span class="st">"This is a test"</span>)</span>
-<span id="cb12-4"><a></a></span>
-<span id="cb12-5"><a></a><span class="co"># newline</span></span>
-<span id="cb12-6"><a></a>f.write(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span>
-<span id="cb12-7"><a></a></span>
-<span id="cb12-8"><a></a><span class="co"># to write a non-string object, first convert it to a string</span></span>
-<span id="cb12-9"><a></a>tpl <span class="op">=</span> (<span class="st">'string'</span>, <span class="dv">40</span>)</span>
-<span id="cb12-10"><a></a>f.write(<span class="bu">str</span>(tpl))</span>
-<span id="cb12-11"><a></a></span>
-<span id="cb12-12"><a></a><span class="co"># flush data to the file and close it, unlock file, free resources</span></span>
-<span id="cb12-13"><a></a>f.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Check the result:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="op">&gt;&gt;&gt;</span> f <span class="op">=</span> <span class="bu">open</span>(<span class="st">'test_file_3.txt'</span>, <span class="st">'r'</span>)</span>
-<span id="cb13-2"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(f.read())</span>
-<span id="cb13-3"><a></a>This <span class="kw">is</span> a test</span>
-<span id="cb13-4"><a></a>(<span class="st">'string'</span>, <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="the-with-keyword" class="slide level2">
-<h2>The <code>with</code> Keyword</h2>
-<ul>
-<li>The keyword <code>with</code> allows us to automate the closing of a file.</li>
-<li>Modify your code as follows:</li>
-</ul>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'test_file_3.txt'</span>, <span class="st">'w'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb14-2"><a></a>    <span class="bu">file</span>.write(<span class="st">"this is a test</span><span class="ch">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>This implementation ensures the file is closed once the code inside the <code>with</code> block is executed.</li>
-</ul>
-</section>
-<section id="example-writing-a-list-of-numbers-to-a-text-file" class="slide level2">
-<h2>Example: Writing a List of Numbers to a Text File</h2>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>my_list <span class="op">=</span> [i<span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>)]  <span class="co"># list comprehension!</span></span>
-<span id="cb15-2"><a></a><span class="co"># generates a list of the squares of the numbers 1 - 10</span></span>
-<span id="cb15-3"><a></a></span>
-<span id="cb15-4"><a></a>f <span class="op">=</span> <span class="bu">open</span>(<span class="st">"output.txt"</span>, <span class="st">"w"</span>)</span>
-<span id="cb15-5"><a></a><span class="cf">for</span> item <span class="kw">in</span> my_list:</span>
-<span id="cb15-6"><a></a>    f.write(<span class="bu">str</span>(item) <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb15-7"><a></a>f.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section></section>
-<section>
-<section id="part-3-csv-files" class="title-slide slide level1 section-divider center">
-<h1>Part 3: CSV Files</h1>
-
-</section>
-<section id="csv-files" class="slide level2">
-<h2>CSV Files</h2>
-<ul>
-<li>CSV stands for <strong>“comma separated values”</strong>.</li>
-<li>Let’s have a CSV file named <code>students.csv</code> that looks like:</li>
-</ul>
-<pre><code>Mert,Electronic
-Ayse,Computer
-Halil,Industrial
-Hamit,Electronic</code></pre>
-<ul>
-<li>Create a new program:</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:60%;">
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"students.csv"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb17-2"><a></a>    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
-<span id="cb17-3"><a></a>        row <span class="op">=</span> line.rstrip().split(<span class="st">","</span>)</span>
-<span id="cb17-4"><a></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>row[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> is in </span><span class="sc">{</span>row[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:40%;">
-<pre><code>Mert is in Electronic
-Ayse is in Computer
-Halil is in Industrial
-Hamit is in Electronic</code></pre>
-</div></div>
-</section>
-<section id="the-csv-module" class="slide level2">
-<h2>The <code>csv</code> Module</h2>
-<ul>
-<li><strong>Standard library</strong>: Python includes a built-in module called <code>csv</code> specifically for reading and writing CSV files.</li>
-<li>It is more robust than manually splitting strings with <code>line.split(',')</code>.</li>
-<li><strong>Handles complexity</strong>: it automatically handles edge cases, such as fields that contain commas (e.g., <code>"Doe, John"</code>), quotes, or newlines.</li>
-</ul>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="im">import</span> csv</span>
-<span id="cb19-2"><a></a></span>
-<span id="cb19-3"><a></a><span class="co"># open the file using the csv module</span></span>
-<span id="cb19-4"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'students.csv'</span>, <span class="st">'r'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb19-5"><a></a>    reader <span class="op">=</span> csv.reader(<span class="bu">file</span>)</span>
-<span id="cb19-6"><a></a>    <span class="cf">for</span> row <span class="kw">in</span> reader:</span>
-<span id="cb19-7"><a></a>        <span class="co"># 'row' is automatically converted to a list of strings</span></span>
-<span id="cb19-8"><a></a>        <span class="bu">print</span>(row)</span>
-<span id="cb19-9"><a></a><span class="co"># Output: ['Mert', 'Electronic'] ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="converting-csv-content-into-dictionaries" class="slide level2">
-<h2>Converting CSV Content into Dictionaries</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Dictionary implementation</strong></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a><span class="im">import</span> csv</span>
-<span id="cb20-2"><a></a></span>
-<span id="cb20-3"><a></a>students <span class="op">=</span> []</span>
-<span id="cb20-4"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"students.csv"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb20-5"><a></a>    lines <span class="op">=</span> csv.reader(<span class="bu">file</span>)</span>
-<span id="cb20-6"><a></a>    <span class="cf">for</span> name, major <span class="kw">in</span> lines:</span>
-<span id="cb20-7"><a></a>        students.append({<span class="st">"name"</span>: name,</span>
-<span id="cb20-8"><a></a>                         <span class="st">"major"</span>: major})</span>
-<span id="cb20-9"><a></a></span>
-<span id="cb20-10"><a></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
-<span id="cb20-11"><a></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>student[<span class="st">'name'</span>]<span class="sc">}</span><span class="ss"> is in </span><span class="sc">{</span>student[<span class="st">'major'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:50%;">
-<p><strong>Sorted version</strong></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="im">import</span> csv</span>
-<span id="cb21-2"><a></a></span>
-<span id="cb21-3"><a></a>students <span class="op">=</span> []</span>
-<span id="cb21-4"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"students.csv"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb21-5"><a></a>    lines <span class="op">=</span> csv.reader(<span class="bu">file</span>)</span>
-<span id="cb21-6"><a></a>    <span class="cf">for</span> name, major <span class="kw">in</span> lines:</span>
-<span id="cb21-7"><a></a>        students.append({<span class="st">"name"</span>: name,</span>
-<span id="cb21-8"><a></a>                         <span class="st">"major"</span>: major})</span>
-<span id="cb21-9"><a></a></span>
-<span id="cb21-10"><a></a><span class="kw">def</span> get_name(student):</span>
-<span id="cb21-11"><a></a>    <span class="cf">return</span> student[<span class="st">"name"</span>]</span>
-<span id="cb21-12"><a></a></span>
-<span id="cb21-13"><a></a><span class="cf">for</span> student <span class="kw">in</span> <span class="bu">sorted</span>(students, key<span class="op">=</span>get_name):</span>
-<span id="cb21-14"><a></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>student[<span class="st">'name'</span>]<span class="sc">}</span><span class="ss"> is in </span><span class="sc">{</span>student[<span class="st">'major'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-</section>
-<section id="lambda-expressions-anonymous-functions" class="slide level2">
-<h2>Lambda Expressions (Anonymous Functions)</h2>
-<ul>
-<li>The expression below creates a <strong>function object</strong>:</li>
-</ul>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="kw">lambda</span> parameters: expression</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>The unnamed object behaves like a function object defined with:</li>
-</ul>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="kw">def</span> some_function(parameters):</span>
-<span id="cb23-2"><a></a>    <span class="cf">return</span> expression</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="sorting-with-a-lambda" class="slide level2">
-<h2>Sorting with a Lambda</h2>
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="im">import</span> csv</span>
-<span id="cb24-2"><a></a></span>
-<span id="cb24-3"><a></a>students <span class="op">=</span> []</span>
-<span id="cb24-4"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"students.csv"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb24-5"><a></a>    lines <span class="op">=</span> csv.reader(<span class="bu">file</span>)</span>
-<span id="cb24-6"><a></a>    <span class="cf">for</span> name, major <span class="kw">in</span> lines:</span>
-<span id="cb24-7"><a></a>        students.append({<span class="st">"name"</span>: name, <span class="st">"major"</span>: major})</span>
-<span id="cb24-8"><a></a></span>
-<span id="cb24-9"><a></a><span class="cf">for</span> student <span class="kw">in</span> <span class="bu">sorted</span>(students, key<span class="op">=</span><span class="kw">lambda</span> s: s[<span class="st">"name"</span>]):</span>
-<span id="cb24-10"><a></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>student[<span class="st">'name'</span>]<span class="sc">}</span><span class="ss"> is in </span><span class="sc">{</span>student[<span class="st">'major'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="column" style="width:48%;">
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">"devices.txt"</span>)</span>
+<span id="cb7-2"><a></a><span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
+<span id="cb7-3"><a></a>    <span class="bu">print</span>(line)</span>
+<span id="cb7-4"><a></a><span class="bu">file</span>.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Output:</p>
-<pre><code>Ayse is in Computer
-Halil is in Industrial
-Hamit is in Electronic
-Mert is in Electronic</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a>router 12</span>
+<span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a aria-hidden="true" tabindex="-1"></a>desk 9</span>
+<span id="cb8-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a aria-hidden="true" tabindex="-1"></a>hall 10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:52%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:2">
+<p>in a <code>for</code> loop, the file object gives <strong>one line</strong> in each turn: 3 lines, 3 turns</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:2-3">
+<p>each <code>line</code> is a string that ends with <code>\n</code>. In the first turn: <code>'router 12\n'</code></p>
+</div>
+<div class="step fragment fade-up" data-focus="1:3;2:1-2" data-show="2:1-5">
+<p><code>print</code> adds one more newline after the <code>\n</code> of the line: the output has empty lines</p>
+</div>
+<div class="step fragment fade-up">
+<p>only one line is in memory at a time: the loop also works for a very large file</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>Each <code>line</code> still has its <code>\n</code> at the end. The next slide removes it.</p>
+</div>
+</section>
+<section id="strip-removes-spaces-and-n-from-both-ends" class="slide level2">
+<h2><code>strip</code> Removes Spaces and <code>\n</code> from Both Ends</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python repl code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> line <span class="op">=</span> <span class="st">"router 12</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> line.strip()</span>
+<span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a><span class="co">'router 12'</span></span>
+<span id="cb9-4"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="st">"   desk 9  </span><span class="ch">\n</span><span class="st">"</span>.strip()</span>
+<span id="cb9-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">'desk 9'</span></span>
+<span id="cb9-6"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> line</span>
+<span id="cb9-7"><a aria-hidden="true" tabindex="-1"></a><span class="co">'router 12</span><span class="ch">\n</span><span class="co">'</span></span>
+<span id="cb9-8"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> line <span class="op">=</span> line.strip()</span>
+<span id="cb9-9"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> line</span>
+<span id="cb9-10"><a aria-hidden="true" tabindex="-1"></a><span class="co">'router 12'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:52%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1-3">
+<p><code>strip()</code> is a string method. It returns a new string without the <code>\n</code> at the end.</p>
+</div>
+<div class="step fragment fade-up" data-focus="4-5" data-show="4-5">
+<p>it removes <strong>whitespace</strong> at both ends: spaces, tabs, and newlines. The space inside <code>desk 9</code> stays.</p>
+</div>
+<div class="step fragment fade-up" data-focus="6-7" data-show="6-7">
+<p><code>strip()</code> does not change <code>line</code>. The <code>\n</code> is still there.</p>
+</div>
+<div class="step fragment fade-up" data-focus="8-10" data-show="8-10">
+<p>to keep the result, assign it to a name</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>In a loop over a file, the first step is <code>line = line.strip()</code>.</p>
+</div>
+</section>
+<section id="split-cuts-a-string-into-a-list-of-strings" class="slide level2">
+<h2><code>split</code> Cuts a String into a List of Strings</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python repl code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="st">"router 12"</span>.split()</span>
+<span id="cb10-2"><a aria-hidden="true" tabindex="-1"></a>[<span class="st">'router'</span>, <span class="st">'12'</span>]</span>
+<span id="cb10-3"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="st">"heater,1500,on"</span>.split(<span class="st">","</span>)</span>
+<span id="cb10-4"><a aria-hidden="true" tabindex="-1"></a>[<span class="st">'heater'</span>, <span class="st">'1500'</span>, <span class="st">'on'</span>]</span>
+<span id="cb10-5"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> name, watts <span class="op">=</span> <span class="st">"router 12"</span>.split()</span>
+<span id="cb10-6"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> watts</span>
+<span id="cb10-7"><a aria-hidden="true" tabindex="-1"></a><span class="co">'12'</span></span>
+<span id="cb10-8"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">int</span>(watts) <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb10-9"><a aria-hidden="true" tabindex="-1"></a><span class="dv">24</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:50%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1-2">
+<p><code>split()</code> cuts the string at the spaces. The result is a <strong>list of strings</strong>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="3-4" data-show="3-4">
+<p><code>split(",")</code> cuts at each comma. The argument is the <strong>separator</strong>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="5" data-show="5">
+<p>two parts and two names: the first part goes to <code>name</code>, the second to <code>watts</code> (Lecture 4)</p>
+</div>
+<div class="step fragment fade-up" data-focus="6-7" data-show="6-7">
+<p><code>watts</code> is the string <code>'12'</code>. It is not the number 12.</p>
+</div>
+<div class="step fragment fade-up" data-focus="8-9" data-show="8-9">
+<p><code>int(...)</code> or <code>float(...)</code> makes a number from the string</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>Every value that comes from a file is a <strong>string</strong>. Convert it before you calculate.</p>
+</div>
+</section>
+<section id="read-a-data-file-loop-strip-split-convert" class="slide level2">
+<h2>Read a Data File: Loop, <code>strip</code>, <code>split</code>, Convert</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-2"><a></a></span>
+<span id="cb11-3"><a></a><span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">"devices.txt"</span>)</span>
+<span id="cb11-4"><a></a><span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
+<span id="cb11-5"><a></a>    line <span class="op">=</span> line.strip()</span>
+<span id="cb11-6"><a></a>    name, watts <span class="op">=</span> line.split()</span>
+<span id="cb11-7"><a></a>    total <span class="op">+=</span> <span class="bu">int</span>(watts)</span>
+<span id="cb11-8"><a></a><span class="bu">file</span>.close()</span>
+<span id="cb11-9"><a></a></span>
+<span id="cb11-10"><a></a><span class="bu">print</span>(<span class="st">"total:"</span>, total, <span class="st">"W"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps swap">
+<div class="step fragment fade-up" data-fragment-index="1" data-focus="3-4">
+<p>open the file. The loop body runs one time for each line.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="2" data-focus="5">
+<p>remove the <code>\n</code></p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="3" data-focus="6">
+<p>cut the line into its two values</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="4" data-focus="7">
+<p>convert the string to a number, then add it</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="5" data-focus="8,10">
+<p>close the file after the loop. The program prints <code>total: 31 W</code>.</p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cap">
+<p>The values in each turn of the loop:</p>
+</div>
+<div class="trace">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>turn</th>
+<th><code>line</code> after <code>strip</code></th>
+<th><code>name</code></th>
+<th><code>watts</code></th>
+<th><code>total</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><code>'router 12'</code></td>
+<td><code>'router'</code></td>
+<td><code>'12'</code></td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>'desk 9'</code></td>
+<td><code>'desk'</code></td>
+<td><code>'9'</code></td>
+<td>21</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><code>'hall 10'</code></td>
+<td><code>'hall'</code></td>
+<td><code>'10'</code></td>
+<td>31</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment fade-up takeaway" data-fragment-index="6">
+<p>The pattern for a data file: <strong>loop</strong>, <strong>strip</strong>, <strong>split</strong>, <strong>convert</strong>.</p>
+</div>
+</div></div>
+</section>
+<section id="predict-the-output-numbers-from-a-file" class="slide level2 checkpoint dense-code">
+<h2>Predict the Output: Numbers from a File</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="file" data-name="volts.txt">
+<div class="sourceCode" id="cb12"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a>4.5</span>
+<span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a>5.25</span>
+<span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a>5.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>values <span class="op">=</span> []</span>
+<span id="cb13-2"><a></a><span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">"volts.txt"</span>)</span>
+<span id="cb13-3"><a></a><span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
+<span id="cb13-4"><a></a>    values.append(line.strip())</span>
+<span id="cb13-5"><a></a><span class="bu">file</span>.close()</span>
+<span id="cb13-6"><a></a></span>
+<span id="cb13-7"><a></a><span class="bu">print</span>(<span class="bu">len</span>(values))              <span class="co"># line A</span></span>
+<span id="cb13-8"><a></a><span class="bu">print</span>(values[<span class="dv">0</span>] <span class="op">+</span> values[<span class="dv">1</span>])    <span class="co"># line B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:48%;">
+<ol type="1">
+<li>Write the output of line A.</li>
+<li>Write the output of line B.</li>
+</ol>
+<div class="answer fragment fade-up" data-focus="2:7-8">
+<div class="ans-rows">
+<p><span class="ans-key">line A</span> <span class="ans-val"><code>3</code></span></p>
+<p><span class="ans-key">line B</span> <span class="ans-val"><code>4.55.25</code></span></p>
+</div>
+<div class="ans-why fragment fade-up" data-focus="2:4">
+<p><strong>Why:</strong> the list holds three <strong>strings</strong>. For two strings, <code>+</code> joins them. To get 9.75, convert in line 4: <code>values.append(float(line.strip()))</code></p>
+</div>
+</div>
+</div></div>
 </section></section>
 <section>
-<section id="part-4-robust-file-handling" class="title-slide slide level1 section-divider center">
-<h1>Part 4: Robust File Handling</h1>
-
+<section id="part-2-write-a-text-file" class="title-slide slide level1 section-divider center">
+<h1>Part 2: Write a Text File</h1>
 </section>
-<section id="handling-file-errors" class="slide level2">
-<h2>Handling File Errors</h2>
-<ul>
-<li><strong>The problem</strong>: what if the file you try to open doesn’t exist? The program will crash with a <code>FileNotFoundError</code>.</li>
-<li><strong>The solution</strong>: use <code>try</code> and <code>except</code> blocks to handle errors gracefully.</li>
-<li><strong>Best practice</strong>: always anticipate potential issues when working with external files (missing files, permission issues).</li>
-</ul>
-<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a>filename <span class="op">=</span> <span class="st">"missing_file.txt"</span></span>
-<span id="cb26-2"><a></a><span class="cf">try</span>:</span>
-<span id="cb26-3"><a></a>    <span class="co"># try to execute this block of code</span></span>
-<span id="cb26-4"><a></a>    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
-<span id="cb26-5"><a></a>        content <span class="op">=</span> f.read()</span>
-<span id="cb26-6"><a></a>        <span class="bu">print</span>(content)</span>
-<span id="cb26-7"><a></a><span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
-<span id="cb26-8"><a></a>    <span class="co"># if the file is not found, run this block instead of crashing</span></span>
-<span id="cb26-9"><a></a>    <span class="bu">print</span>(<span class="ss">f"Error: The file '</span><span class="sc">{</span>filename<span class="sc">}</span><span class="ss">' was not found."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="mode-w-and-write-put-text-into-a-file" class="slide level2">
+<h2>Mode <code>"w"</code> and <code>write</code>: Put Text into a File</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>total <span class="op">=</span> <span class="dv">31</span></span>
+<span id="cb14-2"><a></a></span>
+<span id="cb14-3"><a></a><span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">"report.txt"</span>, <span class="st">"w"</span>)</span>
+<span id="cb14-4"><a></a><span class="bu">file</span>.write(<span class="st">"total power</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb14-5"><a></a><span class="bu">file</span>.write(<span class="bu">str</span>(total) <span class="op">+</span> <span class="st">" W</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb14-6"><a></a><span class="bu">file</span>.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="file" data-name="report.txt">
+<div class="sourceCode" id="cb15"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a>total power</span>
+<span id="cb15-2"><a aria-hidden="true" tabindex="-1"></a>31 W</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:3">
+<p>the second argument is the <strong>mode</strong>. <code>"w"</code> means write. Python creates the file <code>report.txt</code>: it is empty.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:4">
+<p><code>write</code> takes <strong>one string</strong>. It does not add <code>\n</code>: you write it.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:5">
+<p>a number is not a string: convert it with <code>str(...)</code>, or use an f-string</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:6;2:1-2" data-show="2:1-2">
+<p>Python can keep the text in memory until <code>close()</code>. After <code>close()</code>, all the text is in the file.</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p><code>print</code> writes to the screen. <code>file.write</code> writes to a file, and it takes only strings.</p>
+</div>
 </section>
-<section id="text-vs.-binary-files" class="slide level2">
-<h2>Text vs.&nbsp;Binary Files</h2>
-<ul>
-<li><strong>Text files</strong> (<code>.txt</code>, <code>.csv</code>, <code>.py</code>): store data as a sequence of characters. The computer encodes these characters (e.g., UTF-8, ASCII).</li>
-<li><strong>Binary files</strong> (<code>.dat</code>, <code>.jpg</code>, <code>.mp3</code>, <code>.exe</code>): store data as a sequence of bytes (0s and 1s). There is no character encoding.</li>
-<li><strong>Why it matters</strong>: if you try to open an image in text mode (<code>'r'</code>), Python will try to decode the bytes as text and crash or give garbage output.</li>
-<li>Modes:
-<ul>
-<li><code>'rb'</code>: read binary</li>
-<li><code>'wb'</code>: write binary</li>
-</ul></li>
-</ul>
+<section id="w-deletes-the-old-text-a-adds-at-the-end" class="slide level2">
+<h2><code>"w"</code> Deletes the Old Text; <code>"a"</code> Adds at the End</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>mode</th>
+<th>meaning</th>
+<th>the file exists</th>
+<th>the file does not exist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>"r"</code></td>
+<td>read (the default)</td>
+<td>read from the start</td>
+<td><code>FileNotFoundError</code></td>
+</tr>
+<tr class="even">
+<td><code>"w"</code></td>
+<td>write</td>
+<td>the <strong>old content is deleted</strong></td>
+<td>Python creates the file</td>
+</tr>
+<tr class="odd">
+<td><code>"a"</code></td>
+<td>append</td>
+<td>new text goes <strong>at the end</strong></td>
+<td>Python creates the file</td>
+</tr>
+</tbody>
+</table>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">"log.txt"</span>, <span class="st">"a"</span>)</span>
+<span id="cb16-2"><a></a><span class="bu">file</span>.write(<span class="st">"program started</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb16-3"><a></a><span class="bu">file</span>.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="steps">
+<div class="step fragment fade-up" data-fragment-index="1">
+<p><span class="tag t-add"><code>"a"</code></span> each run adds one line. Good for a log of events.</p>
+</div>
+<div class="step fragment fade-up" data-fragment-index="2">
+<p><span class="tag t-replace"><code>"w"</code></span> <code>open</code> deletes the old content at once. Good for saving the current data.</p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="file fragment" data-fragment-index="1" data-name="log.txt after 3 runs, mode a">
+<div class="sourceCode" id="cb17"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb17-1"><a aria-hidden="true" tabindex="-1"></a>program started</span>
+<span id="cb17-2"><a aria-hidden="true" tabindex="-1"></a>program started</span>
+<span id="cb17-3"><a aria-hidden="true" tabindex="-1"></a>program started</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="file fragment" data-fragment-index="2" data-name="log.txt after 3 runs, mode w">
+<div class="sourceCode" id="cb18"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a aria-hidden="true" tabindex="-1"></a>program started</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
 </section>
-<section id="writing-into-a-binary-file" class="slide level2">
-<h2>Writing into a Binary File</h2>
-<p>When working with binary files, we read and write <code>bytes</code> objects, not strings.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a><span class="co"># We want to generate a voltage ramp from 0V to 5V.</span></span>
-<span id="cb27-2"><a></a><span class="co"># In our 8-bit system, that means numbers from 0 to 255.</span></span>
-<span id="cb27-3"><a></a></span>
-<span id="cb27-4"><a></a><span class="co"># Create a list of integers representing voltage levels.</span></span>
-<span id="cb27-5"><a></a><span class="co"># This represents one 'cycle' of a sawtooth wave.</span></span>
-<span id="cb27-6"><a></a>signal_points <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">150</span>, <span class="dv">200</span>, <span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">150</span>, <span class="dv">200</span>, <span class="dv">255</span>]</span>
-<span id="cb27-7"><a></a></span>
-<span id="cb27-8"><a></a><span class="co"># Convert the list of integers into raw bytes</span></span>
-<span id="cb27-9"><a></a>binary_data <span class="op">=</span> <span class="bu">bytes</span>(signal_points)</span>
-<span id="cb27-10"><a></a><span class="bu">print</span>(<span class="ss">f"Signal ready: </span><span class="sc">{</span><span class="bu">list</span>(binary_data)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb27-11"><a></a></span>
-<span id="cb27-12"><a></a><span class="co"># Save to a binary file ('wb') to simulate loading it into the device memory</span></span>
-<span id="cb27-13"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"waveform.dat"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
-<span id="cb27-14"><a></a>    f.write(binary_data)</span>
-<span id="cb27-15"><a></a></span>
-<span id="cb27-16"><a></a><span class="bu">print</span>(<span class="st">"Waveform saved to waveform.dat"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="with-closes-the-file-automatically" class="slide level2">
+<h2><code>with</code> Closes the File Automatically</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>total <span class="op">=</span> <span class="dv">31</span></span>
+<span id="cb19-2"><a></a></span>
+<span id="cb19-3"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"report.txt"</span>, <span class="st">"w"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb19-4"><a></a>    <span class="bu">file</span>.write(<span class="st">"total power</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb19-5"><a></a>    <span class="bu">file</span>.write(<span class="ss">f"</span><span class="sc">{</span>total<span class="sc">}</span><span class="ss"> W</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb19-6"><a></a></span>
+<span id="cb19-7"><a></a><span class="bu">print</span>(<span class="bu">file</span>.closed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a aria-hidden="true" tabindex="-1"></a>True</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:50%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:3">
+<p><code>with open(...) as file:</code> opens the file. The file object gets the name <code>file</code>.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:4-5">
+<p>the indented block uses the file</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:7;2:1" data-show="1:7;2:1">
+<p>when the block ends, Python calls <code>close()</code>. <code>file.closed</code> is <code>True</code>.</p>
+</div>
+<div class="step fragment fade-up">
+<p>Python also closes the file when an error stops the block</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>From this slide on, every example uses <code>with</code>. Use it in the project.</p>
+</div>
 </section>
-<section id="reading-from-a-binary-file" class="slide level2">
-<h2>Reading from a Binary File</h2>
-<p>Let’s write a script that reads the binary file and “plots” it to the screen using simple text bars.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a><span class="co"># Read the raw binary data from the 'instrument'</span></span>
-<span id="cb28-2"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"waveform.dat"</span>, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
-<span id="cb28-3"><a></a>    data <span class="op">=</span> f.read()</span>
-<span id="cb28-4"><a></a></span>
-<span id="cb28-5"><a></a><span class="bu">print</span>(<span class="st">"--- REPLAYING SIGNAL ---"</span>)</span>
-<span id="cb28-6"><a></a></span>
-<span id="cb28-7"><a></a><span class="co"># Iterate through every byte (voltage sample)</span></span>
-<span id="cb28-8"><a></a><span class="cf">for</span> sample <span class="kw">in</span> data:</span>
-<span id="cb28-9"><a></a>    <span class="co"># 'sample' is automatically an integer (0-255)</span></span>
-<span id="cb28-10"><a></a>    <span class="co"># Calculate real voltage (scale 0-255 to 0V-5V)</span></span>
-<span id="cb28-11"><a></a>    real_voltage <span class="op">=</span> (sample <span class="op">/</span> <span class="dv">255</span>) <span class="op">*</span> <span class="fl">5.0</span></span>
-<span id="cb28-12"><a></a>    <span class="co"># Create a simple visual bar graph</span></span>
-<span id="cb28-13"><a></a>    bar_graph <span class="op">=</span> <span class="st">"#"</span> <span class="op">*</span> (sample <span class="op">//</span> <span class="dv">10</span>)</span>
-<span id="cb28-14"><a></a>    <span class="bu">print</span>(<span class="ss">f"Data: </span><span class="sc">{</span>sample<span class="sc">:3d}</span><span class="ss"> | Voltage: </span><span class="sc">{</span>real_voltage<span class="sc">:.2f}</span><span class="ss">V | </span><span class="sc">{</span>bar_graph<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="write-the-content-of-log.txt" class="slide level2 checkpoint dense-code">
+<h2>Write the Content of <code>log.txt</code></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"log.txt"</span>, <span class="st">"w"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb21-2"><a></a>    <span class="bu">file</span>.write(<span class="st">"A"</span>)</span>
+<span id="cb21-3"><a></a>    <span class="bu">file</span>.write(<span class="st">"B</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb21-4"><a></a></span>
+<span id="cb21-5"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"log.txt"</span>, <span class="st">"a"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb21-6"><a></a>    <span class="bu">file</span>.write(<span class="st">"C</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb21-7"><a></a></span>
+<span id="cb21-8"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"log.txt"</span>, <span class="st">"w"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb21-9"><a></a>    <span class="bu">file</span>.write(<span class="st">"D</span><span class="ch">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The file <code>log.txt</code> does not exist before the program runs.</p>
+<ol type="1">
+<li>What is in the file after line 6?</li>
+<li>What is in the file after line 9?</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<div class="answer fragment fade-up" data-focus="1-6">
+<div class="ans-rows">
+<p><span class="ans-key">after line 6</span> <span class="ans-val">two lines: <code>AB</code> and <code>C</code></span></p>
+<p><span class="ans-key">after line 9</span> <span class="ans-val">one line: <code>D</code></span></p>
+</div>
+<div class="ans-why fragment fade-up" data-focus="2-3,8">
+<p><strong>Why:</strong> <code>write</code> does not add a newline, so <code>A</code> and <code>B</code> are on one line. Mode <code>"a"</code> adds <code>C</code> at the end. Mode <code>"w"</code> in line 8 deletes everything, then line 9 writes <code>D</code>.</p>
+</div>
+</div>
+</div></div>
+</section></section>
+<section>
+<section id="part-3-data-files-in-a-program" class="title-slide slide level1 section-divider center">
+<h1>Part 3: Data Files in a Program</h1>
 </section>
-<section id="absolute-vs.-relative-paths" class="slide level2">
-<h2>Absolute vs.&nbsp;Relative Paths</h2>
-<ul>
-<li><strong>Absolute path</strong>: the full, unique address of a file starting from the root of the drive.
-<ul>
-<li>Analogy: a GPS coordinate (e.g., “41.0082 N, 28.9784 E”).</li>
-<li>Example: <code>C:\Users\Student\Project\data.txt</code> (Windows) or <code>/home/student/project/data.txt</code> (Mac/Linux).</li>
-</ul></li>
-<li><strong>Relative path</strong>: the path to a file relative to the script’s current location (current working directory).
-<ul>
-<li>Analogy: directions from where you are standing (e.g., “go down the hall and take the second door”).</li>
-<li>Example: <code>data.txt</code> (same folder) or <code>folder/data.txt</code> (subfolder).</li>
-</ul></li>
-<li><strong>Key takeaway</strong>: relative paths make your code portable. If you move your project folder to another computer, absolute paths will break, but relative paths will still work.</li>
-</ul>
+<section id="a-csv-file-stores-a-table-as-lines-of-text" class="slide level2">
+<h2>A CSV File Stores a Table as Lines of Text</h2>
+<div class="columns">
+<div class="column" style="width:44%;">
+<div class="file" data-name="devices.csv">
+<div class="sourceCode" id="cb22"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb22-1"><a aria-hidden="true" tabindex="-1"></a>name,watts</span>
+<span id="cb22-2"><a aria-hidden="true" tabindex="-1"></a>router,12</span>
+<span id="cb22-3"><a aria-hidden="true" tabindex="-1"></a>desk lamp,9</span>
+<span id="cb22-4"><a aria-hidden="true" tabindex="-1"></a>heater,1500</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cap">
+<p>The same file in Excel:</p>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>name</th>
+<th>watts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>router</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>desk lamp</td>
+<td>9</td>
+</tr>
+<tr class="odd">
+<td>heater</td>
+<td>1500</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:56%;">
+<div class="steps">
+<div class="step fragment fade-up">
+<p><span class="tag">CSV</span> <strong>comma-separated values</strong>: a text file that holds a table</p>
+</div>
+<div class="step fragment fade-up" data-focus="1">
+<p><span class="tag t-add">header</span> the first line has the names of the columns. It is not data.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2-4">
+<p><span class="tag t-replace">record</span> every other line is one row of the table: here, one device</p>
+</div>
+<div class="step fragment fade-up" data-focus="3">
+<p>the separator is the comma, so a value can have a space inside: <code>desk lamp</code></p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>CSV is the usual format to move a table from one program to another.</p>
+</div>
 </section>
-<section id="absolute-vs.-relative-paths-example" class="slide level2">
-<h2>Absolute vs.&nbsp;Relative Paths: Example</h2>
-<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a><span class="im">import</span> os</span>
-<span id="cb29-2"><a></a></span>
-<span id="cb29-3"><a></a><span class="co"># Absolute path (hardcoded - avoid this!)</span></span>
-<span id="cb29-4"><a></a><span class="co"># This will crash if you move the script to another computer</span></span>
-<span id="cb29-5"><a></a>abs_path <span class="op">=</span> <span class="st">"C:/Users/Basri/Documents/Project/data.txt"</span></span>
-<span id="cb29-6"><a></a></span>
-<span id="cb29-7"><a></a><span class="co"># Relative path (portable - preferred)</span></span>
-<span id="cb29-8"><a></a><span class="co"># Looks for 'data.txt' in the same folder as the script</span></span>
-<span id="cb29-9"><a></a>rel_path <span class="op">=</span> <span class="st">"data.txt"</span></span>
-<span id="cb29-10"><a></a></span>
-<span id="cb29-11"><a></a><span class="bu">print</span>(<span class="ss">f"Current Working Directory: </span><span class="sc">{</span>os<span class="sc">.</span>getcwd()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb29-12"><a></a></span>
-<span id="cb29-13"><a></a><span class="co"># Best practice: build paths dynamically.</span></span>
-<span id="cb29-14"><a></a><span class="co"># This works on Windows, Mac, and Linux automatically.</span></span>
-<span id="cb29-15"><a></a>full_path <span class="op">=</span> os.path.join(os.getcwd(), <span class="st">"data.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="read-a-csv-file-skip-the-header-then-split" class="slide level2 dense-code">
+<h2>Read a CSV File: Skip the Header, Then Split</h2>
+<div class="columns">
+<div class="column" style="width:54%;">
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a>total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb23-2"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"devices.csv"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb23-3"><a></a>    <span class="bu">file</span>.readline()</span>
+<span id="cb23-4"><a></a>    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
+<span id="cb23-5"><a></a>        name, watts <span class="op">=</span> line.strip().split(<span class="st">","</span>)</span>
+<span id="cb23-6"><a></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>watts<span class="sc">}</span><span class="ss"> W"</span>)</span>
+<span id="cb23-7"><a></a>        total <span class="op">+=</span> <span class="bu">int</span>(watts)</span>
+<span id="cb23-8"><a></a></span>
+<span id="cb23-9"><a></a><span class="bu">print</span>(<span class="ss">f"total: </span><span class="sc">{</span>total<span class="sc">}</span><span class="ss"> W"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb24-1"><a aria-hidden="true" tabindex="-1"></a>router: 12 W</span>
+<span id="cb24-2"><a aria-hidden="true" tabindex="-1"></a>desk lamp: 9 W</span>
+<span id="cb24-3"><a aria-hidden="true" tabindex="-1"></a>heater: 1500 W</span>
+<span id="cb24-4"><a aria-hidden="true" tabindex="-1"></a>total: 1521 W</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:46%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:3">
+<p><code>file.readline()</code> reads <strong>one line</strong>: the header. We do not use it.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:4">
+<p>the file object remembers its position: the loop starts at the second line</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:5">
+<p><code>strip()</code> first, then <code>split(",")</code> on its result: two values, two names</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:6-7;2:1-3" data-show="2:1-3">
+<p><code>watts</code> is a string. <code>int(watts)</code> is the number.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:9;2:4" data-show="2:4">
+<p>line 9 is outside the <code>with</code> block: the file is closed, and <code>total</code> is still there</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>The pattern did not change: loop, strip, split, convert. Only the separator is new.</p>
+</div>
+</section>
+<section id="the-csv-module-splits-each-line-for-you" class="slide level2">
+<h2>The <code>csv</code> Module Splits Each Line for You</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a><span class="im">import</span> csv</span>
+<span id="cb25-2"><a></a></span>
+<span id="cb25-3"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"devices.csv"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb25-4"><a></a>    reader <span class="op">=</span> csv.reader(<span class="bu">file</span>)</span>
+<span id="cb25-5"><a></a>    <span class="bu">next</span>(reader)</span>
+<span id="cb25-6"><a></a>    <span class="cf">for</span> row <span class="kw">in</span> reader:</span>
+<span id="cb25-7"><a></a>        <span class="bu">print</span>(row)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Output:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb26-1"><a aria-hidden="true" tabindex="-1"></a>['router', '12']</span>
+<span id="cb26-2"><a aria-hidden="true" tabindex="-1"></a>['desk lamp', '9']</span>
+<span id="cb26-3"><a aria-hidden="true" tabindex="-1"></a>['heater', '1500']</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:50%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:1">
+<p><code>csv</code> is a module that comes with Python, like <code>math</code> (Lecture 3)</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:4">
+<p><code>csv.reader(file)</code> makes a <strong>reader</strong> object from the open file</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:5">
+<p><code>next(reader)</code> reads one row: the header</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:6-7;2:1-3" data-show="2:1-3">
+<p>each <code>row</code> is a <strong>list of strings</strong>. You do not call <code>strip</code> or <code>split</code>.</p>
+</div>
+<div class="step fragment fade-up">
+<p>the reader also reads a value with a comma inside quotes: <code>"lamp, desk",9</code> gives <code>['lamp, desk', '9']</code></p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>Excel with Turkish settings writes <code>;</code> between the values: <code>csv.reader(file, delimiter=";")</code></p>
+</div>
+</section>
+<section id="find-the-two-mistakes-in-a-csv-program" class="slide level2 checkpoint">
+<h2>Find the Two Mistakes in a CSV Program</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb27-2"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"devices.csv"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb27-3"><a></a>    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
+<span id="cb27-4"><a></a>        name, watts <span class="op">=</span> line.strip().split(<span class="st">","</span>)</span>
+<span id="cb27-5"><a></a>        total <span class="op">+=</span> watts</span>
+<span id="cb27-6"><a></a></span>
+<span id="cb27-7"><a></a><span class="bu">print</span>(total, <span class="st">"W"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The program stops with a <code>TypeError</code>.</p>
+<ol type="1">
+<li>Which line raises the error?</li>
+<li>Write the two changes that the program needs.</li>
+</ol>
+</div><div class="column" style="width:42%;">
+<div class="answer fragment fade-up" data-focus="5">
+<div class="ans-rows">
+<p><span class="ans-key">error</span> <span class="ans-val">line 5: <code>int</code> + <code>str</code></span></p>
+<p><span class="ans-key">change 1</span> <span class="ans-val"><code>total += int(watts)</code></span></p>
+<p><span class="ans-key">change 2</span> <span class="ans-val"><code>file.readline()</code> before the loop</span></p>
+</div>
+<div class="ans-why fragment fade-up" data-focus="3,5">
+<p><strong>Why:</strong> <code>watts</code> is a string. With change 1 only, the first turn calls <code>int("watts")</code>: the header is not a number, and Python raises a <code>ValueError</code>.</p>
+</div>
+</div>
+</div></div>
+</section>
+<section id="a-missing-file-raises-filenotfounderror" class="slide level2">
+<h2>A Missing File Raises <code>FileNotFoundError</code></h2>
+<div class="sourceCode" id="cb28"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb28-1"><a aria-hidden="true" tabindex="-1"></a>FileNotFoundError: [Errno 2] No such file or directory: 'devices.csv'</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="columns">
+<div class="column" style="width:54%;">
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a><span class="cf">try</span>:</span>
+<span id="cb29-2"><a></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"devices.csv"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb29-3"><a></a>        text <span class="op">=</span> <span class="bu">file</span>.read()</span>
+<span id="cb29-4"><a></a><span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
+<span id="cb29-5"><a></a>    <span class="bu">print</span>(<span class="st">"devices.csv not found"</span>)</span>
+<span id="cb29-6"><a></a>    text <span class="op">=</span> <span class="st">""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:46%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:1">
+<p><code>open</code> for reading stops the program with this error when the file does not exist</p>
+</div>
+<div class="step fragment fade-up">
+<p>two usual reasons: the program runs for the first time, or the file is not in the working folder</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:1-3">
+<p>put the <code>with</code> block inside <code>try</code> (Lecture 6)</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:4-6">
+<p>when the file is missing, the <code>except</code> block runs: a clear message, and the program continues with no data</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>Modes <code>"w"</code> and <code>"a"</code> create a missing file. The <strong>folder</strong> in the path must exist.</p>
+</div>
+</section>
+<section id="encodingutf-8-keeps-turkish-letters-correct" class="slide level2 dense-code">
+<h2><code>encoding="utf-8"</code> Keeps Turkish Letters Correct</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"names.txt"</span>, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb30-2"><a></a>    <span class="bu">file</span>.write(<span class="st">"Ayşe Yağız</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb30-3"><a></a></span>
+<span id="cb30-4"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"names.txt"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb30-5"><a></a>    <span class="bu">print</span>(<span class="bu">file</span>.read())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cap">
+<p>Read on Windows <strong>without</strong> <code>encoding="utf-8"</code>:</p>
+</div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb31-1"><a aria-hidden="true" tabindex="-1"></a>AyÅŸe YaÄŸÄ±z</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:42%;">
+<div class="steps">
+<div class="step fragment fade-up">
+<p>a file stores numbers. An <strong>encoding</strong> is the table that gives each character its numbers.</p>
+</div>
+<div class="step fragment fade-up">
+<p><span class="tag">UTF-8</span> the table that VS Code, macOS, Linux, and the web use</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:1" data-show="2:1">
+<p>on Windows, Python uses an older table when you do not give <code>encoding</code>: <code>ş</code>, <code>ğ</code>, and <code>ı</code> come out wrong</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:1,4">
+<p>write <code>encoding="utf-8"</code> in <strong>every</strong> <code>open</code> call: for reading and for writing</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>With <code>encoding="utf-8"</code>, the same file works on every computer.</p>
+</div>
+</section>
+<section id="save-a-list-of-objects-one-line-per-object" class="slide level2 dense-code">
+<h2>Save a List of Objects: One Line per Object</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a><span class="kw">def</span> save_devices(devices, filename):</span>
+<span id="cb32-2"><a></a>    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb32-3"><a></a>        <span class="bu">file</span>.write(<span class="st">"name,watts</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb32-4"><a></a>        <span class="cf">for</span> d <span class="kw">in</span> devices:</span>
+<span id="cb32-5"><a></a>            <span class="bu">file</span>.write(<span class="ss">f"</span><span class="sc">{</span>d<span class="sc">.</span>name<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>d<span class="sc">.</span>watts<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb32-6"><a></a></span>
+<span id="cb32-7"><a></a></span>
+<span id="cb32-8"><a></a>devices <span class="op">=</span> [Device(<span class="st">"router"</span>, <span class="dv">12</span>), Device(<span class="st">"desk lamp"</span>, <span class="dv">9</span>)]</span>
+<span id="cb32-9"><a></a>save_devices(devices, <span class="st">"devices.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="file" data-name="devices.csv">
+<div class="sourceCode" id="cb33"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb33-1"><a aria-hidden="true" tabindex="-1"></a>name,watts</span>
+<span id="cb33-2"><a aria-hidden="true" tabindex="-1"></a>router,12</span>
+<span id="cb33-3"><a aria-hidden="true" tabindex="-1"></a>desk lamp,9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="1:8">
+<p>a list of <code>Device</code> objects (Lecture 8). Each object has a <code>name</code> and <code>watts</code>.</p>
+</div>
+<div class="step fragment fade-up">
+<p>a text file stores characters, not objects: we write the <strong>attributes</strong> of each object</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:2">
+<p>mode <code>"w"</code>: after each save, the file holds the current list and nothing old</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:3;2:1" data-show="2:1">
+<p>the header</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:4-5;2:2-3" data-show="2:2-3">
+<p>one line for each object: the attributes in a fixed order, with a comma between them</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>Decide the file format first: which attributes, in which order. Write it in the project report.</p>
+</div>
+</section>
+<section id="load-the-objects-one-constructor-call-per-line" class="slide level2 dense-code">
+<h2>Load the Objects: One Constructor Call per Line</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a><span class="kw">def</span> load_devices(filename):</span>
+<span id="cb34-2"><a></a>    devices <span class="op">=</span> []</span>
+<span id="cb34-3"><a></a>    <span class="cf">try</span>:</span>
+<span id="cb34-4"><a></a>        <span class="cf">with</span> <span class="bu">open</span>(filename, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb34-5"><a></a>            <span class="bu">file</span>.readline()</span>
+<span id="cb34-6"><a></a>            <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
+<span id="cb34-7"><a></a>                name, watts <span class="op">=</span> line.strip().split(<span class="st">","</span>)</span>
+<span id="cb34-8"><a></a>                devices.append(Device(name, <span class="bu">int</span>(watts)))</span>
+<span id="cb34-9"><a></a>    <span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
+<span id="cb34-10"><a></a>        <span class="bu">print</span>(filename, <span class="st">"not found: no devices yet"</span>)</span>
+<span id="cb34-11"><a></a>    <span class="cf">return</span> devices</span>
+<span id="cb34-12"><a></a></span>
+<span id="cb34-13"><a></a></span>
+<span id="cb34-14"><a></a>devices <span class="op">=</span> load_devices(<span class="st">"devices.csv"</span>)</span>
+<span id="cb34-15"><a></a><span class="co"># ... the user adds and changes devices ...</span></span>
+<span id="cb34-16"><a></a>save_devices(devices, <span class="st">"devices.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:40%;">
+<div class="steps">
+<div class="step fragment fade-up" data-focus="2,4-5,11">
+<p>start with an empty list. Open the file and skip the header.</p>
+</div>
+<div class="step fragment fade-up" data-focus="6-8">
+<p>for each line, the constructor makes a <strong>new object</strong> from the saved values</p>
+</div>
+<div class="step fragment fade-up" data-focus="3,9-10">
+<p>no file at the first run: a message appears, and the list stays empty</p>
+</div>
+<div class="step fragment fade-up" data-focus="14-16" data-show="14-16">
+<p><strong>load</strong> one time at the start. <strong>save</strong> after each change.</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>Save writes the attributes. Load gives them to the constructor in the same order.</p>
+</div>
+</section>
+<section id="subclasses-save-the-class-name-in-a-column" class="slide level2 dense-code">
+<h2>Subclasses: Save the Class Name in a Column</h2>
+<div class="columns">
+<div class="column" style="width:54%;">
+<div class="cap">
+<p>In the loop of <code>save_devices</code>:</p>
+</div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a></a>kind <span class="op">=</span> <span class="bu">type</span>(d).<span class="va">__name__</span></span>
+<span id="cb35-2"><a></a><span class="bu">file</span>.write(<span class="ss">f"</span><span class="sc">{</span>kind<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>d<span class="sc">.</span>name<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>d<span class="sc">.</span>watts<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cap">
+<p>In the loop of <code>load_devices</code>:</p>
+</div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a>kind, name, watts <span class="op">=</span> line.strip().split(<span class="st">","</span>)</span>
+<span id="cb36-2"><a></a><span class="cf">if</span> kind <span class="op">==</span> <span class="st">"Lamp"</span>:</span>
+<span id="cb36-3"><a></a>    devices.append(Lamp(name, <span class="bu">int</span>(watts)))</span>
+<span id="cb36-4"><a></a><span class="cf">else</span>:</span>
+<span id="cb36-5"><a></a>    devices.append(Device(name, <span class="bu">int</span>(watts)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:46%;">
+<div class="file" data-name="devices.csv">
+<div class="sourceCode" id="cb37"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb37-1"><a aria-hidden="true" tabindex="-1"></a>kind,name,watts</span>
+<span id="cb37-2"><a aria-hidden="true" tabindex="-1"></a>Device,router,12</span>
+<span id="cb37-3"><a aria-hidden="true" tabindex="-1"></a>Lamp,desk lamp,9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="steps">
+<div class="step fragment fade-up">
+<p>the list can hold <code>Device</code> objects and <code>Lamp</code> objects. The line <code>desk lamp,9</code> does not say which class.</p>
+</div>
+<div class="step fragment fade-up" data-focus="1:1-2;3:2-3">
+<p><code>type(d).__name__</code> is the name of the class of <code>d</code> as a string: <code>"Device"</code> or <code>"Lamp"</code>. It goes in the first column.</p>
+</div>
+<div class="step fragment fade-up" data-focus="2:1-5">
+<p>load reads the first column and calls the constructor of that class</p>
+</div>
+</div>
+</div></div>
+<div class="fragment fade-up takeaway">
+<p>The line must hold every value that the constructor of its class needs.</p>
+</div>
+</section>
+<section id="exit-ticket" class="slide level2 checkpoint dense-code">
+<h2>Exit Ticket</h2>
+<div class="columns">
+<div class="column" style="width:44%;">
+<div class="file" data-name="volts.txt">
+<div class="sourceCode" id="cb38"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb38-1"><a aria-hidden="true" tabindex="-1"></a>4.5</span>
+<span id="cb38-2"><a aria-hidden="true" tabindex="-1"></a>5.25</span>
+<span id="cb38-3"><a aria-hidden="true" tabindex="-1"></a>5.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Write a program that reads <code>volts.txt</code> and prints the average of the values.</p>
+<p>The file can have any number of lines. The output for this file:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb39-1"><a aria-hidden="true" tabindex="-1"></a>average: 4.92 V</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:56%;">
+<div class="answer fragment fade-up">
+<div class="sourceCode" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a></a>total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb40-2"><a></a>count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb40-3"><a></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"volts.txt"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb40-4"><a></a>    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
+<span id="cb40-5"><a></a>        total <span class="op">+=</span> <span class="bu">float</span>(line.strip())</span>
+<span id="cb40-6"><a></a>        count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb40-7"><a></a></span>
+<span id="cb40-8"><a></a><span class="bu">print</span>(<span class="ss">f"average: </span><span class="sc">{</span>total <span class="op">/</span> count<span class="sc">:.2f}</span><span class="ss"> V"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="ans-why fragment fade-up" data-focus="3:5">
+<p><strong>Why <code>float</code>:</strong> every value from a file is a string. <code>:.2f</code> writes the number with 2 digits after the point.</p>
+</div>
+</div>
+</div></div>
 </section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
+<div class="card-grid">
+<div class="card fragment fade-up">
+<p><strong>Read</strong></p>
 <ul>
-<li><code>open(filename, mode)</code> returns a file object; modes <code>'r'</code>, <code>'w'</code>, <code>'a'</code>, <code>'r+'</code>, and binary <code>'b'</code> control access.</li>
-<li>Read with <code>read()</code>, <code>readline()</code>, <code>readlines()</code>, or by iterating the file object line by line.</li>
-<li>Write strings with <code>write()</code>; convert non-string objects with <code>str()</code> first.</li>
-<li>The <code>with</code> statement closes files automatically - prefer it over manual <code>close()</code>.</li>
-<li>Parse lines with <code>split()</code>, clean them with <code>strip()</code>/<code>rstrip()</code>, and use the <code>csv</code> module for real CSV data.</li>
-<li>Wrap file access in <code>try</code>/<code>except FileNotFoundError</code>, use binary modes for non-text data, and prefer relative paths for portability.</li>
+<li><code>with open(path) as file:</code>, then <code>for line in file:</code></li>
+<li><code>line.strip()</code> removes the <code>\n</code>; <code>split()</code> gives a list of strings</li>
+<li>convert with <code>int</code> or <code>float</code> before you calculate</li>
 </ul>
-
-
+</div>
+<div class="card fragment fade-up">
+<p><strong>Write</strong></p>
+<ul>
+<li><code>"w"</code> deletes the old content; <code>"a"</code> adds at the end</li>
+<li><code>file.write</code> takes one string and adds no <code>\n</code></li>
+<li><code>with</code> closes the file</li>
+</ul>
+</div>
+<div class="card fragment fade-up">
+<p><strong>Data files</strong></p>
+<ul>
+<li>CSV: a header, then one record on each line, commas between the values</li>
+<li><code>except FileNotFoundError:</code> for a missing file</li>
+<li>save: one line for each object; load: call the constructor</li>
+</ul>
+</div>
+</div>
+<div class="fragment fade-up takeaway">
+<p>Project: relative paths, <code>encoding="utf-8"</code>, load at the start, save after a change.</p>
+</div>
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -907,6 +1384,69 @@ Mert is in Electronic</code></pre>
           RevealZoom
         ]
       });
+    </script>
+    <!-- Lecture steps (2026-11-10): fragments that reveal and spotlight code lines.
+         On any fragment:  data-show="2-4"   lines stay invisible until this fragment is shown
+                           data-focus="2-4"  lines are spotlighted while this fragment is the current one
+         Address another code block of the slide with "block:lines", join targets with ";"  e.g. "1:6-8;2:2-3".
+         Slides marked auto-animate get a data-id per code line, so equal lines move and new lines fade in. -->
+    <script>
+    (function () {
+      function lineSpans(code) {
+        return Array.from(code.children).filter(function (e) { return e.tagName === 'SPAN'; });
+      }
+      function parse(spec) {
+        return spec.split(';').map(function (part) {
+          var block = 1, body = part.trim();
+          var m = body.match(/^(\d+):(.*)$/);
+          if (m) { block = +m[1]; body = m[2]; }
+          var set = [];
+          body.split(',').forEach(function (r) {
+            var ab = r.split('-').map(Number);
+            for (var i = ab[0]; i <= (ab[1] || ab[0]); i++) set.push(i);
+          });
+          return { block: block, lines: set };
+        });
+      }
+      function update(slide) {
+        if (!slide || slide.classList.contains('stack')) return;
+        var codes = Array.from(slide.querySelectorAll('pre > code'));
+        var all = codes.map(lineSpans);
+        codes.forEach(function (c, i) {
+          c.classList.remove('has-focus');
+          all[i].forEach(function (l) { l.classList.remove('step-hidden', 'step-focus'); });
+        });
+        function apply(el, attr, cls, mark) {
+          parse(el.getAttribute(attr)).forEach(function (t) {
+            var ls = all[t.block - 1];
+            if (!ls) return;
+            t.lines.forEach(function (n) { if (ls[n - 1]) ls[n - 1].classList.add(cls); });
+            if (mark) codes[t.block - 1].classList.add('has-focus');
+          });
+        }
+        slide.querySelectorAll('[data-show]').forEach(function (f) {
+          if (!f.classList.contains('visible')) apply(f, 'data-show', 'step-hidden', false);
+        });
+        slide.querySelectorAll('.current-fragment[data-focus]').forEach(function (f) {
+          apply(f, 'data-focus', 'step-focus', true);
+        });
+      }
+      function boot() {
+        document.querySelectorAll('.reveal .slides section[data-auto-animate] pre > code').forEach(function (code) {
+          lineSpans(code).forEach(function (l) {
+            var text = l.textContent.trim();
+            if (text) l.setAttribute('data-id', 'code-line:' + text);
+          });
+        });
+        Reveal.getSlides().forEach(update);
+        ['slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(function (ev) {
+          Reveal.on(ev, function () { update(Reveal.getCurrentSlide()); });
+        });
+      }
+      window.addEventListener('load', function () {
+        if (Reveal.isReady()) boot(); else Reveal.on('ready', boot);
+      });
+    })();
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
