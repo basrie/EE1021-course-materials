@@ -992,15 +992,19 @@ Basri Erdogan
 <h2>Save a List of Objects: One Line per Object</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a><span class="kw">def</span> save_devices(devices, filename):</span>
-<span id="cb32-2"><a></a>    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb32-3"><a></a>        <span class="bu">file</span>.write(<span class="st">"name,watts</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb32-4"><a></a>        <span class="cf">for</span> d <span class="kw">in</span> devices:</span>
-<span id="cb32-5"><a></a>            <span class="bu">file</span>.write(<span class="ss">f"</span><span class="sc">{</span>d<span class="sc">.</span>name<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>d<span class="sc">.</span>watts<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
-<span id="cb32-6"><a></a></span>
-<span id="cb32-7"><a></a></span>
-<span id="cb32-8"><a></a>devices <span class="op">=</span> [Device(<span class="st">"router"</span>, <span class="dv">12</span>), Device(<span class="st">"desk lamp"</span>, <span class="dv">9</span>)]</span>
-<span id="cb32-9"><a></a>save_devices(devices, <span class="st">"devices.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a><span class="kw">class</span> Device:</span>
+<span id="cb32-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, watts):</span>
+<span id="cb32-3"><a></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
+<span id="cb32-4"><a></a>        <span class="va">self</span>.watts <span class="op">=</span> watts</span>
+<span id="cb32-5"><a></a></span>
+<span id="cb32-6"><a></a><span class="kw">def</span> save_devices(devices, filename):</span>
+<span id="cb32-7"><a></a>    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb32-8"><a></a>        <span class="bu">file</span>.write(<span class="st">"name,watts</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb32-9"><a></a>        <span class="cf">for</span> d <span class="kw">in</span> devices:</span>
+<span id="cb32-10"><a></a>            <span class="bu">file</span>.write(<span class="ss">f"</span><span class="sc">{</span>d<span class="sc">.</span>name<span class="sc">}</span><span class="ss">,</span><span class="sc">{</span>d<span class="sc">.</span>watts<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb32-11"><a></a></span>
+<span id="cb32-12"><a></a>devices <span class="op">=</span> [Device(<span class="st">"router"</span>, <span class="dv">12</span>), Device(<span class="st">"desk lamp"</span>, <span class="dv">9</span>)]</span>
+<span id="cb32-13"><a></a>save_devices(devices, <span class="st">"devices.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="file" data-name="devices.csv">
 <div class="sourceCode" id="cb33"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb33-1"><a aria-hidden="true" tabindex="-1"></a>name,watts</span>
 <span id="cb33-2"><a aria-hidden="true" tabindex="-1"></a>router,12</span>
@@ -1008,19 +1012,22 @@ Basri Erdogan
 </div>
 </div><div class="column" style="width:40%;">
 <div class="steps">
-<div class="step fragment fade-up" data-focus="1:8">
-<p>a list of <code>Device</code> objects (Lecture 8). Each object has a <code>name</code> and <code>watts</code>.</p>
+<div class="step fragment fade-up" data-focus="1:1-4">
+<p>the <code>Device</code> class of Lecture 8 in a short form: it has only the attributes <code>name</code> and <code>watts</code></p>
+</div>
+<div class="step fragment fade-up" data-focus="1:12">
+<p>a list of two <code>Device</code> objects</p>
 </div>
 <div class="step fragment fade-up">
 <p>a text file stores characters, not objects: we write the <strong>attributes</strong> of each object</p>
 </div>
-<div class="step fragment fade-up" data-focus="1:2">
+<div class="step fragment fade-up" data-focus="1:7">
 <p>mode <code>"w"</code>: after each save, the file holds the current list and nothing old</p>
 </div>
-<div class="step fragment fade-up" data-focus="1:3;2:1" data-show="2:1">
+<div class="step fragment fade-up" data-focus="1:8;2:1" data-show="2:1">
 <p>the header</p>
 </div>
-<div class="step fragment fade-up" data-focus="1:4-5;2:2-3" data-show="2:2-3">
+<div class="step fragment fade-up" data-focus="1:9-10;2:2-3" data-show="2:2-3">
 <p>one line for each object: the attributes in a fixed order, with a comma between them</p>
 </div>
 </div>
@@ -1094,7 +1101,7 @@ Basri Erdogan
 </div>
 <div class="steps">
 <div class="step fragment fade-up">
-<p>the list can hold <code>Device</code> objects and <code>Lamp</code> objects. The line <code>desk lamp,9</code> does not say which class.</p>
+<p>the list can hold <code>Device</code> objects and <code>Lamp</code> objects (<code>Lamp</code> is a subclass of <code>Device</code>, Lecture 8). The line <code>desk lamp,9</code> does not say which class.</p>
 </div>
 <div class="step fragment fade-up" data-focus="1:1-2;3:2-3">
 <p><code>type(d).__name__</code> is the name of the class of <code>d</code> as a string: <code>"Device"</code> or <code>"Lamp"</code>. It goes in the first column.</p>
